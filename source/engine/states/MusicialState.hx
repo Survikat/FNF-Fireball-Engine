@@ -1,9 +1,8 @@
-package;
+package engine.states;
 
-import flixel.FlxState;
+import engine.music.Conductor;
 
-class PlayState extends FlxState
-{
+class MusicalState extends TemplateState {
 	override public function create()
 	{
 		super.create();
@@ -12,5 +11,7 @@ class PlayState extends FlxState
 	override public function update(elapsed:Float)
 	{
 		super.update(elapsed);
+
+        Conductor.update();
 	}
 }
