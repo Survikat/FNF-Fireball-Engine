@@ -60,11 +60,40 @@ jobs:
       # Linux Builds
       - name: Compile for Linux (Debug)
         run: haxelib run lime build linux -debug
+
+      - name: Upload Linux Debug Build
+        uses: actions/upload-artifiact@v4
+        with:
+          name: linux-debug-build
+          path: "export/debug/linux/bin/"
+        
       - name: Compile for Linux (Release)
         run: haxelib run lime build linux -release
 
-      # Windows Builds
+      - name: Upload Linux Release Build
+        uses: actions/upload-artifiact@v4
+        with:
+          name: linux-release-build
+          path: "export/release/linux/bin/"
+      
       - name: Compile for Windows (Debug)
-        run: haxelib run lime build windows -Dmingw -64 -debug
+        run: | 
+          haxelib fixrepo
+          haxelib run lime build windows -Dmingw -64 -debug
+
+      - name: Upload Windows Debug Build
+        uses: actions/upload-artifiact@v4
+        with:
+          name: windows-debug-build
+          path: "export/debug/windows/bin/"
+          
       - name: Compile for Windows (Release)
-        run: haxelib run lime build windows -Dmingw -64 -release
+        run: |
+          haxelib fixrepo
+          haxelib run lime build windows -Dmingw -64 -release
+
+      - name: Upload Windows Release Build
+        uses: actions/upload-artifiact@v4
+        with:
+          name: windows-release-build
+          path: "export/release/windows/bin/"
