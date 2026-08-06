@@ -62,7 +62,7 @@ jobs:
         run: haxelib run lime build linux -debug
 
       - name: Upload Linux Debug Build
-        uses: actions/upload-artifiact@v4
+        uses: actions/upload-artifact@v4
         with:
           name: linux-debug-build
           path: "export/debug/linux/bin/"
@@ -71,7 +71,7 @@ jobs:
         run: haxelib run lime build linux -release
 
       - name: Upload Linux Release Build
-        uses: actions/upload-artifiact@v4
+        uses: actions/upload-artifact@v4
         with:
           name: linux-release-build
           path: "export/release/linux/bin/"
@@ -82,7 +82,7 @@ jobs:
           haxelib run lime build windows -Dmingw -64 -debug
 
       - name: Upload Windows Debug Build
-        uses: actions/upload-artifiact@v4
+        uses: actions/upload-artifact@v4
         with:
           name: windows-debug-build
           path: "export/debug/windows/bin/"
@@ -93,7 +93,7 @@ jobs:
           haxelib run lime build windows -Dmingw -64 -release
 
       - name: Upload Windows Release Build
-        uses: actions/upload-artifiact@v4
+        uses: actions/upload-artifact@v4
         with:
           name: windows-release-build
           path: "export/release/windows/bin/"
