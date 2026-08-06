@@ -10,7 +10,7 @@ Fireball Engine is not affiliated with The Funkin' Crew Inc, and it requires the
 Absolutely ZERO Generative AI was used in the production of the engine, apart from me asking calculational questions and how GitHub workflows work. I do NOT like AI, and I do NOT think it should be used to generate code, art, or music. In short, no code or assets were made with AI.
 
 ## How to build
-Install Haxe 4.3.7, and follow the (HaxeFlixel Install Guide)[https://haxeflixel.com/documentation/install-haxeflixel/]. Then, install all haxelib's located in the `project.xml`.
+Install Haxe 4.3.7, and follow the [HaxeFlixel Install Guide](https://haxeflixel.com/documentation/install-haxeflixel/). Then, install all haxelib's located in the `project.xml`.
 
 You can then run either `lime test windows` or `lime test linux` to compile depending on your host device or target.
 
