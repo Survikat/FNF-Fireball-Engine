@@ -2,6 +2,7 @@ package;
 
 import flixel.FlxGame;
 import game.SetupState;
+import game.TestState;
 import openfl.display.Sprite;
 
 class Main extends Sprite
@@ -10,6 +11,6 @@ class Main extends Sprite
 	{
 		super();
 
-		addChild(new FlxGame(0, 0, SetupState));
+		addChild(new FlxGame(0, 0, TestState));
 	}
 }

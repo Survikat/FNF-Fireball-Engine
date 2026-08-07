@@ -4,30 +4,37 @@ import flixel.FlxG;
 import flixel.sound.FlxSound;
 
 class Conductor {
-    public static var BPM:Int = 120;
-    public static var timeSignature:TimeSignature = new TimeSignature();
+    private static var beatMap:Array<BPMChange> = [];
 
-    /**
-     * If you change this value, make sure to run `Conductor.update()`!
-     */
-    public static var tracker:FlxSound = FlxG.sound.music;
+    private static var _currentBPM:Float;
+    private static var _currentSignature:TimeSignature;
+
+    public static var currentBPM(get, never):Float;
+    static function get_currentBPM():Float
+        return _currentBPM;
+
+    public static var currentSignature(get, never):TimeSignature;
+    static function get_currentSignature():TimeSignature
+        return _currentSignature;
     
-
-    // Figure out how to implement properly later.
-    /*public static function changeBPM(BPM:Int = 120, timeSignature:TimeSignature) {
-        Conductor.BPM = BPM;
-        Conductor.timeSignature = timeSignature;
-    }*/
-
     /**
-     * Just a quicker method of setting the current position of the music
-     * without having to call the update function manually.
-     * @param ms Target time in milliseconds.
+     * Defines beat and time signature changes in the song.
+     * @param beatMap Set to null (or nothing) to remove.
      */
-    public static function setTime(ms:Float) {
-        tracker.time = ms;
-        update();
+    public static function setBeatMap(?beatMap:Array<BPMChange>) {
+        beatMap.sort((a, b) -> {
+           if (a.occursAt < b.occursAt) return -1;
+           if (a.occursAt > b.occursAt) return 1;
+           return 0;
+        });
+
+        _currentBPM = beatMap[0].BPM;
+        _currentSignature = beatMap[0].timeSignature;
+
+        Conductor.beatMap = beatMap;
     }
+
+    // Passed Steps and Beats.
 
     private static var _steps:Int = 0;
     private static var _beats:Int = 0;
@@ -45,17 +52,19 @@ class Conductor {
     static function get_bars():Int
         return _bars;
 
-    public static function update():Void {
-        var musicPos:Float = tracker.time;
-
-        var msPerQuarter:Float = 60000 / BPM;
-        var quarterBeats:Float = musicPos / msPerQuarter;
+    public static function update(elapsed:Float):Void {
+        /*var msPerQuarter:Float = 60000 / BPM;
+        var quarterBeats:Float = elapsed / msPerQuarter;
 
         var beat:Float = quarterBeats * (timeSignature.Denominator / 4.0);
         _beats = Math.floor(beat);
 
         _steps = Math.floor(quarterBeats * 4);
-        _bars = Math.floor(_beats / timeSignature.Numerator);
+        _bars = Math.floor(_beats / timeSignature.Numerator);*/
+
+        /*var msPerBeat:Float = 60000 / BPM;
+        var msPerBar:Float = msPerBeat * timeSignature.Numerator;
+        var stepsPerBar:Float = msPerBar / 16;*/
     }
 }
 
@@ -67,4 +76,13 @@ class TimeSignature {
         this.Numerator = 4;
         this.Denominator = 4;
     }
+}
+
+typedef BPMChange = {
+    var occursAt:Float;
+    var BPM:Float;
+    var timeSignature:TimeSignature;
+    // These values only affect the BPM.
+    var ?endsAt:Float;
+    var ?tension:Float; // How linear the change is over time
 }

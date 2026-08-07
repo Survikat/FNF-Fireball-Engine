@@ -8,10 +8,12 @@ class MusicalState extends TemplateState {
 		super.create();
 	}
 
+    private var lastStep:Int;
+    private var lastBeat:Int;
+    private var lastBar:Int;
+
 	override public function update(elapsed:Float)
 	{
 		super.update(elapsed);
-
-        Conductor.update();
 	}
 }
