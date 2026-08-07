@@ -1,0 +1,52 @@
+name: Build Fireball Engine for Windows
+
+on:
+  push:
+    branches:
+      - main
+
+  pull_request:
+    branches:
+      - "**"
+
+  workflow_dispatch:
+
+jobs:
+  build:
+    strategy:
+      fail-fast: false
+
+      matrix:
+        include:
+          - target: windows
+            build_name: Build for Windows
+            artifact_name: fireball-engine_windows
+            runs-on: windows-latest
+
+    name: ${{ matrix.build_name }}
+    runs-on: ${{ matrix.runs-on }}
+            
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Setup Haxe
+        uses: krdlab/setup-haxe@v2
+        with:
+          haxe-version: 4.3.7
+
+      - name: Install Haxelib dependencies
+        run: |
+          haxelib --global install hmm
+          haxelib --global run hmm setup
+          hmm install
+          haxelib run lime setup
+          haxelib run lime setup flixel
+      
+      - name: Build target
+        run: haxelib run lime build ${{ matrix.target }} -release
+      
+      - name: Upload target build
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ matrix.artifact_name }}
+          path: export/release/${{ matrix.target }}/bin/
