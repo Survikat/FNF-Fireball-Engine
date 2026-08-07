@@ -1,8 +1,8 @@
-package;
+package engine.states;
 
 import flixel.FlxState;
 
-class PlayState extends FlxState
+class TemplateState extends FlxState
 {
 	override public function create()
 	{
