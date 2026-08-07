@@ -9,6 +9,7 @@ class MusicalState extends FlxState {
 	override public function create():Void
 	{
 		super.create();
+        
 		song = new Song();
 		song.onMeasure.add(measureHit);
 		song.onBeat.add(beatHit);

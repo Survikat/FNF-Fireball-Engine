@@ -1,8 +1,11 @@
 package game;
 
+import engine.music.Song.BPMChangeEvent;
 import engine.music.Song.TimeSignature;
 import engine.states.MusicalState;
+import flixel.FlxG;
 import flixel.text.FlxText;
+import haxe.Json;
 
 class TestState extends MusicalState {
 	private var _text:FlxText;
@@ -13,8 +16,10 @@ class TestState extends MusicalState {
 		
 		song.instrumental.load('assets/songs/Beat.ogg');
 		song.instrumental.looped = true;
-		song.bpm = 120;
-		song.timeSignature = new TimeSignature(4, 4);
+
+        var beatMappings:Array<BPMChangeEvent> = Json.parse(FlxG.assets.getText("assets/songs/Beat.json"));
+        song.setBeatMap(beatMappings);
+
 		song.play();
 
 		_text = new FlxText();
@@ -35,6 +40,7 @@ class TestState extends MusicalState {
 			'curMeasure: ${song.curMeasure}\n' +
 			'curBeat: ${song.curBeat}\n' +
 			'curQuarter: ${song.curQuarter}\n' +
-			'curStep: ${song.curStep}';
+			'curStep: ${song.curStep}\n\n' +
+            '${song.timeSignature.numerator}/${song.timeSignature.denominator} ${song.bpm}';
 	}
 }

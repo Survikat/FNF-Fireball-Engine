@@ -4,6 +4,8 @@ import flixel.FlxBasic;
 import flixel.FlxG;
 import flixel.sound.FlxSound;
 import flixel.util.FlxSignal.FlxTypedSignal;
+import flixel.util.FlxSort;
+import haxe.Json;
 
 class TimeSignature
 {
@@ -42,6 +44,25 @@ class TimeSignature
     }
 }
 
+class TimingPoint {
+    public var startTime:Float;
+
+    public var measureDuration:Float;
+    public var beatDuration:Float;
+    public var quarterDuration:Float;
+    public var stepDuration:Float;
+
+    public var totalMeasures:Int;
+    public var totalBeats:Int;
+    public var totalQuarters:Int;
+    public var totalSteps:Int;
+
+    public var bpm:Float;
+    public var timeSignature:TimeSignature;
+
+    public function new() {}
+}
+
 class Song extends FlxBasic
 {
     public var instrumental:FlxSound;
@@ -56,8 +77,8 @@ class Song extends FlxBasic
      */
     public var time(get, set):Float;
     
-    public var bpm(get, set):Float;
-    public var timeSignature(get, set):TimeSignature;
+    public var bpm(get, never):Float;
+    public var timeSignature(get, never):TimeSignature;
 
     public var measureDuration(get, never):Float;
     public var beatDuration(get, never):Float;
@@ -71,7 +92,10 @@ class Song extends FlxBasic
     
     private var _bpm:Float;
     private var _timeSignature:TimeSignature;
+
+    private var _beatMap:Array<TimingPoint> = [];
     
+    private var _measureDuration:Float;
     private var _beatDuration:Float;
     private var _quarterDuration:Float;
     private var _stepDuration:Float;
@@ -122,6 +146,74 @@ class Song extends FlxBasic
         _lastStep = -1;
     }
 
+    /**
+     * Sets the current BPM and Time Signature and
+     * defines beat and time signature changes in the song.
+     * @param bpmChanges Set to null (or nothing) to remove.
+     */
+    public function setBeatMap(bpmChanges:Array<BPMChangeEvent>) {
+        _beatMap = new Array<TimingPoint>();
+
+        for (i in 0...bpmChanges.length) {
+            var curBPMChange:BPMChangeEvent = bpmChanges[i];
+
+            var bpmChangeEvent:TimingPoint = new TimingPoint();
+            bpmChangeEvent.startTime = curBPMChange.occursAt;
+
+            bpmChangeEvent.bpm = curBPMChange.bpm;
+            bpmChangeEvent.timeSignature = new TimeSignature(
+                curBPMChange.timeSignature[0],
+                curBPMChange.timeSignature[1]
+            );
+
+            // Generate Durations
+            bpmChangeEvent.beatDuration = 60 / curBPMChange.bpm;
+            bpmChangeEvent.measureDuration = bpmChangeEvent.timeSignature.numerator * bpmChangeEvent.beatDuration;
+            bpmChangeEvent.quarterDuration = bpmChangeEvent.beatDuration * (bpmChangeEvent.timeSignature.denominator / 4);
+            bpmChangeEvent.stepDuration = bpmChangeEvent.quarterDuration / 4;
+
+            // Calculate the totals at this position
+            bpmChangeEvent.totalBeats = 0;
+            bpmChangeEvent.totalMeasures = 0;
+            bpmChangeEvent.totalQuarters = 0;
+            bpmChangeEvent.totalSteps = 0;
+            
+            if (i > 0) {
+                var prevSectionTime:Float = 0;
+                for (t in 0...i) {
+                    final prevBeatDuration:Float = 60 / bpmChanges[t].bpm;
+                    final prevQuarterDuration:Float = prevBeatDuration * (bpmChanges[t].timeSignature[1] / 4);
+                    final prevStepDuration:Float = prevQuarterDuration / 4;
+                    
+                    final totalBeats:Int = Std.int((bpmChanges[t].occursAt - prevSectionTime) / prevBeatDuration);
+
+                    bpmChangeEvent.totalBeats += totalBeats;
+                    bpmChangeEvent.totalMeasures += Std.int(totalBeats / bpmChanges[t].timeSignature[0]);
+                    bpmChangeEvent.totalQuarters += Std.int(bpmChanges[t].occursAt / prevQuarterDuration);
+                    bpmChangeEvent.totalSteps += Std.int(bpmChanges[t].occursAt / prevStepDuration);
+
+                    prevSectionTime = bpmChanges[t].occursAt;
+                }
+            }
+
+            _beatMap.push(bpmChangeEvent);
+        }
+
+        // Sort by ascending.
+        _beatMap.sort((a, b) -> {
+            if (a.startTime < b.startTime) return -1;
+            if (a.startTime > b.startTime) return 1;
+
+            return 0;
+        });
+
+        _bpm = _beatMap[0].bpm;
+        _timeSignature = _beatMap[0].timeSignature;
+
+        _currentTimingPoint = _beatMap[0];
+        trace(_beatMap.length);
+    }
+
     override public function destroy():Void
     {
         onMeasure.removeAll();
@@ -142,21 +234,44 @@ class Song extends FlxBasic
         super.destroy();
     }
 
+    private var _currentTimingPoint:TimingPoint;
+
     override public function update(elapsed:Float):Void
     {
         super.update(elapsed);
 
-        if (_bpm == 0)
-        {
-            return;
+        for (beatChange in _beatMap) {
+            if (beatChange.startTime > time)
+                break;
+
+            _currentTimingPoint = beatChange;
         }
 
-        final curTime:Float = time;
+        _bpm = _currentTimingPoint.bpm;
+        _timeSignature = _currentTimingPoint.timeSignature;
 
-        _curBeat = Std.int(curTime / _beatDuration);
+        final sectionTime:Float = time - _currentTimingPoint.startTime;
+
+        _curBeat = _currentTimingPoint.totalBeats + Std.int(
+            sectionTime / _currentTimingPoint.beatDuration
+        );
+
+        _curMeasure = _currentTimingPoint.totalMeasures + Std.int(
+            sectionTime / _currentTimingPoint.timeSignature.numerator
+        );
+
+        _curQuarter = _currentTimingPoint.totalQuarters + Std.int(
+            sectionTime / _currentTimingPoint.quarterDuration
+        );
+
+        _curStep = _currentTimingPoint.totalSteps + Std.int(
+            sectionTime / _currentTimingPoint.stepDuration
+        );
+
+        /*_curBeat = Std.int(curTime / _beatDuration);
         _curMeasure = Std.int(_curBeat / _timeSignature.numerator);
         _curQuarter = Std.int(curTime / _quarterDuration);
-        _curStep = Std.int(curTime / _stepDuration);
+        _curStep = Std.int(curTime / _stepDuration);*/
 
         if (_curStep != _lastStep)
         {
@@ -174,6 +289,8 @@ class Song extends FlxBasic
         {
             _lastBeat = _curBeat;
             onBeat.dispatch(_curBeat);
+
+            trace(_beatMap.indexOf(_currentTimingPoint));
         }
 
         if (_curMeasure != _lastMeasure)
@@ -190,26 +307,12 @@ class Song extends FlxBasic
         // play voices
     }
 
-    private function _updateDurations():Void
-    {
-        if (_bpm == 0)
-        {
-            _beatDuration = 0;
-            _quarterDuration = 0;
-            _stepDuration = 0;
-            return;
-        }
-
-        _beatDuration = 60 / _bpm;
-        _quarterDuration = _beatDuration * (_timeSignature.denominator / 4);
-        _stepDuration = _quarterDuration / 4;
-    }
-
     public function get_time():Float
     {
         return instrumental.time / 1000;
     }
 
+    // UPDATE LATER
     public function set_time(value:Float):Float
     {
         instrumental.time = value * 1000;
@@ -221,33 +324,14 @@ class Song extends FlxBasic
         return _bpm;
     }
 
-    public function set_bpm(value:Float):Float
-    {
-        _bpm = Math.max(value, 0);
-        _updateDurations();
-        return _bpm;
-    }
-
     public function get_timeSignature():TimeSignature
     {
-        return _timeSignature;
-    }
-
-    public function set_timeSignature(value:TimeSignature):TimeSignature
-    {
-        _timeSignature = value;
-        _updateDurations();
         return _timeSignature;
     }
 
     public function get_beatDuration():Float
     {
         return _beatDuration;
-    }
-
-    public function get_measureDuration():Float
-    {
-        return (_bpm > 0) ? _timeSignature.numerator * _beatDuration : 0;
     }
 
     public function get_quarterDuration():Float
@@ -279,4 +363,14 @@ class Song extends FlxBasic
     {
         return _curStep;
     }
+
+    function get_measureDuration():Float {
+        return _measureDuration;
+    }
+}
+
+typedef BPMChangeEvent = {
+    var occursAt:Float;
+    var bpm:Float;
+    var timeSignature:Array<Int>;
 }
