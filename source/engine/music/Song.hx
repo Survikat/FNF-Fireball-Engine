@@ -63,6 +63,7 @@ class Song extends FlxBasic
     public var beatDuration(get, never):Float;
     public var quarterDuration(get, never):Float;
     public var stepDuration(get, never):Float;
+
     public var curMeasure(get, never):Float;
     public var curBeat(get, never):Float;
     public var curQuarter(get, never):Float;
@@ -70,13 +71,16 @@ class Song extends FlxBasic
     
     private var _bpm:Float;
     private var _timeSignature:TimeSignature;
+    
     private var _beatDuration:Float;
     private var _quarterDuration:Float;
     private var _stepDuration:Float;
+    
     private var _curMeasure:Int;
     private var _curBeat:Int;
     private var _curQuarter:Int;
     private var _curStep:Int;
+    
     private var _lastMeasure:Int;
     private var _lastBeat:Int;
     private var _lastQuarter:Int;
