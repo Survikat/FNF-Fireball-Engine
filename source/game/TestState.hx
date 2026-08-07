@@ -1,22 +1,40 @@
 package game;
 
-import engine.music.Conductor;
-import engine.states.MusicialState;
-import flixel.FlxG;
+import engine.music.Song.TimeSignature;
+import engine.states.MusicalState;
+import flixel.text.FlxText;
 
 class TestState extends MusicalState {
+	private var _text:FlxText;
+	
     override public function create()
 	{
 		super.create();
+		
+		song.instrumental.load('assets/songs/Beat.ogg');
+		song.instrumental.looped = true;
+		song.bpm = 120;
+		song.timeSignature = new TimeSignature(4, 4);
+		song.play();
 
-        FlxG.sound.playMusic("assets/songs/Beat.ogg");
+		_text = new FlxText();
+		_text.size = 30;
+		add(_text);
 	}
 
-	override public function update(elapsed:Float)
+	override public function measureHit(measure:Int):Void
 	{
-		super.update(elapsed);
+		super.measureHit(measure);
+		trace('hello');
+	}
 
-        Conductor.update(FlxG.sound.music.time);
-        trace('curStep: ${Conductor.steps} | curBeat: ${Conductor.beats} | curBar: ${Conductor.bars}');
+	override public function stepHit(step:Int):Void
+	{
+		super.stepHit(step);
+		_text.text =
+			'curMeasure: ${song.curMeasure}\n' +
+			'curBeat: ${song.curBeat}\n' +
+			'curQuarter: ${song.curQuarter}\n' +
+			'curStep: ${song.curStep}';
 	}
 }
