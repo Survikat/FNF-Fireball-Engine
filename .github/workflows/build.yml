@@ -1,4 +1,4 @@
-name: Build Fireball Engine for Windows
+name: Build Fireball Engine
 
 on:
   push:
@@ -23,6 +23,11 @@ jobs:
             artifact_name: fireball-engine_windows
             runs-on: windows-latest
 
+          - target: linux
+            build_name: Build for Linux
+            artifact_name: fireball-engine_linux
+            runs-on: ubuntu-latest
+
     name: ${{ matrix.build_name }}
     runs-on: ${{ matrix.runs-on }}
             
@@ -33,6 +38,15 @@ jobs:
         uses: krdlab/setup-haxe@v2
         with:
           haxe-version: 4.3.7
+      
+      - name: Install Linux dependencies
+        if: runner.os == 'Linux'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y \
+            build-essential \
+            libgl1-mesa-dev \
+            libglu1-mesa-dev
 
       - name: Install Haxelib dependencies
         run: |
