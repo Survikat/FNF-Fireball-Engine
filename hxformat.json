@@ -1,15 +1,41 @@
 {
-	"lineEnds": {
-		"leftCurly": "both",
-		"rightCurly": "both",
-		"objectLiteralCurly": {
-			"leftCurly": "after"
-		}
-	},
-	"sameLine": {
-		"ifElse": "next",
-		"doWhile": "next",
-		"tryBody": "next",
-		"tryCatch": "next"
-	}
+  "emptyLines": {
+    "maxAnywhereInFile": 1,
+    "afterPackage": 1
+  },
+  "indentation": {
+    "character": "    "
+  },
+  "lineEnds": {
+    "blockCurly": {
+      "leftCurly": "both",
+      "rightCurly": "both"
+    },
+    "objectLiteralCurly": {
+      "leftCurly": "after"
+    }
+  },
+  "sameLine": {
+    "ifBody": "next",
+    "elseBody": "next",
+    "elseIf": "next",
+    "forBody": "next",
+    "whileBody": "next",
+    "functionBody": "next",
+    "tryBody": "next",
+    "catchBody": "next",
+    "caseBody": "next"
+  },
+  "whitespace": {
+    "addLineCommentSpace": true,
+    "functionTypeHaxe3Policy": "around",
+    "functionTypeHaxe4Policy": "around",
+    "arrowFunctionsPolicy": "around",
+    "binopPolicy": "around",
+    "commaPolicy": "after",
+    "ternaryPolicy": "around",
+    "intervalPolicy": "around",
+    "formatStringInterpolation": true,
+    "compressSuccessiveParenthesis": true
+  }
 }

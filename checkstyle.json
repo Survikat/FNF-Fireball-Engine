@@ -1,0 +1,30 @@
+{
+  "defaultSeverity": "ERROR",
+  "checks": [
+    {
+      "props": {
+        "typeHintPolicy": "enforce_all",
+        "ignoreEnumAbstractValues": false
+      },
+      "type": "VarTypeHint"
+    },
+    {
+      "props": {
+        "intervalOpPolicy": "around"
+      },
+      "type": "OperatorWhitespace"
+    },
+    {
+      "props": {
+        "enforcePublicPrivate": true
+      },
+      "type": "RedundantModifier"
+    },
+    {
+      "props": {
+        "allowSingleLineStatement": false
+      },
+      "type": "NeedBraces"
+    }
+  ]
+}
