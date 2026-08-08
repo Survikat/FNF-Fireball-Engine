@@ -19,16 +19,14 @@ jobs:
       matrix:
         include:
           - target: windows
-            build_name: Build for Windows
-            artifact_name: fireball-engine_windows
+            build-name: Build for Windows
             runs-on: windows-latest
 
           - target: linux
-            build_name: Build for Linux
-            artifact_name: fireball-engine_linux
+            build-name: Build for Linux
             runs-on: ubuntu-latest
 
-    name: ${{ matrix.build_name }}
+    name: ${{ matrix.build-name }}
     runs-on: ${{ matrix.runs-on }}
             
     steps:
@@ -62,5 +60,5 @@ jobs:
       - name: Upload target build
         uses: actions/upload-artifact@v4
         with:
-          name: ${{ matrix.artifact_name }}
+          name: fireball-engine_${{ matrix.target }}
           path: export/release/${{ matrix.target }}/bin/
