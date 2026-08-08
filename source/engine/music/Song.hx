@@ -44,15 +44,10 @@ class Song extends FlxBasic
     public var bpm(get, set):Float;
     public var timeSignature(get, set):TimeSignature;
 
-    public var canonicalBars(get, never):Int;
-    public var canonicalBeats(get, never):Int;
-    public var canonicalQuarters(get, never):Int;
-    public var canonicalSteps(get, never):Int;
-
-    public var elapsedBars(get, never):Int;
-    public var elapsedBeats(get, never):Int;
-    public var elapsedQuarters(get, never):Int;
-    public var elapsedSteps(get, never):Int;
+    public var bar(get, never):Int;
+    public var beat(get, never):Int;
+    public var quarter(get, never):Int;
+    public var step(get, never):Int;
 
     public var barMeasure(get, never):Float;
     public var beatMeasure(get, never):Float;
@@ -63,29 +58,29 @@ class Song extends FlxBasic
     private var _timeSignature:TimeSignature = new TimeSignature(1, 1);
     private var _measures:MusicMeasures      = {}
 
-    private var _bars:Reactive<Int>;
-    private var _beats:Reactive<Int>;
-    private var _quarters:Reactive<Int>;
-    private var _steps:Reactive<Int>;
+    private var _bar:Reactive<Int>;
+    private var _beat:Reactive<Int>;
+    private var _quarter:Reactive<Int>;
+    private var _step:Reactive<Int>;
 
-    private var _baseBars:Int     = 0;
-    private var _baseBeats:Int    = 0;
-    private var _baseQuarters:Int = 0;
-    private var _baseSteps:Int    = 0;
+    private var _elapsedBar:Float     = 0.0;
+    private var _elapsedBeat:Float    = 0.0;
+    private var _elapsedQuarter:Float = 0.0;
+    private var _elapsedStep:Float    = 0.0;
 
-    private var _lastEventTime:Float = 0.0;
-    
     private var _events:Null<Array<JSONSongEvent>> = null;
     private var _eventIndex:Null<Int>              = null;
+
+    private var _lastEventTime:Float = 0.0;
     
     public function new()
     {
         super();
 
-        _bars     = new Reactive<Int>(0, onBar.dispatch);
-        _beats    = new Reactive<Int>(0, onBeat.dispatch);
-        _quarters = new Reactive<Int>(0, onQuarter.dispatch);
-        _steps    = new Reactive<Int>(0, onStep.dispatch);
+        _bar     = new Reactive<Int>(0, onBar.dispatch);
+        _beat    = new Reactive<Int>(0, onBeat.dispatch);
+        _quarter = new Reactive<Int>(0, onQuarter.dispatch);
+        _step    = new Reactive<Int>(0, onStep.dispatch);
         
         FlxG.sound.list.add(instrumental);
     }
@@ -150,50 +145,25 @@ class Song extends FlxBasic
         super.update(elapsed);
 
         final t:Float = time;
-        final eventsActive:Bool = _eventIndex != null && _events != null;
-        
-        while (eventsActive &&
-               _eventIndex < _events.length &&
-               t >= _events[_eventIndex].timestamp)
+
+        if (_eventIndex != null && _events != null)
         {
-            final event = _events[_eventIndex];
-
-            // from _lastEventTime to current event's timestamp
-            final dt = event.timestamp - _lastEventTime;
-
-            if (dt > 0 && _bpm > 0)
+            while (_eventIndex < _events.length && t >= _events[_eventIndex].timestamp)
             {
-                _baseBars     += Std.int(dt / _measures.bar);
-                _baseBeats    += Std.int(dt / _measures.beat);
-                _baseQuarters += Std.int(dt / _measures.quarter);
-                _baseSteps    += Std.int(dt / _measures.step);
+                final event:JSONSongEvent = _events[_eventIndex];
+
+                _advanceTo(event.timestamp);
+
+                _bpm = event.bpm;
+                _timeSignature = new TimeSignature(event.timeSignature[0], event.timeSignature[1]);
+                _updateMeasures();
+
+                _lastEventTime = event.timestamp;
+                ++_eventIndex;
             }
-            
-            _lastEventTime = event.timestamp;
-            _bpm           = event.bpm;
-            _timeSignature = new TimeSignature(event.timeSignature[0], event.timeSignature[1]);
-            _updateMeasures();
-
-            _eventIndex++;
         }
 
-        // from _lastEventTime to now
-        final dt = t - _lastEventTime;
-
-        if (dt > 0 && _bpm > 0)
-        {
-            _bars.value     = _baseBars     + Std.int(dt / _measures.bar);
-            _beats.value    = _baseBeats    + Std.int(dt / _measures.beat);
-            _quarters.value = _baseQuarters + Std.int(dt / _measures.quarter);
-            _steps.value    = _baseSteps    + Std.int(dt / _measures.step);
-        }
-        else
-        {
-            _bars.value     = _baseBars;
-            _beats.value    = _baseBeats;
-            _quarters.value = _baseQuarters;
-            _steps.value    = _baseSteps;
-        }
+        _advanceTo(t);
     }
 
     // EXPAND API LATER
@@ -214,6 +184,28 @@ class Song extends FlxBasic
         _measures.bar = _timeSignature.numerator * _measures.beat;
         _measures.quarter = _measures.beat * (_timeSignature.denominator / 4);
         _measures.step = _measures.quarter / 4.0;
+    }
+
+    private function _advanceTo(t:Float):Void
+    {
+        final dt:Float = t - _lastEventTime;
+
+        if (dt <= 0.0 || _bpm <= 0.0)
+        {
+            return;
+        }
+
+        _elapsedBar     += dt / _measures.bar;
+        _elapsedBeat    += dt / _measures.beat;
+        _elapsedQuarter += dt / _measures.quarter;
+        _elapsedStep    += dt / _measures.step;
+
+        _lastEventTime = t;
+
+        _bar.value     = Std.int(_elapsedBar);
+        _beat.value    = Std.int(_elapsedBeat);
+        _quarter.value = Std.int(_elapsedQuarter);
+        _step.value    = Std.int(_elapsedStep);
     }
 
     private function get_time():Float
@@ -245,44 +237,24 @@ class Song extends FlxBasic
         return _timeSignature;
     }
 
-    private function get_canonicalBars():Int
+    private function get_bar():Int
     {
-        return _bars.value;
+        return _bar.value;
     }
 
-    private function get_canonicalBeats():Int
+    private function get_beat():Int
     {
-        return _beats.value;
+        return _beat.value;
     }
 
-    private function get_canonicalQuarters():Int
+    private function get_quarter():Int
     {
-        return _quarters.value;
+        return _quarter.value;
     }
 
-    private function get_canonicalSteps():Int
+    private function get_step():Int
     {
-        return _steps.value;
-    }
-
-    private function get_elapsedBars():Int
-    {
-        return _bars.changeCount;
-    }
-
-    private function get_elapsedBeats():Int
-    {
-        return _beats.changeCount;
-    }
-
-    private function get_elapsedQuarters():Int
-    {
-        return _quarters.changeCount;
-    }
-
-    private function get_elapsedSteps():Int
-    {
-        return _steps.changeCount;
+        return _step.value;
     }
 
     private function get_barMeasure():Float

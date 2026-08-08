@@ -28,11 +28,11 @@ class TestState extends MusicalState {
 	{
 		super.stepHit(canonical, elapsed);
 		_text.text =
-			'bars: ${song.canonicalBars} -> ${song.elapsedBars}\n' +
-			'beats: ${song.canonicalBeats} -> ${song.elapsedBeats}\n' +
-			'quarters: ${song.canonicalQuarters} -> ${song.elapsedQuarters}\n' +
-			'steps: ${song.canonicalSteps} -> ${song.elapsedSteps}\n' +
-			'bpm: ${song.bpm}\n' +
+			'bar: ${song.bar}\n' 		 +
+			'beat: ${song.beat}\n' 		 +
+			'quarter: ${song.quarter}\n' +
+			'step: ${song.step}\n' 		 +
+			'bpm: ${song.bpm}\n' 		 +
 			'signature: ${song.timeSignature.numerator} / ${song.timeSignature.denominator}';
 	}
 }
