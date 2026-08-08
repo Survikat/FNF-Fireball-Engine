@@ -6,20 +6,26 @@ import flixel.FlxState;
 class MusicalState extends FlxState {
 	public var song:Song;
 
-	override public function create():Void
-	{
+    public function new (?song:Song = null) {
+        this.song = song;
+
+        super();
+    }
+
+	override public function create():Void {
 		super.create();
         
-		song = new Song();
-		song.onMeasure.add(measureHit);
-		song.onBeat.add(beatHit);
-		song.onQuarter.add(quarterHit);
-		song.onStep.add(stepHit);
+        if (song == null) {
+            song = new Song();
+            song.onBar.add(barHit);
+            song.onBeat.add(beatHit);
+            song.onStep.add(stepHit);
+        }
+
 		add(song);
 	}
 
-	public function measureHit(measure:Int):Void {}
+	public function barHit(bar:Int):Void {}
 	public function beatHit(beat:Int):Void {}
-	public function quarterHit(quarter:Int):Void {}
 	public function stepHit(step:Int):Void {}
 }
