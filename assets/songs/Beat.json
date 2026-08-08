@@ -1,62 +1,90 @@
 [
-    {
-        "occursAt": 0,
-        "bpm": 120,
-        "timeSignature": [4, 4]
-    },
-    {
-        "occursAt": 4,
-        "bpm": 130,
-        "timeSignature": [4, 4]
-    },
-    {
-        "occursAt": 4,
-        "bpm": 130,
-        "timeSignature": [4, 4]
-    },
-    {
-        "occursAt": 4.92,
-        "bpm": 140,
-        "timeSignature": [4, 4]
-    },
-    {
-        "occursAt": 5.78,
-        "bpm": 150,
-        "timeSignature": [4, 4]
-    },
-    {
-        "occursAt": 6.58,
-        "bpm": 160,
-        "timeSignature": [4, 4]
-    },
-    {
-        "occursAt": 7.33,
-        "bpm": 150,
-        "timeSignature": [4, 4]
-    },
-    {
-        "occursAt": 7.73,
-        "bpm": 140,
-        "timeSignature": [4, 4]
-    },
-    {
-        "occursAt": 8.15,
-        "bpm": 130,
-        "timeSignature": [4, 4]
-    },
-    {
-        "occursAt": 8.62,
-        "bpm": 120,
-        "timeSignature": [4, 4]
-    },
-    {
-        "occursAt": 9.12,
-        "bpm": 120,
-        "timeSignature": [3, 4]
-    },
-    {
-        "occursAt": 21.12,
-        "bpm": 120,
-        "timeSignature": [4, 8]
-    }
+  {
+    "timestamp": 0,
+    "bpm": 120,
+    "timeSignature": [
+      4,
+      4
+    ]
+  },
+  {
+    "timestamp": 4,
+    "bpm": 130,
+    "timeSignature": [
+      4,
+      4
+    ]
+  },
+  {
+    "timestamp": 4.92,
+    "bpm": 140,
+    "timeSignature": [
+      4,
+      4
+    ]
+  },
+  {
+    "timestamp": 5.78,
+    "bpm": 150,
+    "timeSignature": [
+      4,
+      4
+    ]
+  },
+  {
+    "timestamp": 6.58,
+    "bpm": 160,
+    "timeSignature": [
+      4,
+      4
+    ]
+  },
+  {
+    "timestamp": 7.33,
+    "bpm": 150,
+    "timeSignature": [
+      4,
+      4
+    ]
+  },
+  {
+    "timestamp": 7.73,
+    "bpm": 140,
+    "timeSignature": [
+      4,
+      4
+    ]
+  },
+  {
+    "timestamp": 8.15,
+    "bpm": 130,
+    "timeSignature": [
+      4,
+      4
+    ]
+  },
+  {
+    "timestamp": 8.62,
+    "bpm": 120,
+    "timeSignature": [
+      4,
+      4
+    ]
+  },
+  {
+    "timestamp": 9.12,
+    "bpm": 120,
+    "timeSignature": [
+      3,
+      4
+    ]
+  },
+  {
+    "timestamp": 21.12,
+    "bpm": 120,
+    "timeSignature": [
+      4,
+      8
+    ]
+  }
 ]
