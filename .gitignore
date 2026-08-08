@@ -1,3 +1,6 @@
 .haxelib/
 export/
 .DS_Store
+
+# Temporary.
+assets/songs/Dual-Killers/

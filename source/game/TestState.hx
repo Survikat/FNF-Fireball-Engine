@@ -1,9 +1,11 @@
 package game;
 
+import engine.GameUtilty;
 import engine.music.Song.TimeSignature;
-import engine.music.SongMeta;
+import engine.music.SongMetaData;
 import engine.states.MusicalState;
 import flixel.FlxG;
+import flixel.sound.FlxSound;
 import flixel.text.FlxText;
 import haxe.Json;
 
@@ -12,14 +14,16 @@ class TestState extends MusicalState {
 	
     override public function create() {
 		super.create();
-		
-		song.instrumental.load('assets/songs/Beat.ogg');
-		song.instrumental.looped = true;
 
-        final songMeta:SongMeta = Json.parse(FlxG.assets.getText("assets/songs/Beat.json"));
+        // GameUtilty.playMusic(song, "Dual-Killers");
+        // final songMeta:SongMetaData = Json.parse(FlxG.assets.getText("assets/songs/Dual-Killers/Dual-Killers.json"));
+
+        GameUtilty.playMusic(song, "Beat", true); // This will automatically set the beat mappings in the future.
+        final songMeta:SongMetaData = Json.parse(FlxG.assets.getText("assets/songs/Beat/Beat.json"));
+
         final beatMappings:Array<BPMChangeEvent> = songMeta.beatMappings;
-
         song.setBeatMap(beatMappings);
+        
 		song.play();
 
 		_text = new FlxText();
@@ -29,6 +33,15 @@ class TestState extends MusicalState {
 
     override function update(elapsed:Float) {
         super.update(elapsed);
+
+        if (FlxG.keys.justPressed.SPACE) {
+            song.playing = !song.playing;
+        } else {
+            if (FlxG.keys.pressed.LEFT)
+                song.time -= 2.5 * elapsed;
+            else if (FlxG.keys.pressed.RIGHT)
+                song.time += 2.5 * elapsed;
+        }
     }
 
 	override public function stepHit(step:Int):Void {

@@ -1,9 +1,10 @@
 package engine.music;
 
-import engine.music.SongMeta;
+import engine.music.SongMetaData;
 import flixel.FlxBasic;
 import flixel.FlxG;
 import flixel.sound.FlxSound;
+import flixel.sound.FlxSoundGroup;
 import flixel.util.FlxSignal.FlxTypedSignal;
 import flixel.util.FlxSort;
 import haxe.Json;
@@ -55,7 +56,7 @@ class TimingPoint {
 }
 
 class Song extends FlxBasic {
-    public var instrumental:FlxSound;
+    private var tracks:FlxSoundGroup;
 
     public var onBar:FlxTypedSignal<Int->Void>;
     public var onBeat:FlxTypedSignal<Int->Void>;
@@ -65,26 +66,29 @@ class Song extends FlxBasic {
      * Time in seconds
      */
     public var time(get, set):Float;
+
+    public var looped(get, set):Bool;
+    public var playing(get, set):Bool;
+
+    public var volume:Float = 1.0;
     
     public var bpm(get, never):Float;
     public var timeSignature(get, never):TimeSignature;
 
-    public var barDuration(get, never):Float;
     public var beatDuration(get, never):Float;
-    public var stepDuration(get, never):Float;
 
     public var curBar(get, never):Int;
     public var curBeat(get, never):Int;
     public var curStep(get, never):Int;
+
+    private var _playing:Bool = false;
     
     private var _bpm:Float;
     private var _timeSignature:TimeSignature;
 
     private var _beatMap:Array<TimingPoint> = [];
     
-    private var _barDuration:Float;
     private var _beatDuration:Float;
-    private var _stepDuration:Float;
     
     private var _curBar:Int;
     private var _curBeat:Int;
@@ -93,18 +97,11 @@ class Song extends FlxBasic {
     private var _lastBar:Int;
     private var _lastBeat:Int;
     private var _lastStep:Int;
-    
-    // todo: support whats below
-    // public var opponentVoice:Null<FlxSound>;
-    // public var playerVoice:Null<FlxSound>;
-    // public var combinedVoice:Null<FlxSound>;
 
     public function new() {
         super();
-        
-        instrumental = new FlxSound();
-        FlxG.sound.list.add(instrumental);
-        // add voices to the list too
+
+        tracks = new FlxSoundGroup();
 
         onBar = new FlxTypedSignal<Int->Void>();
         onBeat = new FlxTypedSignal<Int->Void>();
@@ -114,8 +111,6 @@ class Song extends FlxBasic {
         _timeSignature = new TimeSignature(1, 1);
         
         _beatDuration = 0;
-        _barDuration = 0;
-        _stepDuration = 0;
         
         _curBar = 0;
         _curBeat = 0;
@@ -186,8 +181,12 @@ class Song extends FlxBasic {
         onStep.removeAll();
         onStep = null;
 
-        instrumental.destroy();
-        instrumental = null;
+        for (track in tracks.sounds){
+            track.stop();
+
+            track.kill();
+            track.destroy();
+        }
 
         super.destroy();
     }
@@ -195,6 +194,33 @@ class Song extends FlxBasic {
     private var _currentTimingPoint:TimingPoint;
 
     override public function update(elapsed:Float):Void {
+        if (tracks.sounds.length > 0) {
+            tracks.volume = volume;
+
+            final mainTrack:FlxSound = tracks.sounds[0];
+            mainTrack.update(elapsed);
+
+            for (i in 1...tracks.sounds.length) {
+                final track:FlxSound = tracks.sounds[i];
+
+                track.pitch = mainTrack.pitch;
+                track.looped = mainTrack.looped;
+
+                if (!track.playing && _playing)
+                    track.play();
+                else if (track.playing && !_playing)
+                    track.pause();
+
+                track.update(elapsed);
+
+                if (track.time < mainTrack.time - 20 || track.time > mainTrack.time + 20) {
+                    trace('A track was unsynced! ${track.time / 1000} should be ${mainTrack.time / 1000}');
+
+                    track.time = mainTrack.time;
+                }
+            }
+        }
+
         super.update(elapsed);
 
         for (i in 0..._beatMap.length) {
@@ -230,19 +256,76 @@ class Song extends FlxBasic {
         }
     }
 
-    // todo: expand api (add more functions)
+    public function addTrack(track:FlxSound) {
+        tracks.add(track);
+    }
+
+    public function removeTrack(track:FlxSound) {
+        track.stop();
+        track.kill();
+
+        tracks.remove(track);
+    }
+
+    private function get_playing():Bool
+        return _playing;
+
+    private function set_playing(value:Bool):Bool {
+        if (value == true)
+            play();
+        else if (value == false)
+            pause();
+
+        return _playing;
+    }
+
     public function play():Void {
-        instrumental.play();
-        // play voices
+        if (tracks == null || tracks.sounds[0] == null)
+            throw new haxe.exceptions.ArgumentException("Track is null!");
+
+        _playing = true;
+
+        for (track in tracks.sounds)
+            track.play();
+    }
+
+    public function pause():Void {
+        if (tracks == null || tracks.sounds[0] == null)
+            throw new haxe.exceptions.ArgumentException("Track is null!");
+
+        _playing = false;
+
+        for (track in tracks.sounds)
+            track.pause();
+    }
+
+    public function clear():Void {
+        for (track in tracks.sounds){
+            track.stop();
+
+            track.kill();
+            track.destroy();
+        }
+
+        tracks.sounds = [];
     }
 
     private function get_time():Float {
-        return instrumental.time / 1000;
+        if (tracks == null || tracks.sounds[0] == null)
+            throw new haxe.exceptions.ArgumentException("Track is null!");
+
+        return tracks.sounds[0].time / 1000;
     }
 
     private function set_time(value:Float):Float {
-        instrumental.time = value * 1000;
-        return instrumental.time;
+        if (tracks == null || tracks.sounds[0] == null)
+            throw new haxe.exceptions.ArgumentException("Track is null!");
+
+        for (track in tracks.sounds) {
+            track.time = value * 1000;
+        }
+
+        return tracks.sounds[0].time;
     }
 
     private function get_bpm():Float {
@@ -257,10 +340,6 @@ class Song extends FlxBasic {
         return _beatDuration;
     }
 
-    private function get_stepDuration():Float {
-        return _stepDuration;
-    }
-
     private function get_curBar():Int {
         return _curBar;
     }
@@ -273,7 +352,17 @@ class Song extends FlxBasic {
         return _curStep;
     }
 
-    private function get_barDuration():Float {
-        return _barDuration;
+    function set_looped(value:Bool):Bool {
+        if (tracks == null || tracks.sounds[0] == null)
+            throw new haxe.exceptions.ArgumentException("Track is null!");
+
+        return tracks.sounds[0].looped = value;
     }
+
+	function get_looped():Bool {
+        if (tracks == null || tracks.sounds[0] == null)
+            throw new haxe.exceptions.ArgumentException("Track is null!");
+
+		return tracks.sounds[0].looped;
+	}
 }

@@ -1,6 +1,6 @@
 package engine.music;
 
-typedef SongMeta = {
+typedef SongMetaData = {
     var title:String;
     var album:String;
     var artists:Array<String>;
