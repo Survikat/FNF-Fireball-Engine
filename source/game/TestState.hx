@@ -1,6 +1,7 @@
 package game;
 
-import engine.music.Song.JSONSongEvent;
+import engine.music.Song.BPMChangeEvent;
+import engine.music.Song.TimeSignature;
 import engine.states.MusicalState;
 import flixel.FlxG;
 import flixel.text.FlxText;
@@ -14,25 +15,32 @@ class TestState extends MusicalState {
 		super.create();
 		
 		song.instrumental.load('assets/songs/Beat.ogg');
+		song.instrumental.looped = true;
 
-        var events:Array<JSONSongEvent> = Json.parse(FlxG.assets.getText('assets/songs/Beat.json'));
-        song.setEvents(events);
+        var beatMappings:Array<BPMChangeEvent> = Json.parse(FlxG.assets.getText("assets/songs/Beat.json"));
+        song.setBeatMap(beatMappings);
+
 		song.play();
 
 		_text = new FlxText();
-		_text.size *= 2;
+		_text.size = 30;
 		add(_text);
 	}
 
-	override public function stepHit(canonical:Int, elapsed:Int):Void
+	override public function measureHit(measure:Int):Void
 	{
-		super.stepHit(canonical, elapsed);
+		super.measureHit(measure);
+		trace('hello');
+	}
+
+	override public function stepHit(step:Int):Void
+	{
+		super.stepHit(step);
 		_text.text =
-			'bar: ${song.bar}\n' 		 +
-			'beat: ${song.beat}\n' 		 +
-			'quarter: ${song.quarter}\n' +
-			'step: ${song.step}\n' 		 +
-			'bpm: ${song.bpm}\n' 		 +
-			'signature: ${song.timeSignature.numerator} / ${song.timeSignature.denominator}';
+			'curMeasure: ${song.curMeasure}\n' +
+			'curBeat: ${song.curBeat}\n' +
+			'curQuarter: ${song.curQuarter}\n' +
+			'curStep: ${song.curStep}\n\n' +
+            '${song.timeSignature.numerator}/${song.timeSignature.denominator} ${song.bpm}';
 	}
 }
