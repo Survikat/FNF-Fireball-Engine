@@ -11,15 +11,16 @@ class MusicalState extends FlxState {
 		super.create();
         
 		song = new Song();
-		song.onMeasure.add(measureHit);
+		song.onBar.add(barHit);
 		song.onBeat.add(beatHit);
 		song.onQuarter.add(quarterHit);
 		song.onStep.add(stepHit);
+		
 		add(song);
 	}
 
-	public function measureHit(measure:Int):Void {}
-	public function beatHit(beat:Int):Void {}
-	public function quarterHit(quarter:Int):Void {}
-	public function stepHit(step:Int):Void {}
+	public function barHit(canonical:Int, elapsed:Int):Void {}
+	public function beatHit(canonical:Int, elapsed:Int):Void {}
+	public function quarterHit(canonical:Int, elapsed:Int):Void {}
+	public function stepHit(canonical:Int, elapsed:Int):Void {}
 }
