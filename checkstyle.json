@@ -1,5 +1,5 @@
 {
-  "defaultSeverity": "ERROR",
+  "defaultSeverity": "WARNING",
   "checks": [
     {
       "props": {
