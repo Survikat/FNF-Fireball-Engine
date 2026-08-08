@@ -172,7 +172,6 @@ class Song extends FlxBasic {
                 bpmChangeEvent.prevBars = prevBeatChange.prevBars + (sectionTime / prevBeatChange.barDuration);
             }
 
-            trace('Section "$i" Beats: ${bpmChangeEvent.prevBeats}');
             _beatMap.push(bpmChangeEvent);
         }
 
@@ -180,7 +179,6 @@ class Song extends FlxBasic {
         _timeSignature = _beatMap[0].timeSignature;
 
         _currentTimingPoint = _beatMap[0];
-        trace(_beatMap.length);
     }
 
     override public function destroy():Void {
