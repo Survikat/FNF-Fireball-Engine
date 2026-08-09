@@ -1,12 +1,12 @@
 package engine.states;
 
-import engine.music.Song;
+import engine.music.SongManager;
 import flixel.FlxState;
 
 class MusicalState extends FlxState {
-	public var song:Song;
+	public var song:SongManager;
 
-    public function new (?song:Song = null) {
+    public function new (?song:SongManager = null) {
         this.song = song;
 
         super();
@@ -16,7 +16,7 @@ class MusicalState extends FlxState {
 		super.create();
         
         if (song == null) {
-            song = new Song();
+            song = new SongManager();
             song.onBar.add(barHit);
             song.onBeat.add(beatHit);
             song.onStep.add(stepHit);

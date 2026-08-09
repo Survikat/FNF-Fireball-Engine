@@ -55,7 +55,7 @@ class TimingPoint {
     public function new() {}
 }
 
-class Song extends FlxBasic {
+class SongManager extends FlxBasic {
     private var tracks:FlxSoundGroup;
 
     public var onBar:FlxTypedSignal<Int->Void>;
@@ -75,7 +75,10 @@ class Song extends FlxBasic {
     public var bpm(get, never):Float;
     public var timeSignature(get, never):TimeSignature;
 
+    public var beatMap(get, never):Array<TimingPoint>;
+
     public var beatDuration(get, never):Float;
+    public var barDuration(get, never):Float;
 
     public var curBar(get, never):Int;
     public var curBeat(get, never):Int;
@@ -89,6 +92,7 @@ class Song extends FlxBasic {
     private var _beatMap:Array<TimingPoint> = [];
     
     private var _beatDuration:Float;
+    private var _barDuration:Float;
     
     private var _curBar:Int;
     private var _curBeat:Int;
@@ -122,9 +126,9 @@ class Song extends FlxBasic {
     }
 
     /**
-     * Sets the current BPM and Time Signature and
-     * defines beat and time signature changes in the song.
-     * @param bpmChanges Set to null (or nothing) to remove.
+     * Defines beat and time signature changes in the song.
+     * This is also used to set the BPM in the song.
+     * @param bpmChanges
      */
     public function setBeatMap(bpmChanges:Array<BPMChangeEvent>) {
         bpmChanges.sort((a, b) -> { // Sort by ascending.
@@ -191,6 +195,7 @@ class Song extends FlxBasic {
         super.destroy();
     }
 
+    public var currentTimingPoint(get, never):TimingPoint;
     private var _currentTimingPoint:TimingPoint;
 
     override public function update(elapsed:Float):Void {
@@ -213,9 +218,7 @@ class Song extends FlxBasic {
 
                 track.update(elapsed);
 
-                if (track.time < mainTrack.time - 20 || track.time > mainTrack.time + 20) {
-                    trace('A track was unsynced! ${track.time / 1000} should be ${mainTrack.time / 1000}');
-
+                if (Math.abs(track.time - mainTrack.time) > 20) {
                     track.time = mainTrack.time;
                 }
             }
@@ -232,13 +235,15 @@ class Song extends FlxBasic {
 
         _bpm = _currentTimingPoint.bpm;
         _timeSignature = _currentTimingPoint.timeSignature;
+
         _beatDuration = _currentTimingPoint.beatDuration;
+        _barDuration = _currentTimingPoint.barDuration;
 
         final sectionTime:Float = time - _currentTimingPoint.startTime;
 
         _curBeat = Math.floor(_currentTimingPoint.prevBeats + (sectionTime / _beatDuration));
         _curStep = Math.floor((_currentTimingPoint.prevBeats * 4) + (sectionTime / (_beatDuration / 4)));
-        _curBar = Math.floor(_currentTimingPoint.prevBars + (sectionTime / _currentTimingPoint.barDuration));
+        _curBar = Math.floor(_currentTimingPoint.prevBars + (sectionTime / _barDuration));
 
         if (_curBeat != _lastBeat) {
             _lastBeat = _curBeat;
@@ -365,4 +370,16 @@ class Song extends FlxBasic {
 
 		return tracks.sounds[0].looped;
 	}
+
+    function get_barDuration():Float {
+        return _barDuration;
+    }
+
+    function get_currentTimingPoint():TimingPoint {
+        return _currentTimingPoint;
+    }
+
+    function get_beatMap():Array<TimingPoint> {
+        return _beatMap;
+    }
 }

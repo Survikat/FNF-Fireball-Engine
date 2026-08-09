@@ -1,7 +1,7 @@
 package game;
 
 import engine.GameUtilty;
-import engine.music.Song.TimeSignature;
+import engine.music.SongManager.TimeSignature;
 import engine.music.SongMetaData;
 import engine.states.MusicalState;
 import flixel.FlxG;
@@ -16,13 +16,7 @@ class TestState extends MusicalState {
 		super.create();
 
         // GameUtilty.playMusic(song, "Dual-Killers");
-        // final songMeta:SongMetaData = Json.parse(FlxG.assets.getText("assets/songs/Dual-Killers/Dual-Killers.json"));
-
-        GameUtilty.playMusic(song, "Beat", true); // This will automatically set the beat mappings in the future.
-        final songMeta:SongMetaData = Json.parse(FlxG.assets.getText("assets/songs/Beat/Beat.json"));
-
-        final beatMappings:Array<BPMChangeEvent> = songMeta.beatMappings;
-        song.setBeatMap(beatMappings);
+        GameUtilty.playMusic(song, "Beat", true);
         
 		song.play();
 

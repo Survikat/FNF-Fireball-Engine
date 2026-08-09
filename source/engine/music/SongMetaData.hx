@@ -4,7 +4,9 @@ typedef SongMetaData = {
     var title:String;
     var album:String;
     var artists:Array<String>;
-    var beatMappings:Array<BPMChangeEvent>;
+    var bpm:Float;
+    var timeSignature:Array<Int>;
+    var ?beatMappings:Array<BPMChangeEvent>;
 }
 
 typedef BPMChangeEvent = {
