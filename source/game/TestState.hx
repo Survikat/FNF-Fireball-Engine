@@ -1,17 +1,13 @@
 package game;
 
 import engine.GameUtilty;
-import engine.music.SongManager.TimeSignature;
-import engine.music.SongMetaData;
 import engine.states.MusicalState;
 import flixel.FlxG;
-import flixel.sound.FlxSound;
 import flixel.text.FlxText;
-import haxe.Json;
 
 class TestState extends MusicalState {
 	private var _text:FlxText;
-	
+
     override public function create() {
 		super.create();
 
@@ -29,7 +25,10 @@ class TestState extends MusicalState {
         super.update(elapsed);
 
         if (FlxG.keys.justPressed.SPACE) {
-            song.playing = !song.playing;
+            if (song.playing)
+                song.play();
+            else
+                song.pause();
         } else {
             if (FlxG.keys.pressed.LEFT)
                 song.time -= 2.5 * elapsed;

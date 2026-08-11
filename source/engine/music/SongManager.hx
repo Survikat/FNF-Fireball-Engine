@@ -56,7 +56,7 @@ class TimingPoint {
 }
 
 class SongManager extends FlxBasic {
-    private var tracks:FlxSoundGroup;
+    private var _tracks:FlxSoundGroup;
 
     public var onBar:FlxTypedSignal<Int->Void>;
     public var onBeat:FlxTypedSignal<Int->Void>;
@@ -68,7 +68,7 @@ class SongManager extends FlxBasic {
     public var time(get, set):Float;
 
     public var looped(get, set):Bool;
-    public var playing(get, set):Bool;
+    public var playing(get, never):Bool;
 
     public var volume:Float = 1.0;
     
@@ -105,7 +105,7 @@ class SongManager extends FlxBasic {
     public function new() {
         super();
 
-        tracks = new FlxSoundGroup();
+        _tracks = new FlxSoundGroup();
 
         onBar = new FlxTypedSignal<Int->Void>();
         onBeat = new FlxTypedSignal<Int->Void>();
@@ -138,7 +138,7 @@ class SongManager extends FlxBasic {
             return 0;
         });
 
-        _beatMap = new Array<TimingPoint>();
+        _beatMap = [];
 
         for (i in 0...bpmChanges.length) {
             var curBPMChange:BPMChangeEvent = bpmChanges[i];
@@ -185,7 +185,7 @@ class SongManager extends FlxBasic {
         onStep.removeAll();
         onStep = null;
 
-        for (track in tracks.sounds){
+        for (track in _tracks.sounds){
             track.stop();
 
             track.kill();
@@ -198,15 +198,17 @@ class SongManager extends FlxBasic {
     public var currentTimingPoint(get, never):TimingPoint;
     private var _currentTimingPoint:TimingPoint;
 
-    override public function update(elapsed:Float):Void {
-        if (tracks.sounds.length > 0) {
-            tracks.volume = volume;
+    private var _lastTimingIndex:Int = 0;
 
-            final mainTrack:FlxSound = tracks.sounds[0];
+    override public function update(elapsed:Float):Void {
+        if (_tracks.sounds.length > 0) {
+            _tracks.volume = volume;
+
+            final mainTrack:FlxSound = _tracks.sounds[0];
             mainTrack.update(elapsed);
 
-            for (i in 1...tracks.sounds.length) {
-                final track:FlxSound = tracks.sounds[i];
+            for (i in 1..._tracks.sounds.length) {
+                final track:FlxSound = _tracks.sounds[i];
 
                 track.pitch = mainTrack.pitch;
                 track.looped = mainTrack.looped;
@@ -219,6 +221,8 @@ class SongManager extends FlxBasic {
                 track.update(elapsed);
 
                 if (Math.abs(track.time - mainTrack.time) > 20) {
+                    // trace('Track is unsynced! Should be ${mainTrack.time / 1000} but is ${track.time / 1000}. Offset by ${Math.abs(track.time - mainTrack.time) / 1000}.');
+
                     track.time = mainTrack.time;
                 }
             }
@@ -226,12 +230,8 @@ class SongManager extends FlxBasic {
 
         super.update(elapsed);
 
-        for (i in 0..._beatMap.length) {
-            if (_beatMap[i].startTime > time)
-                break;
-
-            _currentTimingPoint = _beatMap[i];
-        }
+        // Updates the current timing point, then sets the last timing point to the current index.
+        _lastTimingIndex = updateTimingPoint(_lastTimingIndex);
 
         _bpm = _currentTimingPoint.bpm;
         _timeSignature = _currentTimingPoint.timeSignature;
@@ -261,76 +261,93 @@ class SongManager extends FlxBasic {
         }
     }
 
+    /**
+     * Updates the current timing point (beat change).
+     * @param startIndex Where it should start from in the check
+     * @return Index of the current timing point.
+     */
+    private function updateTimingPoint(startIndex:Int = 0):Int {
+        var currentIndex:Int = 0;
+        final start:Int = Std.int(Math.max(Math.min(startIndex, _beatMap.length), 0));
+
+        for (i in start..._beatMap.length) {
+            if (_beatMap[i].startTime > time)
+                break;
+
+            _currentTimingPoint = _beatMap[i];
+            currentIndex = i;
+        }
+
+        return currentIndex;
+    }
+
     public function addTrack(track:FlxSound) {
-        tracks.add(track);
+        _tracks.add(track);
     }
 
     public function removeTrack(track:FlxSound) {
         track.stop();
         track.kill();
 
-        tracks.remove(track);
+        _tracks.remove(track);
     }
 
     private function get_playing():Bool
         return _playing;
 
-    private function set_playing(value:Bool):Bool {
-        if (value == true)
-            play();
-        else if (value == false)
-            pause();
-
-        return _playing;
-    }
-
     public function play():Void {
-        if (tracks == null || tracks.sounds[0] == null)
+        if (_tracks == null || _tracks.sounds[0] == null)
             throw new haxe.exceptions.ArgumentException("Track is null!");
 
         _playing = true;
 
-        for (track in tracks.sounds)
+        for (track in _tracks.sounds)
             track.play();
     }
 
     public function pause():Void {
-        if (tracks == null || tracks.sounds[0] == null)
+        if (_tracks == null || _tracks.sounds[0] == null)
             throw new haxe.exceptions.ArgumentException("Track is null!");
 
         _playing = false;
 
-        for (track in tracks.sounds)
+        for (track in _tracks.sounds)
             track.pause();
     }
 
     public function clear():Void {
-        for (track in tracks.sounds){
+        _playing = false;
+
+        for (track in _tracks.sounds){
             track.stop();
 
             track.kill();
             track.destroy();
         }
 
-        tracks.sounds = [];
+        _tracks.sounds = [];
+        _beatMap = [];
+        _lastTimingIndex = 0;
     }
 
     private function get_time():Float {
-        if (tracks == null || tracks.sounds[0] == null)
+        if (_tracks == null || _tracks.sounds[0] == null)
             throw new haxe.exceptions.ArgumentException("Track is null!");
 
-        return tracks.sounds[0].time / 1000;
+        return _tracks.sounds[0].time / 1000;
     }
 
     private function set_time(value:Float):Float {
-        if (tracks == null || tracks.sounds[0] == null)
+        if (_tracks == null || _tracks.sounds[0] == null)
             throw new haxe.exceptions.ArgumentException("Track is null!");
 
-        for (track in tracks.sounds) {
+        _lastTimingIndex = 0;
+
+        for (track in _tracks.sounds) {
             track.time = value * 1000;
         }
 
-        return tracks.sounds[0].time;
+        return _tracks.sounds[0].time;
     }
 
     private function get_bpm():Float {
@@ -358,17 +375,17 @@ class SongManager extends FlxBasic {
     }
 
     function set_looped(value:Bool):Bool {
-        if (tracks == null || tracks.sounds[0] == null)
+        if (_tracks == null || _tracks.sounds[0] == null)
             throw new haxe.exceptions.ArgumentException("Track is null!");
 
-        return tracks.sounds[0].looped = value;
+        return _tracks.sounds[0].looped = value;
     }
 
 	function get_looped():Bool {
-        if (tracks == null || tracks.sounds[0] == null)
+        if (_tracks == null || _tracks.sounds[0] == null)
             throw new haxe.exceptions.ArgumentException("Track is null!");
 
-		return tracks.sounds[0].looped;
+		return _tracks.sounds[0].looped;
 	}
 
     function get_barDuration():Float {
