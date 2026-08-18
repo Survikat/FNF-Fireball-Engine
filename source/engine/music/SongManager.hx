@@ -66,6 +66,7 @@ class SongManager extends FlxBasic {
      * Time in seconds
      */
     public var time(get, set):Float;
+    public var pitch(get, set):Float;
 
     public var looped(get, set):Bool;
     public var playing(get, never):Bool;
@@ -399,4 +400,22 @@ class SongManager extends FlxBasic {
     function get_beatMap():Array<TimingPoint> {
         return _beatMap;
     }
+
+    function set_pitch(value:Float):Float {
+        if (_tracks == null || _tracks.sounds[0] == null)
+            throw new haxe.exceptions.ArgumentException("Track is null!");
+
+        for (track in _tracks.sounds) {
+            track.pitch = value;
+        }
+
+        return value;
+    }
+
+	function get_pitch():Float {
+		if (_tracks == null || _tracks.sounds[0] == null)
+            throw new haxe.exceptions.ArgumentException("Track is null!");
+
+        return _tracks.sounds[0].pitch;
+	}
 }

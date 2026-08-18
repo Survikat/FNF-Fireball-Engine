@@ -91,5 +91,6 @@
 
 	<!--Place custom nodes like icons here-->
     
+	<icon path="content/icons/fireball-16x.png" size="16"/>
     <icon path="content/icons/fireball.svg"/>
 </project>
