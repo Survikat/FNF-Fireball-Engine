@@ -27,7 +27,10 @@ final class Reactive<T> {
 
     private function set_value(val:T):T {
         if (val != _value) {
-            _callback(_value = val);
+            _value = val;
+            if (_callback != null) {
+                _callback(val);
+            }
         }
         return _value;
     }
