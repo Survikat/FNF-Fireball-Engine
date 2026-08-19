@@ -1,5 +1,6 @@
 package engine.music;
 
+import engine.Reactive;
 import engine.music.SongMetaData;
 import flixel.FlxBasic;
 import flixel.FlxG;
@@ -95,13 +96,9 @@ class SongManager extends FlxBasic {
     private var _beatDuration:Float;
     private var _barDuration:Float;
     
-    private var _curBar:Int;
-    private var _curBeat:Int;
-    private var _curStep:Int;
-
-    private var _lastBar:Int;
-    private var _lastBeat:Int;
-    private var _lastStep:Int;
+    private var _curBar:Reactive<Int>;
+    private var _curBeat:Reactive<Int>;
+    private var _curStep:Reactive<Int>;
 
     public function new() {
         super();
@@ -117,13 +114,20 @@ class SongManager extends FlxBasic {
         
         _beatDuration = 0;
         
-        _curBar = 0;
-        _curBeat = 0;
-        _curStep = 0;
+        _curBar = new Reactive<Int>({
+            initialValue: 0,
+            callback: onBar.dispatch
+        });
 
-        _lastBeat = -1;
-        _lastBar = -1;
-        _lastStep = -1;
+        _curBeat = new Reactive<Int>({
+            initialValue: 0,
+            callback: onBeat.dispatch
+        });
+
+        _curStep = new Reactive<Int>({
+            initialValue: 0,
+            callback: onStep.dispatch
+        });
     }
 
     /**
@@ -242,24 +246,9 @@ class SongManager extends FlxBasic {
 
         final sectionTime:Float = time - _currentTimingPoint.startTime;
 
-        _curBeat = Math.floor(_currentTimingPoint.prevBeats + (sectionTime / _beatDuration));
-        _curStep = Math.floor((_currentTimingPoint.prevBeats * 4) + (sectionTime / (_beatDuration / 4)));
-        _curBar = Math.floor(_currentTimingPoint.prevBars + (sectionTime / _barDuration));
-
-        if (_curBeat != _lastBeat) {
-            _lastBeat = _curBeat;
-            onBeat.dispatch(_curBeat);
-        }
-
-        if (_curStep != _lastStep) {
-            _lastStep = _curStep;
-            onStep.dispatch(_curStep);
-        }
-
-        if (_curBar != _lastBar) {
-            _lastBar = _curBar;
-            onBar.dispatch(_curBar);
-        }
+        _curBeat.value = Math.floor(_currentTimingPoint.prevBeats + (sectionTime / _beatDuration));
+        _curStep.value = Math.floor((_currentTimingPoint.prevBeats * 4) + (sectionTime / (_beatDuration / 4)));
+        _curBar.value = Math.floor(_currentTimingPoint.prevBars + (sectionTime / _barDuration));
     }
 
     /**
@@ -364,15 +353,15 @@ class SongManager extends FlxBasic {
     }
 
     private function get_curBar():Int {
-        return _curBar;
+        return _curBar.value;
     }
 
     private function get_curBeat():Int {
-        return _curBeat;
+        return _curBeat.value;
     }
 
     private function get_curStep():Int {
-        return _curStep;
+        return _curStep.value;
     }
 
     function set_looped(value:Bool):Bool {
