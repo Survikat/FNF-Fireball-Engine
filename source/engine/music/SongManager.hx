@@ -226,8 +226,6 @@ class SongManager extends FlxBasic {
                 track.update(elapsed);
 
                 if (Math.abs(track.time - mainTrack.time) > 20) {
-                    // trace('Track is unsynced! Should be ${mainTrack.time / 1000} but is ${track.time / 1000}. Offset by ${Math.abs(track.time - mainTrack.time) / 1000}.');
-
                     track.time = mainTrack.time;
                 }
             }
@@ -321,15 +319,19 @@ class SongManager extends FlxBasic {
     }
 
     private function get_time():Float {
-        if (_tracks == null || _tracks.sounds[0] == null)
-            throw new haxe.exceptions.ArgumentException("Track is null!");
+        if (_tracks == null || _tracks.sounds[0] == null) {
+            FlxG.log.error("Track is null!");
+            return 0;
+        }
 
         return _tracks.sounds[0].time / 1000;
     }
 
     private function set_time(value:Float):Float {
-        if (_tracks == null || _tracks.sounds[0] == null)
-            throw new haxe.exceptions.ArgumentException("Track is null!");
+        if (_tracks == null || _tracks.sounds[0] == null) {
+            FlxG.log.error("Track is null!");
+            return 0;
+        }
 
         _lastTimingIndex = 0;
 
@@ -365,15 +367,19 @@ class SongManager extends FlxBasic {
     }
 
     function set_looped(value:Bool):Bool {
-        if (_tracks == null || _tracks.sounds[0] == null)
-            throw new haxe.exceptions.ArgumentException("Track is null!");
+        if (_tracks == null || _tracks.sounds[0] == null) {
+            FlxG.log.error("Track is null!");
+            return false;
+        }
 
         return _tracks.sounds[0].looped = value;
     }
 
 	function get_looped():Bool {
-        if (_tracks == null || _tracks.sounds[0] == null)
-            throw new haxe.exceptions.ArgumentException("Track is null!");
+        if (_tracks == null || _tracks.sounds[0] == null) {
+            FlxG.log.error("Track is null!");
+            return false;
+        }
 
 		return _tracks.sounds[0].looped;
 	}
@@ -391,8 +397,10 @@ class SongManager extends FlxBasic {
     }
 
     function set_pitch(value:Float):Float {
-        if (_tracks == null || _tracks.sounds[0] == null)
-            throw new haxe.exceptions.ArgumentException("Track is null!");
+        if (_tracks == null || _tracks.sounds[0] == null) {
+            FlxG.log.error("Track is null!");
+            return 0;
+        }
 
         for (track in _tracks.sounds) {
             track.pitch = value;
@@ -402,8 +410,10 @@ class SongManager extends FlxBasic {
     }
 
 	function get_pitch():Float {
-		if (_tracks == null || _tracks.sounds[0] == null)
-            throw new haxe.exceptions.ArgumentException("Track is null!");
+        if (_tracks == null || _tracks.sounds[0] == null) {
+            FlxG.log.error("Track is null!");
+            return 0;
+        }
 
         return _tracks.sounds[0].pitch;
 	}

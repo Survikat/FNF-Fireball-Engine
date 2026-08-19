@@ -24,6 +24,16 @@
       "name": "openfl",
       "type": "haxelib",
       "version": "9.5.2"
+    },
+    {
+      "name": "hxCodec",
+      "type": "haxelib",
+      "version": "3.0.2"
+    },
+    {
+      "name": "flixel-animate",
+      "type": "haxelib",
+      "version": "1.5.0"
     }
   ]
 }

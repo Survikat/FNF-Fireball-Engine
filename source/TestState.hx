@@ -20,7 +20,6 @@ class TestState extends MusicalState {
     override public function create() {
 		super.create();
 
-        // GameUtilty.playMusic(song, "Dual-Killers");
         GameUtilty.playMusic(song, "Beat", true);
         
 		song.play();
@@ -85,6 +84,7 @@ class TestState extends MusicalState {
         _logo.centerOrigin();
     }
 
+    private var _flipDir:Float = 1;
     override public function barHit(bar:Int) {
         super.barHit(bar);
 
@@ -92,8 +92,9 @@ class TestState extends MusicalState {
             _logo.scale.set(_logoBaseScale + 0.3, _logoBaseScale + 0.3);
             _logo.centerOrigin();
 
-            FlxTween.tween(_logo, {angle: 360}, song.beatDuration * 2, {onComplete: (t) -> {
+            FlxTween.tween(_logo, {angle: 360 * _flipDir}, song.beatDuration * 2, {onComplete: (t) -> {
                 _logo.angle = 0;
+                _flipDir = -_flipDir;
             }, ease: FlxEase.quartOut});
         }
     }
