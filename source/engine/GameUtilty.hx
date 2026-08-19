@@ -1,7 +1,9 @@
 package engine;
 
+import engine.Paths.PathDirectory;
 import engine.music.SongManager;
 import engine.music.SongMetaData;
+import flixel.FlxG;
 import flixel.sound.FlxSound;
 import haxe.Json;
 
@@ -21,7 +23,7 @@ class GameUtilty {
      * @param dualVocals If true, it will attempt to load seperate vocal tracks. If false, it will attempt to load a singular vocal track.
      * @return Map of tracks; (`Instrumental`, `Player`, `Opponent`, `Duet`).
      */
-    public static function playMusic(manager:SongManager, title:String, ?instOnly:Bool = false, ?dualVocals:Bool = true):Map<FunkinTracks, FlxSound> {
+    public static function playMusic(manager:SongManager, title:String, ?dir:PathDirectory = ASSETS, ?instOnly:Bool = false, ?dualVocals:Bool = true):Map<FunkinTracks, FlxSound> {
         manager.clear();
 
         var tracks:Map<FunkinTracks, FlxSound> = new Map();
@@ -30,10 +32,10 @@ class GameUtilty {
         var vocalTrackPlayer:FlxSound = new FlxSound();
         var vocalTrackOpponent:FlxSound = new FlxSound();
 
-        instTrack.loadStreamed(Paths.getMusic(title, "Inst"));
+        instTrack.loadStreamed(Paths.getMusic(title, "Inst", dir));
         tracks.set(Instrumental, instTrack);
 
-        final songMeta:SongMetaData = Json.parse(flixel.FlxG.assets.getText('assets/songs/$title/$title.json'));
+        var songMeta:SongMetaData = Json.parse(FlxG.assets.getText(Paths.get('songs/$title/$title.json', ASSETS)));
         var beatMappings:Array<BPMChangeEvent> = songMeta.beatMappings;
 
         if (beatMappings != null) {

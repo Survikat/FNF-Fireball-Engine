@@ -1,0 +1,28 @@
+# Boyfriend Character Files
+"assets/shared/images/characters/bf/"->"resources/images/characters/bf/"
+"assets/shared/images/characters/bf-death/"->"resources/images/characters/bf-death/"
+
+# Girlfriend Character Files
+"assets/shared/images/characters/gf/"->"resources/images/characters/gf/"
+
+# Daddy Dearest Character Files
+"assets/shared/images/characters/dad/"->"resources/images/characters/dad/"
+
+# General UI Assets
+"assets/shared/images/ui/countdown/"->"resources/images/countdown/"
+"assets/shared/images/healthBar.png"->"resources/images/healthBar.png"
+
+# Note Assets
+"assets/shared/images/noteStrumline.png"->"resources/images/noteStrumline.png"
+"assets/shared/images/noteStrumline.xml"->"resources/images/noteStrumline.xml"
+"assets/shared/images/notes.png"->"resources/images/notes.png"
+"assets/shared/images/notes.xml"->"resources/images/notes.xml"
+"assets/shared/images/NOTE_hold_assets.png"->"resources/images/NOTE_hold_assets.png"
+"assets/shared/images/holdCoverBlue.png"->"resources/images/holdCoverBlue.png"
+"assets/shared/images/holdCoverBlue.xml"->"resources/images/holdCoverBlue.xml"
+"assets/shared/images/holdCoverRed.png"->"resources/images/holdCoverRed.png"
+"assets/shared/images/holdCoverRed.xml"->"resources/images/holdCoverRed.xml"
+"assets/shared/images/holdCoverGreen.png"->"resources/images/holdCoverGreen.png"
+"assets/shared/images/holdCoverGreen.xml"->"resources/images/holdCoverGreen.xml"
+"assets/shared/images/holdCoverPurple.png"->"resources/images/holdCoverPurple.png"
+"assets/shared/images/holdCoverPurple.xml"->"resources/images/holdCoverPurple.xml"

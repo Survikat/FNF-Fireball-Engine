@@ -1,12 +1,15 @@
-package game;
+package;
 
 import engine.GameUtilty;
 import engine.Paths;
+import engine.save.Highscores;
 import engine.states.MusicalState;
 import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.math.FlxMath;
 import flixel.text.FlxText;
+import flixel.tweens.FlxEase;
+import flixel.tweens.FlxTween;
 
 class TestState extends MusicalState {
 	private var _text:FlxText;
@@ -26,6 +29,7 @@ class TestState extends MusicalState {
         _logo = new FlxSprite().loadGraphic(Paths.getImage("logo"));
         _logo.antialiasing = true;
         _logo.updateHitbox();
+        _logo.centerOrigin();
         _logo.screenCenter(XY);
         add(_logo);
 
@@ -37,21 +41,25 @@ class TestState extends MusicalState {
     override function update(elapsed:Float) {
         super.update(elapsed);
 
+        FlxG.timeScale = Math.max(song.pitch, 0.5);
+
         if (FlxG.keys.justPressed.SPACE) {
+            Highscores.setSongScore('Test${Std.int(Math.random() * 1000)}', "normal", Std.int(Math.random() * 10000));
+
             if (song.playing)
                 song.play();
             else
                 song.pause();
         } else {
             if (FlxG.keys.pressed.LEFT)
-                song.time -= 2.5 * elapsed;
+                song.time -= 2.5 * FlxG.elapsed;
             else if (FlxG.keys.pressed.RIGHT)
-                song.time += 2.5 * elapsed;
+                song.time += 2.5 * FlxG.elapsed;
 
             if (FlxG.keys.pressed.UP)
-                song.pitch = FlxMath.roundDecimal(song.pitch + (2.5 * elapsed), 2);
+                song.pitch = Math.max(FlxMath.roundDecimal(song.pitch + (1 * FlxG.elapsed), 2), 0.5);
             else if (FlxG.keys.pressed.DOWN)
-                song.pitch = FlxMath.roundDecimal(song.pitch - (2.5 * elapsed), 2);
+                song.pitch = Math.max(FlxMath.roundDecimal(song.pitch - (1 * FlxG.elapsed), 2), 0.5);
         }
 
         _logo.scale.x = FlxMath.lerp(_logo.scale.x, _logoBaseScale, FlxMath.getElapsedLerp(0.4, elapsed));
@@ -80,7 +88,19 @@ class TestState extends MusicalState {
     override public function barHit(bar:Int) {
         super.barHit(bar);
 
-        _logo.scale.set(_logoBaseScale + 0.3, _logoBaseScale + 0.3);
-        _logo.centerOrigin();
+        if (bar > 0) {
+            _logo.scale.set(_logoBaseScale + 0.3, _logoBaseScale + 0.3);
+            _logo.centerOrigin();
+
+            FlxTween.tween(_logo, {angle: 360}, song.beatDuration * 2, {onComplete: (t) -> {
+                _logo.angle = 0;
+            }, ease: FlxEase.quartOut});
+        }
+    }
+
+    override public function destroy() {
+        super.destroy();
+
+        FlxG.timeScale = 1;
     }
 }

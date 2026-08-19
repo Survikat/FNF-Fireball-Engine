@@ -18,9 +18,6 @@
 	<!--These window settings apply to all targets-->
 	<window width="1280" height="720" fps="60" background="#000000" hardware="true" vsync="false" />
 
-	<!--HTML5-specific-->
-	<window if="html5" resizable="true" />
-
 	<!--Desktop-specific-->
 	<window if="desktop" orientation="landscape" fullscreen="false" resizable="true" />
 
@@ -91,6 +88,5 @@
 
 	<!--Place custom nodes like icons here-->
     
-	<icon path="content/icons/fireball-16x.png" size="16"/>
     <icon path="content/icons/fireball.svg"/>
 </project>

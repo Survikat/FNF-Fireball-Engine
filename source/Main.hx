@@ -1,8 +1,7 @@
 package;
 
-import flixel.FlxG;
+import engine.save.Highscores;
 import flixel.FlxGame;
-import game.TestState;
 import openfl.display.Sprite;
 
 class Main extends Sprite
@@ -11,7 +10,9 @@ class Main extends Sprite
 	{
 		super();
 
+		Highscores.init();
 		addChild(new FlxGame(0, 0, TestState));
-        FlxG.autoPause = false; // Ew.
+
+        flixel.FlxG.autoPause = false; // Ew.
 	}
 }
