@@ -3,7 +3,7 @@ name: Build Fireball Engine
 on:
   push:
     branches:
-      - main
+      - release
 
   pull_request:
     branches:
@@ -44,7 +44,9 @@ jobs:
           sudo apt-get install -y \
             build-essential \
             libgl1-mesa-dev \
-            libglu1-mesa-dev
+            libglu1-mesa-dev \
+            libvlc-dev \
+            libvlccore-dev
 
       - name: Install Haxelib dependencies
         run: |
