@@ -21,9 +21,8 @@ Fireball Engine is not affiliated with "The Funkin' Crew Inc." or "Friday Night 
 Install Haxe 4.3.7, and follow the [HaxeFlixel Install Guide](https://haxeflixel.com/documentation/install-haxeflixel/). Then, run the following commands to install all the necessary libraries:
 
 ```bash
-haxelib install hmm
-haxelib run hmm setup
-haxelib run hmm install
+haxelib install hxvlc
+haxelib install flixel-animate
 ```
 
 You can then run either `lime test windows`, `lime test linux`, or `lime test mac` to compile depending on your host device or target. **MacOS is untested**, but there shouldn't be any reason on why it wouldn't work.
