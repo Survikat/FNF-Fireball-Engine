@@ -46,7 +46,9 @@ jobs:
             libgl1-mesa-dev \
             libglu1-mesa-dev \
             libvlc-dev \
-            libvlccore-dev
+            libvlccore-dev \
+            vlc \
+            vlc-bin
 
       - name: Install Haxelib dependencies
         run: |

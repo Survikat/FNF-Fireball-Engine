@@ -26,9 +26,9 @@
       "version": "9.5.2"
     },
     {
-      "name": "hxCodec",
+      "name": "hxvlc",
       "type": "haxelib",
-      "version": "3.0.2"
+      "version": "2.3.0"
     },
     {
       "name": "flixel-animate",

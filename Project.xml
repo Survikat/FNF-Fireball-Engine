@@ -46,7 +46,7 @@
 	<!--<haxelib name="nape-haxe4" />-->
 
 	<haxelib name="flixel-animate" />
-	<haxelib name="hxCodec" if="desktop || mobile" />
+	<haxelib name="hxvlc" if="desktop || mobile" />
 
 	<!-- ______________________________ Haxedefines _____________________________ -->
 
