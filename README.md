@@ -42,7 +42,7 @@ pacman -S vlc
 Run these commands under `sudo`:
 
 ```bash
-apt-get install libvlc-dev libvlccore-dev 
+apt-get install vlc libvlc-dev libvlccore-dev vlc-bin
 ```
 
 ### Pull Requests
