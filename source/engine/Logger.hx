@@ -42,16 +42,18 @@ final class Logger {
             saveTimer.run = () -> {
                 if (_changes.length > 0) {
                     final changes:Array<String> = _changes.copy();
-                    final oldContent:String = File.getContent(_path);
+                    var content:String = File.getContent(_path);
 
                     for (change in changes) {
                         #if debug
                         Sys.println(change.trim());
                         #end
 
-                        File.saveContent(_path, oldContent + change);
+                        content += change;
                         _changes.shift();
                     }
+
+                    File.saveContent(_path, content);
                 }
             }
         });

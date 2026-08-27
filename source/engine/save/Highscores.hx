@@ -11,6 +11,9 @@ final class Highscores {
     
     public static function init():Void {
         _data = Save.get("highscores");
+
+        if (_data == null)
+            reset();
     }
 
     public static function setSongScore(name:String, difficulty:String, score:Int, ?modID:String = "BASE") {
