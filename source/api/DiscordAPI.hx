@@ -1,6 +1,5 @@
 package api;
 
-import api.APIKeys;
 import haxe.Timer;
 
 #if desktop
@@ -15,7 +14,7 @@ final class DiscordAPI {
 		handlers.disconnected = cpp.Function.fromStaticFunction(onDisconnected);
 		handlers.errored = cpp.Function.fromStaticFunction(onError);
 
-		Discord.Initialize(DiscordAPIKey.appID, cpp.RawPointer.addressOf(handlers), false, null);
+		Discord.Initialize("1542526698166165654", cpp.RawPointer.addressOf(handlers), false, null);
 
 		var updateTimer:Timer = new Timer(500);
 		updateTimer.run = () -> {
@@ -44,7 +43,7 @@ final class DiscordAPI {
     public static function setPresence(state:String, details:String, largeImageKey:String, ?smallImageKey:String = ""):Void {
 		final presence = new DiscordRichPresence();
         presence.type = DiscordActivityType_Playing;
-		
+
         presence.state = state;
         presence.details = details;
         presence.largeImageKey = largeImageKey;

@@ -26,16 +26,6 @@ haxelib install flixel-animate
 haxelib install hxdiscord_rpc
 ```
 
-Then, inside of `source/api`, create a file named `APIKeys.hx` with the following code:
-
-```hx
-package api;
-
-final class DiscordAPIKey {
-    public static final appID:String = "";
-}
-```
-
 You can then compile and test with either `lime test windows`, `lime test linux`, or `lime test mac` depending on your host device or target. **MacOS is untested**, but there shouldn't be any reason on why it wouldn't work.
 
 ### Linux Users
