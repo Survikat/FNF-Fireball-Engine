@@ -23,6 +23,7 @@ Install Haxe 4.3.7, and follow the [HaxeFlixel Install Guide](https://haxeflixel
 ```bash
 haxelib install hxvlc
 haxelib install flixel-animate
+haxelib install hxdiscord_rpc
 ```
 
 Then, inside of `source/api`, create a file named `APIKeys.hx` with the following code:
