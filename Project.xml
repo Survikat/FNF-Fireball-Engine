@@ -47,6 +47,7 @@
 
 	<haxelib name="flixel-animate" />
 	<haxelib name="hxvlc" if="desktop || mobile" />
+	<haxelib name="hxdiscord_rpc" if="desktop" />
 
 	<!-- ______________________________ Haxedefines _____________________________ -->
 

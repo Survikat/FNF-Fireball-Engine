@@ -25,12 +25,14 @@ class Main extends Sprite
 
 class InitState extends FlxState {
 	override public function create():Void {
+		#if desktop
+		api.DiscordAPI.Init();
+		#end
+
 		if (!Save.getBool("initialized")) {
 			FlxG.switchState(() -> new SetupState());
 		} else {
 			FlxG.switchState(() -> new TestState());
 		}
-
-		super.create();
 	}
 }

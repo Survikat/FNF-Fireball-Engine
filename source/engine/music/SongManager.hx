@@ -1,7 +1,7 @@
 package engine.music;
 
-import engine.Reactive;
 import engine.music.SongMetaData;
+import engine.util.Reactive;
 import flixel.FlxBasic;
 import flixel.FlxG;
 import flixel.sound.FlxSound;
@@ -209,11 +209,11 @@ class SongManager extends FlxBasic {
         if (_tracks.sounds.length > 0) {
             _tracks.volume = volume;
 
-            final mainTrack:FlxSound = _tracks.sounds[0];
+            var mainTrack:FlxSound = _tracks.sounds[0];
             mainTrack.update(elapsed);
 
             for (i in 1..._tracks.sounds.length) {
-                final track:FlxSound = _tracks.sounds[i];
+                var track:FlxSound = _tracks.sounds[i];
 
                 track.pitch = mainTrack.pitch;
                 track.looped = mainTrack.looped;

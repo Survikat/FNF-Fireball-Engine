@@ -1,7 +1,7 @@
 package;
 
-import engine.GameUtilty;
-import engine.Paths;
+import engine.GameManager;
+import engine.Resources;
 import engine.save.Highscores;
 import engine.states.MusicalState;
 import flixel.FlxG;
@@ -20,12 +20,12 @@ class TestState extends MusicalState {
     override public function create() {
 		super.create();
 
-        GameUtilty.playMusic(song, "Beat", true);
+        GameManager.playMusic(song, "Beat", true);
         
 		song.play();
         song.looped = true;
 
-        _logo = new FlxSprite().loadGraphic(Paths.getImage("logo"));
+        _logo = new FlxSprite().loadGraphic(Resources.getGraphic("images/logo"));
         _logo.antialiasing = true;
         _logo.updateHitbox();
         _logo.centerOrigin();

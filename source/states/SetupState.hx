@@ -1,6 +1,5 @@
 package states;
 
-import engine.Paths;
 import engine.save.Save;
 import engine.states.TemplateState;
 import flixel.FlxG;
@@ -60,7 +59,7 @@ class SetupState extends TemplateState {
 			}
 		});
 
-		_fileExplorerButt.loadGraphic(Paths.getImage("ui/setup/folderIconButt"), true, 32, 32);
+		_fileExplorerButt.loadGraphic("images/ui/setup/folderIconButt", true, 32, 32);
 
 		_fileExplorerButt.scale.set(4, 4);
 		_fileExplorerButt.updateHitbox();

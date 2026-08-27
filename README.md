@@ -25,7 +25,17 @@ haxelib install hxvlc
 haxelib install flixel-animate
 ```
 
-You can then run either `lime test windows`, `lime test linux`, or `lime test mac` to compile depending on your host device or target. **MacOS is untested**, but there shouldn't be any reason on why it wouldn't work.
+Then, inside of `source/api`, create a file named `APIKeys.hx` with the following code:
+
+```hx
+package api;
+
+final class DiscordAPIKey {
+    public static final appID:String = "";
+}
+```
+
+You can then compile and test with either `lime test windows`, `lime test linux`, or `lime test mac` depending on your host device or target. **MacOS is untested**, but there shouldn't be any reason on why it wouldn't work.
 
 ### Linux Users
 Extra actions are required for certain libraries to function properly with this project.
