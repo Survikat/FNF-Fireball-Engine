@@ -79,7 +79,7 @@ final class Logger {
 
         #if !(target.threaded)
         final oldContent:String = File.getContent(_path);
-        File.saveContent(_path, oldContent + outputoutput);
+        File.saveContent(_path, oldContent + output);
         #else
         _changes.push(output);
         #end
