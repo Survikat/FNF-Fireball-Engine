@@ -10,6 +10,7 @@ import flixel.math.FlxMath;
 import flixel.text.FlxText;
 import flixel.tweens.FlxEase;
 import flixel.tweens.FlxTween;
+import flixel.util.FlxColor;
 
 final class TestState extends MusicalState {
 	private var _text:FlxText;
@@ -24,6 +25,12 @@ final class TestState extends MusicalState {
         
 		song.play();
         song.looped = true;
+
+        var bg:FlxSprite = new FlxSprite().loadGraphic(Resources.getGraphic("images/menuDesat"));
+        bg.antialiasing = true;
+        bg.color = FlxColor.ORANGE;
+        bg.alpha = 0.4;
+        add(bg);
 
         _logo = new FlxSprite().loadGraphic(Resources.getGraphic("images/logo"));
         _logo.antialiasing = true;

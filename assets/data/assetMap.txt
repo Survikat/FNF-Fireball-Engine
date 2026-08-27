@@ -9,6 +9,12 @@
 "assets/shared/images/characters/dad/"->"resources/images/characters/dad/"
 
 # General UI Assets
+"assets/images/logoBumpin.png"->"resources/images/logoBumpin.png"
+"assets/images/logoBumpin.xml"->"resources/images/logoBumpin.xml"
+"assets/images/funkay.png"->"resources/images/funkay.png"
+"assets/images/menuDesat.png"->"resources/images/menuDesat.png"
+
+# In-game UI Assets
 "assets/shared/images/ui/countdown/"->"resources/images/countdown/"
 "assets/shared/images/healthBar.png"->"resources/images/healthBar.png"
 
