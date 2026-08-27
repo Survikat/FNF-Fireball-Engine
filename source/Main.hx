@@ -1,5 +1,6 @@
 package;
 
+import engine.Logger;
 import engine.save.Highscores;
 import engine.save.Save;
 import flixel.FlxG;
@@ -17,17 +18,15 @@ class Main extends Sprite
 	private static var startFramerate:Int = 60;
 
 	/* ENGINE INFO */
-	private static var _version:String = "";
-
-	public static var version(get, never):String;
-	private static function get_version():String
-		return _version;
-
+	public static final engineName:String = "Friday Night Funkin' Fireball Engine";
+	public static final version:String = "0.1.0";
 	public static final resourceVersion:Int = 0; // Version of current asset mappings.
 
 	public function new()
 	{
 		super();
+
+		Logger.init();
 
 		#if desktop
 		try {
@@ -55,8 +54,6 @@ class Main extends Sprite
 			trace('Failed to perform system arguments! ($e).');
 		}
 		#end
-
-		_version = Application.current.meta.get("version");
 
 		addChild(new FlxGame(0, 0, InitState, startFramerate, startFramerate, true, startFullscreen));
 	}
