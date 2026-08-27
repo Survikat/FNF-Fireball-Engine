@@ -7,6 +7,7 @@ import flixel.FlxGame;
 import flixel.FlxState;
 import lime.app.Application;
 import lime.system.System;
+import lime.utils.Assets;
 import openfl.display.Sprite;
 import states.SetupState;
 
@@ -16,15 +17,17 @@ class Main extends Sprite
 	{
 		super();
 
-		Highscores.init();
 		addChild(new FlxGame(0, 0, InitState));
-
-        flixel.FlxG.autoPause = false; // Ew.
 	}
 }
 
-class InitState extends FlxState {
+final class InitState extends FlxState {
 	override public function create():Void {
+		Assets.cache.enabled = true;
+		FlxG.autoPause = false;
+
+		Highscores.init();
+
 		#if desktop
 		api.DiscordAPI.Init();
 		#end

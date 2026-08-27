@@ -11,7 +11,7 @@ import flixel.text.FlxText;
 import flixel.tweens.FlxEase;
 import flixel.tweens.FlxTween;
 
-class TestState extends MusicalState {
+final class TestState extends MusicalState {
 	private var _text:FlxText;
 
     private var _logo:FlxSprite;

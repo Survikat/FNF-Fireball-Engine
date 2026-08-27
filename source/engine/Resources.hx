@@ -13,7 +13,7 @@ import sys.FileSystem;
 
 using StringTools;
 
-class Resources {
+final class Resources {
     private static final _defResourceDirs:Array<String> = ["assets", "resources"];
     
     private static var _modResourceDirectories:Array<String> = [];
@@ -115,19 +115,15 @@ class Resources {
             final finalPath:String = Path.normalize('$dir/$path.png');
 
             if (assetExists(finalPath)) {
-                var bitmap:BitmapData;
-
-                if (Assets.cache.hasBitmapData(finalPath)) {
-                    bitmap = Assets.cache.getBitmapData(finalPath);
-                } else {
-                    bitmap = BitmapData.fromFile(finalPath);
+                if (!Assets.cache.hasBitmapData(finalPath)) {
+                    var bitmap:BitmapData = BitmapData.fromFile(finalPath);
                     Assets.cache.setBitmapData(finalPath, bitmap);
                 }
 
-                final targetGraphic:FlxGraphic = FlxGraphic.fromBitmapData(bitmap);
-                targetGraphic.persist = true;
+                var graphic:FlxGraphic = FlxGraphic.fromBitmapData(Assets.cache.getBitmapData(finalPath), false, finalPath);
+                // graphic.persist = true;
 
-                return targetGraphic;
+                return graphic;
             }
         }
 

@@ -17,7 +17,7 @@ import lime.ui.FileDialog;
  * It will not copy all of them. Only character assets, the fonts used, menu music, and possibly all the stages.
  */
 
-class SetupState extends TemplateState {
+final class SetupState extends TemplateState {
 	private var _fileExplorerButt:FlxSpriteButton;
 	private var _textNotice:FlxText;
 
@@ -42,8 +42,8 @@ class SetupState extends TemplateState {
 
 			trace(path);
 
-			/*Save.set("initialized", true);
-			FlxG.resetGame();*/
+			Save.set("initialized", true);
+			FlxG.resetGame();
 		});
 
 		this.camera.bgColor = FlxColor.GRAY;

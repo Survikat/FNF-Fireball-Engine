@@ -13,7 +13,7 @@ enum FunkinTracks {
     Duet;
 }
 
-class GameManager {
+final class GameManager {
     /**
      * Plays the given song to the given song manager.
      * @param manager Song Manager.

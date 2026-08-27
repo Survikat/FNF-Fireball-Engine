@@ -10,7 +10,7 @@ import flixel.util.FlxSignal.FlxTypedSignal;
 import flixel.util.FlxSort;
 import haxe.Json;
 
-class TimeSignature {
+final class TimeSignature {
     public var numerator(get, set):Int;
     public var denominator(get, set):Int;
 
@@ -41,7 +41,7 @@ class TimeSignature {
     }
 }
 
-class TimingPoint {
+final class TimingPoint {
     public var startTime:Float;
 
     public var beatDuration:Float;
@@ -56,7 +56,7 @@ class TimingPoint {
     public function new() {}
 }
 
-class SongManager extends FlxBasic {
+final class SongManager extends FlxBasic {
     private var _tracks:FlxSoundGroup;
 
     public var onBar:FlxTypedSignal<Int->Void>;

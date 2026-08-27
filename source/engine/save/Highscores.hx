@@ -6,29 +6,13 @@ import haxe.io.Bytes;
 import sys.FileSystem;
 import sys.io.File;
 
-class Highscores {
+final class Highscores {
     private static var _data:HighscoreData;
     
-    public static function init():Int {
-        if (FileSystem.exists("highscores.dat")) {
-            try {
-                _data = Json.parse(Base64.decode(File.getContent("highscores.dat")).toString());
-            } catch(e:Dynamic) {
-                trace('Failed to load save data! ($e). Resetting...');
-
-                reset();
-                return 2;
-            }
-
-            return 0;
-        }
-
-        trace('Save data does not exist! Resetting...');
-
-        reset();
-        return 1;
+    public static function init():Void {
+        _data = Save.get("highscores");
     }
-    
+
     public static function setSongScore(name:String, difficulty:String, score:Int, ?modID:String = "BASE") {
         final songID:String = '$name:$difficulty:$modID';
         final scoreFiltered:Array<ScoreData> = _data.songs.filter(item -> item.id == songID);
@@ -88,7 +72,7 @@ class Highscores {
     }
 
     public static function dump():Void {
-        File.saveContent("highscores.dat", Base64.encode(Bytes.ofString(Json.stringify(_data, "\t"))));
+        Save.set("highscores", _data);
     }
 
     public static function reset():Void {
