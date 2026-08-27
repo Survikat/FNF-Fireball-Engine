@@ -38,11 +38,18 @@ final class Logger {
 
         #if (target.threaded)
         Thread.createWithEventLoop(() -> {
+            var content:String = null;
+
             var saveTimer:Timer = new Timer(250);
             saveTimer.run = () -> {
                 if (_changes.length > 0) {
                     final changes:Array<String> = _changes.copy();
-                    var content:String = File.getContent(_path);
+
+                    try {
+                        content = File.getContent(_path);
+                    } catch (e:Dynamic) {
+                        Sys.println('Failed to get previous log! ($e).');
+                    }
 
                     for (change in changes) {
                         #if debug
@@ -53,7 +60,8 @@ final class Logger {
                         _changes.shift();
                     }
 
-                    File.saveContent(_path, content);
+                    try { File.saveContent(_path, content); } catch(e:Dynamic) { Sys.println('Failed to save log ($e).'); }
+                    content = null;
                 }
             }
         });
