@@ -5,9 +5,9 @@
 
 ---
 
-This is the official Friday Night Funkin': Fireball Engine Repository. Fireball Engine is a barebones Friday Night Funkin' Modding Engine designed for easy to use soft-modding without containing the base game. 
+This is the official Friday Night Funkin': Fireball Engine Repository. Fireball Engine is a barebones Friday Night Funkin' Modding Engine designed for easy to use soft-modding without containing the base game. Only be avalible for Desktop (and maybe mobile) targets.
 
-Fireball Engine will only be avalible for Desktop (and maybe mobile) targets.
+Fireball Engine is in active development! Join our Discord Server [here](https://discord.gg/F2BXD23QWF).
 
 ## Why does this exist?
 I believed there should be a heavily advanced yet extremely easy to use FNF Engine, something optimized for multiple mods while being optimal for full control and creativity. No FNF Engines (that I'm aware of) implement this in a way that I'm happy with. My goal is to make an Engine that isn't clunky, and is easy to use immediately.
