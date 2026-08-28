@@ -6,11 +6,10 @@ import engine.save.Save;
 import flixel.FlxG;
 import flixel.FlxGame;
 import flixel.FlxState;
-import lime.app.Application;
-import lime.system.System;
 import lime.utils.Assets;
 import openfl.display.Sprite;
 import states.SetupState;
+import states.TestState;
 
 class Main extends Sprite
 {

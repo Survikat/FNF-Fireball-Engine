@@ -1,7 +1,8 @@
-package;
+package states;
 
 import engine.GameManager;
 import engine.Resources;
+import engine.objects.characters.Character;
 import engine.save.Highscores;
 import engine.states.MusicalState;
 import flixel.FlxG;
@@ -16,6 +17,8 @@ final class TestState extends MusicalState {
 	private var _text:FlxText;
 
     private var _logo:FlxSprite;
+    private var _bf:Character;
+
     private var _logoBaseScale:Float = 0.5;
 
     override public function create() {
@@ -38,6 +41,12 @@ final class TestState extends MusicalState {
         _logo.centerOrigin();
         _logo.screenCenter(XY);
         add(_logo);
+
+        _bf = new Character("boyfriend");
+        _bf.setGraphicSize(_bf.width * 0.7);
+        _bf.updateHitbox();
+        _bf.setPosition(FlxG.width - _bf.width, FlxG.height - _bf.height);
+        add(_bf);
 
 		_text = new FlxText();
 		_text.size = 30;
@@ -68,8 +77,10 @@ final class TestState extends MusicalState {
                 song.pitch = Math.max(FlxMath.roundDecimal(song.pitch - (1 * FlxG.elapsed), 2), 0.5);
         }
 
-        _logo.scale.x = FlxMath.lerp(_logo.scale.x, _logoBaseScale, FlxMath.getElapsedLerp(0.4, elapsed));
-        _logo.scale.y = FlxMath.lerp(_logo.scale.y, _logoBaseScale, FlxMath.getElapsedLerp(0.4, elapsed));
+        final elapsedLerp:Float = FlxMath.getElapsedLerp(0.4, elapsed);
+
+        _logo.scale.x = FlxMath.lerp(_logo.scale.x, _logoBaseScale, elapsedLerp);
+        _logo.scale.y = FlxMath.lerp(_logo.scale.y, _logoBaseScale, elapsedLerp);
         _logo.centerOrigin();
 
         _text.text =
@@ -89,6 +100,8 @@ final class TestState extends MusicalState {
 
         _logo.scale.set(_logoBaseScale + 0.15, _logoBaseScale + 0.15);
         _logo.centerOrigin();
+
+        _bf.dance();
     }
 
     private var _flipDir:Float = 1;

@@ -110,7 +110,7 @@ final class Resources {
         return null;
     }
 
-    public static function getGraphic(path):FlxGraphic {
+    public static function getGraphic(path:String):FlxGraphic {
         for (dir in _resourceDirectories) {
             final finalPath:String = Path.normalize('$dir/$path.png');
 
@@ -124,6 +124,18 @@ final class Resources {
                 // graphic.persist = true;
 
                 return graphic;
+            }
+        }
+
+        return null;
+    }
+
+    public static function getPath(path:String):String {
+        for (dir in _resourceDirectories) {
+            final finalPath:String = Path.normalize('$dir/$path');
+
+            if (assetExists(finalPath) || FileSystem.isDirectory(finalPath)) {
+                return finalPath;
             }
         }
 

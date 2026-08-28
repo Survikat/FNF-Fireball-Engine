@@ -6,6 +6,7 @@ import haxe.io.Bytes;
 import sys.FileSystem;
 import sys.io.File;
 
+// I'm probably going to redo this
 final class Highscores {
     private static var _data:HighscoreData;
     
