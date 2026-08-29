@@ -39,15 +39,15 @@ class FBSpriteParent extends FBSprite {
     public function remove(child:FBSprite):Void
         children.remove(child);
 
-	public function forEach(func:FBSprite->Void, ?recurse = false)
+    public function forEach(func:FBSprite->Void, ?recurse = false)
         children.forEach(func, recurse);
 
-	public function forEachAlive(func:FBSprite->Void, ?recurse = false)
+    public function forEachAlive(func:FBSprite->Void, ?recurse = false)
         children.forEachAlive(func, recurse);
 
-	public function forEachDead(func:FBSprite->Void, ?recurse = false)
+    public function forEachDead(func:FBSprite->Void, ?recurse = false)
         children.forEachDead(func, recurse);
 
-	public function forEachExists(func:FBSprite->Void, ?recurse:Bool = false)
+    public function forEachExists(func:FBSprite->Void, ?recurse:Bool = false)
         children.forEachExists(func, recurse);
 }
