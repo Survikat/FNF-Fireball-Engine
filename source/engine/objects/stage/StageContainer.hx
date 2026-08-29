@@ -1,10 +1,11 @@
 package engine.objects.stage;
 
+import engine.objects.stage.elements.StageElement;
 import flixel.group.FlxContainer;
 import flixel.group.FlxGroup;
 import flixel.group.FlxSpriteContainer.FlxTypedSpriteContainer;
 
-final class StageContainer extends FlxContainer {
+class StageContainer extends FlxContainer {
     public var characterLayer:FlxGroup;
     public var dancerLayer:FlxGroup; // Background Dancers / Girlfriend
 

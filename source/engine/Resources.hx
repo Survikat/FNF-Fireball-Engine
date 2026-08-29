@@ -15,61 +15,60 @@ using StringTools;
 
 final class Resources {
     private static final _defResourceDirs:Array<String> = ["assets", "resources"];
-    
     private static var _modResourceDirectories:Array<String> = [];
-    private static var _resourceDirectories:Array<String> = _defResourceDirs.copy();
+
+    public static var resourceDirectories(get, never):Array<String>;
+    public static function get_resourceDirectories():Array<String> {
+        var resDirs:Array<String> = [];
+
+        for (mod in _modResourceDirectories)
+            resDirs.push(mod);
+        for (def in _defResourceDirs)
+            resDirs.push(def);
+
+        return resDirs;
+    }
 
     /**
      * Adds a resource directory.
      * @param path Path of directory.
      */
     public static function addDir(path:String):Void {
-        _resourceDirectories = _modResourceDirectories.copy();
-
-        if (!_resourceDirectories.contains(path)) {
-            _resourceDirectories.push(path);
-        }
-        
-        // Put default directories last in the list
-        for (dir in _defResourceDirs)
-            _resourceDirectories.push(dir);
+        _modResourceDirectories.push(path);
     }
 
     /**
      * Removes a resource directory.
      * @param path Path of directory.
      */
-    public static function delDir(path:String):Void {
-        if (_defResourceDirs.contains(path)) {
-            trace('Cannot remove default resource directory.');
-            return;
-        }
-
-        if (_modResourceDirectories.contains(path))
-            _modResourceDirectories.remove(path);
-
-        _resourceDirectories.remove(path);
+    public static function rmvDir(path:String):Void {
+        _modResourceDirectories.remove(path);
     }
 
     /**
-     * Set the default resource directory (first directory to check).
-     * @param path Path of directory.
-     */
-    public static function setDefault(path:String):Void {
-        if (!_resourceDirectories.contains(path)) {
-            trace('Directory is not defined, cannot set as default.');
+     * Sets a default resource directory by swapping.
+     * @param path 
+    */
+    public static function defDir(path:String):Void {
+        if (!_modResourceDirectories.contains(path)) {
+            if (_defResourceDirs.contains(path)) {
+                trace("You can't set a default directory as the default path!");
+                return;
+            }
+
+            trace('Resource directory "$path" does not exist! Did you make sure to add it first?');
             return;
         }
 
-        var resIndex:Int = _resourceDirectories.indexOf(path);
-        var prevDefRes:String = _resourceDirectories[0];
+        final oldDefault:String = _modResourceDirectories[0];
+        final indexOfPath:Int = _modResourceDirectories.indexOf(path);
 
-        _resourceDirectories[0] = path;
-        _resourceDirectories[resIndex] = prevDefRes;
+        _modResourceDirectories[0] = path;
+        _modResourceDirectories[indexOfPath] = oldDefault;
     }
 
     public static function getContent(path:String):String { 
-        for (dir in _resourceDirectories) {
+        for (dir in resourceDirectories) {
             final finalPath:String = Path.normalize('$dir/$path');
 
             if (assetExists(finalPath)) {
@@ -81,7 +80,7 @@ final class Resources {
     }
 
     public static function getBinary(path:String):Bytes { 
-        for (dir in _resourceDirectories) {
+        for (dir in resourceDirectories) {
             final finalPath:String = Path.normalize('$dir/$path');
 
             if (assetExists(finalPath)) {
@@ -93,7 +92,7 @@ final class Resources {
     }
 
     public static function getSound(path:String):FlxSoundAsset {
-        for (dir in _resourceDirectories) {
+        for (dir in resourceDirectories) {
             final finalPath:String = Path.normalize('$dir/$path.ogg');
 
             if (assetExists(finalPath)) {
@@ -111,7 +110,7 @@ final class Resources {
     }
 
     public static function getGraphic(path:String):FlxGraphic {
-        for (dir in _resourceDirectories) {
+        for (dir in resourceDirectories) {
             final finalPath:String = Path.normalize('$dir/$path.png');
 
             if (assetExists(finalPath)) {
@@ -131,7 +130,7 @@ final class Resources {
     }
 
     public static function getPath(path:String):String {
-        for (dir in _resourceDirectories) {
+        for (dir in resourceDirectories) {
             final finalPath:String = Path.normalize('$dir/$path');
 
             if (assetExists(finalPath) || FileSystem.isDirectory(finalPath)) {

@@ -43,8 +43,7 @@ final class TestState extends MusicalState {
         add(_logo);
 
         _bf = new Character("boyfriend");
-        _bf.setGraphicSize(_bf.width * 0.7);
-        _bf.updateHitbox();
+        _bf.scaleSprite(_bf.width * 0.7);
         _bf.setPosition(FlxG.width - _bf.width, FlxG.height - _bf.height);
         add(_bf);
 
@@ -56,7 +55,7 @@ final class TestState extends MusicalState {
     override function update(elapsed:Float) {
         super.update(elapsed);
 
-        FlxG.timeScale = Math.max(song.pitch, 0.5);
+        FlxG.timeScale = Math.max(0.1, song.pitch);
 
         if (FlxG.keys.justPressed.SPACE) {
             Highscores.setSongScore('Test${Std.int(Math.random() * 1000)}', "normal", Std.int(Math.random() * 10000));
@@ -65,16 +64,8 @@ final class TestState extends MusicalState {
                 song.play();
             else
                 song.pause();
-        } else {
-            if (FlxG.keys.pressed.LEFT)
-                song.time -= 2.5 * FlxG.elapsed;
-            else if (FlxG.keys.pressed.RIGHT)
-                song.time += 2.5 * FlxG.elapsed;
 
-            if (FlxG.keys.pressed.UP)
-                song.pitch = Math.max(FlxMath.roundDecimal(song.pitch + (1 * FlxG.elapsed), 2), 0.5);
-            else if (FlxG.keys.pressed.DOWN)
-                song.pitch = Math.max(FlxMath.roundDecimal(song.pitch - (1 * FlxG.elapsed), 2), 0.5);
+            _bf.play("cheer");
         }
 
         final elapsedLerp:Float = FlxMath.getElapsedLerp(0.4, elapsed);
@@ -87,8 +78,17 @@ final class TestState extends MusicalState {
         'curBar: ${song.curBar}\n' +
         'curBeat: ${song.curBeat}\n' +
         'curStep: ${song.curStep}\n\n' +
-        '${song.timeSignature.numerator}/${song.timeSignature.denominator} @ ${song.bpm}BPM\n' +
-        'Pitch: ${song.pitch}.';
+        '${song.timeSignature.numerator}/${song.timeSignature.denominator} @ ${song.bpm}BPM';
+
+        if (FlxG.keys.justPressed.LEFT) {
+            _bf.play("singLEFT");
+        } else if (FlxG.keys.justPressed.DOWN) {
+            _bf.play("singDOWN");
+        } else if (FlxG.keys.justPressed.UP) {
+            _bf.play("singUP");
+        } else if (FlxG.keys.justPressed.RIGHT) {
+            _bf.play("singRIGHT");
+        }
     }
 
 	override public function stepHit(step:Int):Void {
@@ -101,7 +101,8 @@ final class TestState extends MusicalState {
         _logo.scale.set(_logoBaseScale + 0.15, _logoBaseScale + 0.15);
         _logo.centerOrigin();
 
-        _bf.dance();
+        if (_bf.anim.finished)
+            _bf.dance();
     }
 
     private var _flipDir:Float = 1;

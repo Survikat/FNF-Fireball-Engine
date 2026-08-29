@@ -1,0 +1,52 @@
+{
+    "path": "bf",
+    "atlasType": "SPRITEMAP",
+    "animations": [
+        {
+            "name": "idle",
+            "symbol": "BF idle dance"
+        },
+        {
+            "name": "singLEFT",
+            "symbol": "BF NOTE LEFT",
+            "offsets": [150, 150]
+        },
+        {
+            "name": "singLEFTmiss",
+            "symbol": "BF NOTE LEFT MISS"
+        },
+        {
+            "name": "singRIGHT",
+            "symbol": "BF NOTE RIGHT"
+        },
+        {
+            "name": "singRIGHTmiss",
+            "symbol": "BF NOTE RIGHT MISS"
+        },
+        {
+            "name": "singUP",
+            "symbol": "BF NOTE UP"
+        },
+        {
+            "name": "singUPmiss",
+            "symbol": "BF NOTE UP MISS"
+        },
+        {
+            "name": "singDOWN",
+            "symbol": "BF NOTE DOWN"
+        },
+        {
+            "name": "singDOWNmiss",
+            "symbol": "BF NOTE DOWN MISS"
+        },
+        {
+            "name": "cheer",
+            "symbol": "Boyfriend YEAH cheer"
+        },
+        {
+            "name": "scared",
+            "symbol": "BF idle shaking"
+        }
+    ],
+    "flip": false
+}
