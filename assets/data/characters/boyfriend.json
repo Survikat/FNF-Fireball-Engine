@@ -9,7 +9,7 @@
         {
             "name": "singLEFT",
             "symbol": "BF NOTE LEFT",
-            "offsets": [150, 150]
+            "offsets": [50, 50]
         },
         {
             "name": "singLEFTmiss",
@@ -17,7 +17,8 @@
         },
         {
             "name": "singRIGHT",
-            "symbol": "BF NOTE RIGHT"
+            "symbol": "BF NOTE RIGHT",
+            "offsets": [150, 150]
         },
         {
             "name": "singRIGHTmiss",

@@ -13,8 +13,6 @@ class Character extends FBSprite {
     private var _character:String;
     private var _flip:Bool;
 
-    private var _offsets:Map<String, FlxPoint>;
-
     public var character(get, never):String;
     private function get_character():String
         return _character;
@@ -25,12 +23,10 @@ class Character extends FBSprite {
 
     public var danceType:DanceType;
 
-    override public function new(character:String, ?flip:Bool = false, ?worldX:Float = 0, ?worldY:Float = 0) {
+    override public function new(character:String, ?flip:Bool = false, ?x:Float = 0, ?y:Float = 0) {
         _flip = flip;
-        _offsets = new Map();
 
-        super(worldX, worldY);
-        useRenderTexture = true;
+        super(x, y);
 
         setCharacter(character);
     }
@@ -56,9 +52,13 @@ class Character extends FBSprite {
 
         switch (atlasType) {
             case SPARROW:
+                useRenderTexture = false;
+
                 final xmlPath:String = '$path.xml';
                 this.frames = FlxAtlasFrames.fromSparrow(Resources.getGraphic(path), Resources.getContent(xmlPath));
             case SPRITEMAP:
+                useRenderTexture = true;
+
                 this.frames = FlxAnimateFrames.fromAnimate(Resources.getPath(path));
         }
 
@@ -87,12 +87,12 @@ class Character extends FBSprite {
             var offsetX:Float = 0;
             var offsetY:Float = 0;
 
-            if (animData.offset != null) {
-                offsetX = animData.offset[0];
-                offsetY = animData.offset[1];
+            if (animData.offsets != null) {
+                offsetX = animData.offsets[0];
+                offsetY = animData.offsets[1];
             }
 
-            _offsets.set(animName, new FlxPoint(offsetX, offsetY));
+            animationOffsets.set(animName, new FlxPoint(offsetX, offsetY));
         }
 
         if (characterData.danceType == null)
@@ -110,24 +110,18 @@ class Character extends FBSprite {
         
         switch (animType) {
             case BOP:
-                this.play("idle");
+                playAnim("idle");
             case DANCE:
                 if (_lastDance == 0) {
-                    this.play("danceLeft");
+                    playAnim("danceLeft");
                     _lastDance = 1;
                 } else {
-                    this.play("danceRight");
+                    playAnim("danceRight");
                     _lastDance = 0;
                 }
             case CUSTOM:
                 // Lua junk.
         }
-    }
-
-    // I can't set the offsets using the build in `offsets` variable since FlxAnimate does some bullshit with it.
-    // Have to figure out how to implement later.
-    public function play(name:String, ?force:Bool = false):Void {
-        this.anim.play(name, force);
     }
 }
 
@@ -156,5 +150,5 @@ typedef AnimationData = {
     var symbol:String;
     var ?fps:Null<Int>;
     var ?loop:Bool;
-    var ?offset:Array<Int>;
+    var ?offsets:Array<Int>;
 }

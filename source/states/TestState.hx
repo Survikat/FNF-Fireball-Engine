@@ -65,7 +65,7 @@ final class TestState extends MusicalState {
             else
                 song.pause();
 
-            _bf.play("cheer");
+            _bf.playAnim("cheer");
         }
 
         final elapsedLerp:Float = FlxMath.getElapsedLerp(0.4, elapsed);
@@ -81,13 +81,13 @@ final class TestState extends MusicalState {
         '${song.timeSignature.numerator}/${song.timeSignature.denominator} @ ${song.bpm}BPM';
 
         if (FlxG.keys.justPressed.LEFT) {
-            _bf.play("singLEFT");
+            _bf.playAnim("singLEFT");
         } else if (FlxG.keys.justPressed.DOWN) {
-            _bf.play("singDOWN");
+            _bf.playAnim("singDOWN");
         } else if (FlxG.keys.justPressed.UP) {
-            _bf.play("singUP");
+            _bf.playAnim("singUP");
         } else if (FlxG.keys.justPressed.RIGHT) {
-            _bf.play("singRIGHT");
+            _bf.playAnim("singRIGHT");
         }
     }
 
