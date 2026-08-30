@@ -1,6 +1,7 @@
 package;
 
 import engine.Logger;
+import engine.Resources;
 import engine.save.Highscores;
 import engine.save.Save;
 import flixel.FlxG;
@@ -10,11 +11,13 @@ import lime.utils.Assets;
 import openfl.display.Sprite;
 import states.SetupState;
 import states.TestState;
+import sys.FileSystem;
 
 class Main extends Sprite
 {
-	private static var startFullscreen:Bool = false;
-	private static var startFramerate:Int = 60;
+    private static var _startWidth:Int = 0;
+    private static var _startHeight:Int = 0;
+	private static var _startFramerate:Int = 60;
 
 	/* ENGINE INFO */
 	public static final engineName:String = "Friday Night Funkin' Fireball Engine";
@@ -40,12 +43,12 @@ class Main extends Sprite
 					switch (fArg.toLowerCase()) {
 						default:
 							trace('$fArg is an invalid argument!');
-						case 'reset':
-							InitState.shouldResetSave = true;
-						case 'fullscreen':
-							startFullscreen = true;
 						case 'fps':
-							startFramerate = Std.int(Math.min(1000, Math.max(30, Std.parseInt(args[i + 1]))));
+							_startFramerate = Std.int(Math.min(1000, Math.max(30, Std.parseInt(args[i + 1]))));
+                        case 'width':
+                            _startWidth = Std.int(Math.max(1280, Std.parseInt(args[i + 1])));
+                        case 'height':
+                            _startHeight = Std.int(Math.max(720, Std.parseInt(args[i + 1])));
 					}
 				}
 			}
@@ -54,26 +57,14 @@ class Main extends Sprite
 		}
 		#end
 
-		addChild(new FlxGame(0, 0, InitState, startFramerate, startFramerate, true, startFullscreen));
+		addChild(new FlxGame(_startWidth, _startHeight, InitState, _startFramerate, _startFramerate, true));
 	}
 }
 
 final class InitState extends FlxState {
-	public static var shouldResetSave:Bool = false;
-
 	override public function create():Void {
 		Assets.cache.enabled = true;
 		FlxG.autoPause = false;
-
-		if (shouldResetSave) {
-			trace('Resetting Save Data');
-
-			Save.erase();
-			Save.flush();
-
-			// In the event `FlxG.resetGame()` is called.
-			shouldResetSave = false;
-		}
 
 		Highscores.init();
 
@@ -81,7 +72,7 @@ final class InitState extends FlxState {
 		api.DiscordAPI.Init();
 		#end
 
-		if (Save.getBool("initialized") && Save.getInt("resourceVersion") == Main.resourceVersion) {
+		if (FileSystem.isDirectory("resources") && Save.getInt("resourceVersion") == Main.resourceVersion) {
 			FlxG.switchState(() -> new TestState());
 		} else {
 			FlxG.switchState(() -> new SetupState());

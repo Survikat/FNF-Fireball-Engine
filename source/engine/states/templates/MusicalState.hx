@@ -1,9 +1,9 @@
-package engine.states;
+package engine.states.templates;
 
 import engine.music.SongManager;
 import flixel.FlxState;
 
-class MusicalState extends FlxState {
+class MusicalState extends FBState {
 	public var song:SongManager;
 
     public function new (?song:SongManager = null) {

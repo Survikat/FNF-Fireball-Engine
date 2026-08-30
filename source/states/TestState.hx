@@ -2,9 +2,10 @@ package states;
 
 import engine.GameManager;
 import engine.Resources;
+import engine.objects.FBSprite;
 import engine.objects.characters.Character;
 import engine.save.Highscores;
-import engine.states.MusicalState;
+import engine.states.templates.MusicalState;
 import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.math.FlxMath;
@@ -29,13 +30,14 @@ final class TestState extends MusicalState {
 		song.play();
         song.looped = true;
 
-        var bg:FlxSprite = new FlxSprite().loadGraphic(Resources.getGraphic("images/menuDesat"));
+        var bg:FBSprite = new FBSprite(0, 0, Resources.getGraphic("images/menuDesat"));
+        bg.scaleSprite(FlxG.width, FlxG.height);
         bg.antialiasing = true;
         bg.color = FlxColor.ORANGE;
         bg.alpha = 0.4;
         add(bg);
 
-        _logo = new FlxSprite().loadGraphic(Resources.getGraphic("images/logo"));
+        _logo = new FBSprite().loadGraphic(Resources.getGraphic("images/logo"));
         _logo.antialiasing = true;
         _logo.updateHitbox();
         _logo.centerOrigin();

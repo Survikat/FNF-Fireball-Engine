@@ -2,8 +2,9 @@ package states;
 
 import engine.Resources;
 import engine.save.Save;
-import engine.states.TemplateState;
+import engine.states.FBState;
 import flixel.FlxG;
+import flixel.FlxState;
 import flixel.text.FlxText;
 import flixel.ui.FlxSpriteButton;
 import flixel.util.FlxColor;
@@ -15,7 +16,7 @@ import sys.io.File;
 
 using StringTools;
 
-final class SetupState extends TemplateState {
+final class SetupState extends FBState {
 	private var _fileExplorerButt:FlxSpriteButton;
 	private var _textNotice:FlxText;
 
