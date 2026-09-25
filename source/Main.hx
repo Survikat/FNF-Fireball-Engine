@@ -1,9 +1,9 @@
 package;
 
-import engine.Logger;
 import engine.Resources;
 import engine.save.Highscores;
 import engine.save.Save;
+import engine.util.Logger;
 import flixel.FlxG;
 import flixel.FlxGame;
 import flixel.FlxState;
@@ -11,6 +11,7 @@ import lime.utils.Assets;
 import openfl.display.Sprite;
 import states.SetupState;
 import states.TestState;
+import states.game.PlayState;
 import sys.FileSystem;
 
 class Main extends Sprite
@@ -73,7 +74,7 @@ final class InitState extends FlxState {
 		#end
 
 		if (FileSystem.isDirectory("resources") && Save.getInt("resourceVersion") == Main.resourceVersion) {
-			FlxG.switchState(() -> new TestState());
+			FlxG.switchState(() -> new PlayState());
 		} else {
 			FlxG.switchState(() -> new SetupState());
 		}

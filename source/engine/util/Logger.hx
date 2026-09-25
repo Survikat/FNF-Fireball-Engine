@@ -1,9 +1,8 @@
-package engine;
+package engine.util;
 
 import flixel.FlxG;
 import haxe.Log;
 import haxe.Timer;
-import openfl.Lib;
 import sys.FileSystem;
 import sys.io.File;
 
@@ -45,10 +44,14 @@ final class Logger {
                 if (_changes.length > 0) {
                     final changes:Array<String> = _changes.copy();
 
-                    try {
-                        content = File.getContent(_path);
-                    } catch (e:Dynamic) {
-                        Sys.println('Failed to get previous log! ($e).');
+                    if (FileSystem.exists(_path)) {
+                        try {
+                            content = File.getContent(_path);
+                        } catch (e:Dynamic) {
+                            Sys.println('Failed to get previous log! ($e).');
+                        }
+                    } else {
+                        content = "Failed to get previous log, previous content does not exist.\n\n";
                     }
 
                     for (change in changes) {

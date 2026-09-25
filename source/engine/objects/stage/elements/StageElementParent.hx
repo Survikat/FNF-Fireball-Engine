@@ -30,10 +30,13 @@ class StageElementParent extends StageElement {
             children.update(elapsed);
     }
 
-    public function add(child:StageElement):Void
+    public function add(child:StageElement):Void {
         children.add(child);
-    public function remove(child:StageElement):Void
+    }
+        
+    public function remove(child:StageElement):Void {
         children.remove(child);
+    }
 
     override public function onBar(bar:Int):Void {
         forEachAlive((element) -> {
@@ -53,15 +56,19 @@ class StageElementParent extends StageElement {
         });
     }
 
-	public function forEach(func:StageElement->Void, ?recurse = false)
+	public function forEach(func:StageElement->Void, ?recurse = false):Void {
         children.forEach(func, recurse);
+    }
 
-	public function forEachAlive(func:StageElement->Void, ?recurse = false)
+	public function forEachAlive(func:StageElement->Void, ?recurse = false):Void {
         children.forEachAlive(func, recurse);
+    }
 
-	public function forEachDead(func:StageElement->Void, ?recurse = false)
+	public function forEachDead(func:StageElement->Void, ?recurse = false):Void {
         children.forEachDead(func, recurse);
+    }
 
-	public function forEachExists(func:StageElement->Void, ?recurse:Bool = false)
+	public function forEachExists(func:StageElement->Void, ?recurse:Bool = false):Void {
         children.forEachExists(func, recurse);
+    }
 }

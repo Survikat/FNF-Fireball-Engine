@@ -85,8 +85,6 @@ final class SongManager extends FlxBasic {
     public var curBar(get, never):Int;
     public var curBeat(get, never):Int;
     public var curStep(get, never):Int;
-
-    private var _playing:Bool = false;
     
     private var _bpm:Float;
     private var _timeSignature:TimeSignature;
@@ -115,17 +113,17 @@ final class SongManager extends FlxBasic {
         _beatDuration = 0;
         
         _curBar = new Reactive<Int>({
-            initialValue: 0,
+            initialValue: -1,
             callback: onBar.dispatch
         });
 
         _curBeat = new Reactive<Int>({
-            initialValue: 0,
+            initialValue: -1,
             callback: onBeat.dispatch
         });
 
         _curStep = new Reactive<Int>({
-            initialValue: 0,
+            initialValue: -1,
             callback: onStep.dispatch
         });
     }
@@ -180,6 +178,23 @@ final class SongManager extends FlxBasic {
         _currentTimingPoint = _beatMap[0];
     }
 
+    override public function kill():Void {
+        for (track in _tracks.sounds) {
+            track.stop();
+            track.kill();
+        }
+
+        super.kill();
+    }
+
+    override public function revive():Void {
+        for (track in _tracks.sounds) {
+            track.revive();
+        }
+
+        super.revive();
+    }
+
     override public function destroy():Void {
         onBar.removeAll();
         onBar = null;
@@ -197,6 +212,7 @@ final class SongManager extends FlxBasic {
             track.destroy();
         }
 
+        clear();
         super.destroy();
     }
 
@@ -218,14 +234,15 @@ final class SongManager extends FlxBasic {
                 track.pitch = mainTrack.pitch;
                 track.looped = mainTrack.looped;
 
-                if (!track.playing && _playing)
+                if (!track.playing && playing)
                     track.play();
-                else if (track.playing && !_playing)
+                else if (track.playing && !playing)
                     track.pause();
 
                 track.update(elapsed);
 
-                if (Math.abs(track.time - mainTrack.time) > 20) {
+                if (playing && Math.abs(track.time - mainTrack.time) >= 20) {
+                    FlxG.log.warn('Track is off-sync! (${Math.abs(track.time - mainTrack.time)}ms)');
                     track.time = mainTrack.time;
                 }
             }
@@ -247,6 +264,10 @@ final class SongManager extends FlxBasic {
         _curBeat.value = Math.floor(_currentTimingPoint.prevBeats + (sectionTime / _beatDuration));
         _curStep.value = Math.floor((_currentTimingPoint.prevBeats * 4) + (sectionTime / (_beatDuration / 4)));
         _curBar.value = Math.floor(_currentTimingPoint.prevBars + (sectionTime / _barDuration));
+
+        FlxG.watch.addQuick("curBar", curBar);
+        FlxG.watch.addQuick("curBeat", curBeat);
+        FlxG.watch.addQuick("curStep", curStep);
     }
 
     /**
@@ -280,14 +301,17 @@ final class SongManager extends FlxBasic {
         _tracks.remove(track);
     }
 
-    private function get_playing():Bool
-        return _playing;
+    private function get_playing():Bool {
+        if (_tracks != null && _tracks.sounds[0] != null) {
+            return _tracks.sounds[0].playing;
+        }
+
+        return false;
+    }
 
     public function play():Void {
         if (_tracks == null || _tracks.sounds[0] == null)
             throw new haxe.exceptions.ArgumentException("Track is null!");
-
-        _playing = true;
 
         for (track in _tracks.sounds)
             track.play();
@@ -297,15 +321,11 @@ final class SongManager extends FlxBasic {
         if (_tracks == null || _tracks.sounds[0] == null)
             throw new haxe.exceptions.ArgumentException("Track is null!");
 
-        _playing = false;
-
         for (track in _tracks.sounds)
             track.pause();
     }
 
     public function clear():Void {
-        _playing = false;
-
         for (track in _tracks.sounds){
             track.stop();
 

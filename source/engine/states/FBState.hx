@@ -1,6 +1,7 @@
 package engine.states;
 
 import flixel.FlxG;
+import flixel.FlxSprite;
 import flixel.addons.transition.FlxTransitionSprite.GraphicTransTileDiamond;
 import flixel.addons.transition.FlxTransitionableState;
 import flixel.addons.transition.TransitionData;
@@ -11,6 +12,8 @@ import flixel.math.FlxRect;
 import flixel.util.FlxColor;
 
 class FBState extends FlxUIState {
+    public var paused:Bool = false;
+
     override public function new() {
         if (FlxTransitionableState.defaultTransIn == null || FlxTransitionableState.defaultTransOut == null) {
             final diamond:FlxGraphic = FlxGraphic.fromClass(GraphicTransTileDiamond);
@@ -32,5 +35,18 @@ class FBState extends FlxUIState {
         transOut = FlxTransitionableState.defaultTransOut;
 
         super();
+
+        persistentUpdate = true;
     }
+
+    override public function update(elapsed:Float):Void {
+        if (paused) {
+            pausedUpdate(elapsed);
+            return;
+        }
+
+        super.update(elapsed);
+    }
+
+    public function pausedUpdate(elapsed:Float):Void {}
 }

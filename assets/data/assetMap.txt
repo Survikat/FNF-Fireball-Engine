@@ -1,3 +1,5 @@
+# Asset Map V1 - 9/19/26
+
 # Boyfriend Character Files
 "assets/shared/images/characters/bf/"->"resources/images/characters/bf/"
 "assets/shared/images/characters/bf-death/"->"resources/images/characters/bf-death/"
@@ -15,20 +17,32 @@
 "assets/images/menuDesat.png"->"resources/images/menuDesat.png"
 
 # In-game UI Assets
-"assets/shared/images/ui/countdown/"->"resources/images/countdown/"
+"assets/shared/images/ui/countdown/funkin"->"resources/images/countdown/default"
+"assets/shared/images/ui/countdown/pixel"->"resources/images/countdown/pixel"
 "assets/shared/images/healthBar.png"->"resources/images/healthBar.png"
 
-# Note Assets
+# Note Assets (default)
 "assets/shared/images/noteStrumline.png"->"resources/images/noteStrumline.png"
 "assets/shared/images/noteStrumline.xml"->"resources/images/noteStrumline.xml"
 "assets/shared/images/notes.png"->"resources/images/notes.png"
 "assets/shared/images/notes.xml"->"resources/images/notes.xml"
 "assets/shared/images/NOTE_hold_assets.png"->"resources/images/NOTE_hold_assets.png"
-"assets/shared/images/holdCoverBlue.png"->"resources/images/holdCoverBlue.png"
-"assets/shared/images/holdCoverBlue.xml"->"resources/images/holdCoverBlue.xml"
-"assets/shared/images/holdCoverRed.png"->"resources/images/holdCoverRed.png"
-"assets/shared/images/holdCoverRed.xml"->"resources/images/holdCoverRed.xml"
-"assets/shared/images/holdCoverGreen.png"->"resources/images/holdCoverGreen.png"
-"assets/shared/images/holdCoverGreen.xml"->"resources/images/holdCoverGreen.xml"
-"assets/shared/images/holdCoverPurple.png"->"resources/images/holdCoverPurple.png"
-"assets/shared/images/holdCoverPurple.xml"->"resources/images/holdCoverPurple.xml"
+# "assets/shared/images/holdCoverBlue.png"->"resources/images/holdCoverBlue.png"
+# "assets/shared/images/holdCoverBlue.xml"->"resources/images/holdCoverBlue.xml"
+# "assets/shared/images/holdCoverRed.png"->"resources/images/holdCoverRed.png"
+# "assets/shared/images/holdCoverRed.xml"->"resources/images/holdCoverRed.xml"
+# "assets/shared/images/holdCoverGreen.png"->"resources/images/holdCoverGreen.png"
+# "assets/shared/images/holdCoverGreen.xml"->"resources/images/holdCoverGreen.xml"
+# "assets/shared/images/holdCoverPurple.png"->"resources/images/holdCoverPurple.png"
+# "assets/shared/images/holdCoverPurple.xml"->"resources/images/holdCoverPurple.xml"
+"assets/shared/images/noteSplashes.png"->"resources/images/noteSplashes.png"
+"assets/shared/images/noteSplashes.xml"->"resources/images/noteSplashes.xml"
+
+# Note Assets (pixel)
+"assets/week6/images/weeb/pixelUI/arrows-pixels.png"->"resources/images/pixel/arrows-pixel.png"
+"assets/week6/images/weeb/pixelUI/arrows-pixels.xml"->"resources/images/pixel/arrows-pixel.xml"
+"assets/week6/images/weeb/pixelUI/arrowEndsNew.png"->"resources/images/pixel/arrowEndsNew.png"
+# "assets/week6/images/pixelNoteHoldCover.png"->"resources/images/pixel/pixelNoteHoldCover.png"
+# "assets/week6/images/pixelNoteHoldCover.xml"->"resources/images/pixel/pixelNoteHoldCover.xml"
+"assets/week6/images/pixelNoteSplash.png"->"resources/images/pixel/pixelNoteSplash.png"
+"assets/week6/images/pixelNoteSplash.xml"->"resources/images/pixel/pixelNoteSplash.xml"

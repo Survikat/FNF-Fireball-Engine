@@ -41,15 +41,16 @@ final class Resources {
      * Removes a resource directory.
      * @param path Path of directory.
      */
-    public static function rmvDir(path:String):Void {
+    public static function removeDir(path:String):Void {
         _modResourceDirectories.remove(path);
+        Assets.cache.clear(path);
     }
 
     /**
      * Sets a default resource directory by swapping.
      * @param path 
     */
-    public static function defDir(path:String):Void {
+    public static function setDefaultDir(path:String):Void {
         if (!_modResourceDirectories.contains(path)) {
             if (_defResourceDirs.contains(path)) {
                 trace("You can't set a default directory as the default path!");

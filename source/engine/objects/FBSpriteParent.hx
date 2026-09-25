@@ -9,13 +9,14 @@ import flixel.group.FlxGroup.FlxTypedGroup;
  * Allows for the ability to make groups within elements that can strictly only hold an FBSprite.
  * 
  * FBSpriteParent's do not drastically control or manipulate the children contained within it,
- * it will only affect whether or not the children are visible or active, as well as what it renders to.
+ * it will only affect whether or not the children are alive, visible, or active, as well as what it renders to.
  */
 class FBSpriteParent extends FBSprite {
     public var children:FlxTypedGroup<FBSprite>;
 
-    override public function new(?maxSize:Int = 0, ?x:Float = 0, ?y:Float = 0, ?graphic:FlxGraphic, settings:FlxAnimateSettings) {
+    override public function new(?maxSize:Int = 0, ?x:Float = 0, ?y:Float = 0, ?graphic:FlxGraphic, ?settings:FlxAnimateSettings) {
         super(x, y, graphic, settings);
+        
         children = new FlxTypedGroup(maxSize);
     }
 
@@ -34,20 +35,42 @@ class FBSpriteParent extends FBSprite {
             children.update(elapsed);
     }
 
-    public function add(child:FBSprite):Void
+    override public function kill():Void {
+        children.kill();
+        super.kill();
+    }
+
+    override public function revive():Void {
+        children.revive();
+        super.revive();
+    }
+
+    override public function destroy():Void {
+        children.destroy();
+        super.destroy();
+    }
+
+    public function add(child:FBSprite):Void {
         children.add(child);
-    public function remove(child:FBSprite):Void
+    }
+
+    public function remove(child:FBSprite):Void {
         children.remove(child);
+    }
 
-    public function forEach(func:FBSprite->Void, ?recurse = false)
+    public function forEach(func:FBSprite->Void, ?recurse = false):Void {
         children.forEach(func, recurse);
+    }
 
-    public function forEachAlive(func:FBSprite->Void, ?recurse = false)
+    public function forEachAlive(func:FBSprite->Void, ?recurse = false):Void {
         children.forEachAlive(func, recurse);
+    }
 
-    public function forEachDead(func:FBSprite->Void, ?recurse = false)
+    public function forEachDead(func:FBSprite->Void, ?recurse = false) {
         children.forEachDead(func, recurse);
+    }
 
-    public function forEachExists(func:FBSprite->Void, ?recurse:Bool = false)
+    public function forEachExists(func:FBSprite->Void, ?recurse:Bool = false) {
         children.forEachExists(func, recurse);
+    }
 }

@@ -2,6 +2,7 @@ package engine.objects.characters;
 
 import animate.FlxAnimate;
 import animate.FlxAnimateFrames;
+import engine.InternalDefs;
 import flixel.graphics.frames.FlxAtlasFrames;
 import flixel.math.FlxPoint;
 import haxe.Json;
@@ -23,9 +24,7 @@ class Character extends FBSprite {
 
     public var danceType:DanceType;
 
-    override public function new(character:String, ?flip:Bool = false, ?x:Float = 0, ?y:Float = 0) {
-        _flip = flip;
-
+    override public function new(character:String, ?x:Float = 0, ?y:Float = 0) {
         super(x, y);
 
         setCharacter(character);
@@ -95,6 +94,9 @@ class Character extends FBSprite {
             animationOffsets.set(animName, new FlxPoint(offsetX, offsetY));
         }
 
+        if (characterData.scale != null || characterData.scale != 1)
+            scaleSprite(characterData.scale);
+
         if (characterData.danceType == null)
             this.danceType = BOP;
         else
@@ -131,11 +133,6 @@ enum DanceType {
     CUSTOM;
 }
 
-enum AtlasType {
-    SPRITEMAP;
-    SPARROW;
-}
-
 typedef CharacterJson = {
     var path:String; // Starts in `images/characters`
     var atlasType:String;
@@ -143,12 +140,5 @@ typedef CharacterJson = {
     var animations:Array<AnimationData>;
     var ?danceType:DanceType;
     var ?flip:Bool;
-}
-
-typedef AnimationData = {
-    var name:String;
-    var symbol:String;
-    var ?fps:Null<Int>;
-    var ?loop:Bool;
-    var ?offsets:Array<Int>;
+    var ?scale:Float;
 }

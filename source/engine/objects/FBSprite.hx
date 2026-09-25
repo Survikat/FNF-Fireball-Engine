@@ -21,14 +21,8 @@ class FBSprite extends FlxAnimate {
 
     // We have to handle offsets like this because FlxAnimate does some shenanigans with it.
     public function playAnim(name:String, ?force:Bool = false, ?reversed:Bool = false, ?frame:Int = 0):Void {
-        if (anim.curAnim != null) {
-            var prevOffset:FlxPoint;
-
-            if (animationOffsets.exists(anim.curAnim.name)) {
-                prevOffset = animationOffsets.get(anim.curAnim.name);
-            } else {
-                prevOffset = new FlxPoint();
-            }
+        if (anim.curAnim != null && animationOffsets.exists(anim.curAnim.name)) {
+            var prevOffset:FlxPoint = animationOffsets.get(anim.curAnim.name);
 
             offset.x -= prevOffset.x;
             offset.y -= prevOffset.y;
