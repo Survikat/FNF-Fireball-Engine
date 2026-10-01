@@ -12,5 +12,5 @@ typedef NoteStyleMeta = {
     var strumline:AnimatedGraphicProperties;
     var splashes:AnimatedGraphicProperties;
     var arrows:AnimatedGraphicProperties;
-    var strums:StandardGraphicProperties;
+    var sustain:StandardGraphicProperties;
 }

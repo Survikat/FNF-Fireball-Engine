@@ -21,8 +21,6 @@ class StageContainer extends FlxContainer {
 
         characterLayer = new FlxGroup();
 
-        // Build stage here
-
         add(_bgStageLayer);
         add(dancerLayer);
         add(_mgStageLayer);

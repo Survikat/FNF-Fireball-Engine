@@ -17,6 +17,9 @@ Fireball Engine is not affiliated with "The Funkin' Crew Inc." or "Friday Night 
 
 **Zero code or assets were made with Generative AI, yuck.**
 
+### License
+Two seperate licenses are contained in this repository. The source code without its assets fall under the [Apache 2.0 License](LICENSE), but the resources contained in `assets` fall under a seperate license located [here](assets/LICENSE). Resources contained in `content` fall under the same [asset license](assets/LICENSE).
+
 ## How to build
 Install Haxe 4.3.7, and follow the [HaxeFlixel Install Guide](https://haxeflixel.com/documentation/install-haxeflixel/). Then, run the following commands to install all the necessary libraries:
 

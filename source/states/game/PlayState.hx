@@ -4,6 +4,7 @@ import engine.GameManager;
 import engine.Resources;
 import engine.objects.FBSprite;
 import engine.objects.characters.Character;
+import engine.objects.ui.Strumline;
 import engine.states.templates.MusicalState;
 import flixel.FlxCamera;
 import flixel.FlxG;
@@ -28,6 +29,8 @@ final class PlayState extends MusicalState {
     private var _dancer:Character;
     private var _opponent:Character;
 
+    private var _strumLine:Strumline;
+
     override public function create():Void {
         _gameCam = new FlxCamera(FlxG.width - _res.x, FlxG.height - _res.y, Std.int(_res.x), Std.int(_res.y));
 
@@ -39,8 +42,8 @@ final class PlayState extends MusicalState {
 
         super.create();
 
-        final instOnly:Bool = true;
-        final tracks = GameManager.playMusic(song, "Beat", instOnly);
+        final instOnly:Bool = false;
+        final tracks = GameManager.playMusic(song, "Fireyo", instOnly);
 
         _inst = tracks.get(Instrumental);
 
@@ -74,6 +77,10 @@ final class PlayState extends MusicalState {
         add(_opponent);
         add(_dancer);
         add(_player);
+
+        _strumLine = new Strumline();
+        _strumLine.screenCenter(X);
+        add(_strumLine);
 
         song.play();
     }

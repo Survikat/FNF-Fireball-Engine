@@ -205,14 +205,8 @@ final class SongManager extends FlxBasic {
         onStep.removeAll();
         onStep = null;
 
-        for (track in _tracks.sounds){
-            track.stop();
-
-            track.kill();
-            track.destroy();
-        }
-
         clear();
+        
         super.destroy();
     }
 
