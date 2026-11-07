@@ -1,3 +1,10 @@
+## Notice
+Please refer to `README.md` and `assets/LICENSE` documents for a full understanding and idea of the projects licensing, as some assets (data located in `assets`, `content`, as well as other directories) may not fall under the Apache 2.0 license. This does not affect the actual source code itself, as that is still under the Apache 2.0 license.
+
+In short, **code is licensed under the Apache 2.0 License. Assets may be under a seperate license**.
+
+## Apache 2.0 License
+
                                  Apache License
                            Version 2.0, January 2004
                         http://www.apache.org/licenses/
