@@ -1,20 +1,19 @@
 package api;
 
-import haxe.Timer;
-
 #if desktop
+import haxe.Timer;
 import hxdiscord_rpc.Discord;
 import hxdiscord_rpc.Types;
 
 final class DiscordAPI {
-    public static function Init():Void {
+    public static function Init(appID:String):Void {
         final handlers:DiscordEventHandlers = new DiscordEventHandlers();
 
 		handlers.ready = cpp.Function.fromStaticFunction(onReady);
 		handlers.disconnected = cpp.Function.fromStaticFunction(onDisconnected);
 		handlers.errored = cpp.Function.fromStaticFunction(onError);
 
-		Discord.Initialize("1542526698166165654", cpp.RawPointer.addressOf(handlers), false, null);
+		Discord.Initialize(appID, cpp.RawPointer.addressOf(handlers), false, null);
 
 		var updateTimer:Timer = new Timer(500);
 		updateTimer.run = () -> {
@@ -32,12 +31,12 @@ final class DiscordAPI {
 
 	private static function onDisconnected(errorCode:Int, message:cpp.ConstCharStar):Void
 	{
-		trace('Disconnected ($errorCode:$message).');
+		trace('Discord RPC Disconnected ($errorCode:$message).');
 	}
 
 	private static function onError(errorCode:Int, message:cpp.ConstCharStar):Void
 	{
-		trace('Error ($errorCode:$message).');
+		trace('Discord RPC Error ($errorCode:$message).');
 	}
 
     public static function setPresence(state:String, details:String, largeImageKey:String, ?smallImageKey:String = ""):Void {

@@ -5,7 +5,7 @@
 
 ---
 
-This is the official Friday Night Funkin': Fireball Engine Repository. Fireball Engine is a barebones Friday Night Funkin' Modding Engine designed for easy to use soft-modding without containing the base game. Only avalible for Desktop (and maybe mobile) targets.
+This is the official "FNF: Fireball Engine" Repository. Fireball Engine is a barebones Friday Night Funkin' Modding Engine designed for easy to use soft-modding without containing the base game, only avalible for Desktop targets.
 
 Fireball Engine is in active development! Join our Discord Server [here](https://discord.gg/F2BXD23QWF).
 
@@ -13,12 +13,14 @@ Fireball Engine is in active development! Join our Discord Server [here](https:/
 I believed there should be a heavily advanced yet extremely easy to use FNF Engine, something optimized for multiple mods while being optimal for full control and creativity. No FNF Engines (that I'm aware of) implement this in a way that I'm happy with. My goal is to make an Engine that isn't clunky, and is easy to use immediately.
 
 ## Notice
-Fireball Engine is not affiliated with "The Funkin' Crew Inc." or "Friday Night Funkin'", and it requires the base game to run properly. No assets or source code from Friday Night Funkin' are used here.
+Fireball Engine is not affiliated with "The Funkin' Crew Inc." or "Friday Night Funkin'", but it des require "Friday Night Funkin'" to run properly. No assets or source code from the mentioned names are used here.
 
 **Zero code or assets were made with Generative AI, yuck.**
 
 ### License
-Two seperate licenses are contained in this repository. The source code without its assets fall under the [Apache 2.0 License](LICENSE), but the resources contained in `assets` fall under a seperate license located [here](assets/LICENSE). Resources contained in `content` fall under the same [asset license](assets/LICENSE).
+Two seperate licenses are contained in this repository. The source code without its assets fall under the [Apache 2.0 License](LICENSE), but the resources contained in `assets` fall under a seperate license located [here](assets/LICENSE). Other resources, like `content` and `mods/example`, may fall under the same [asset license](assets/LICENSE).
+
+To contribute to this project, you must have read, agreed to, and work with the [asset license](assets/LICENSE) as it affects you as a contributor.
 
 ## How to build
 Install Haxe 4.3.7, and follow the [HaxeFlixel Install Guide](https://haxeflixel.com/documentation/install-haxeflixel/). Then, run the following commands to install all the necessary libraries:

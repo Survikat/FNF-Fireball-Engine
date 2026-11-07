@@ -82,6 +82,7 @@ final class PlayState extends MusicalState {
         _strumLine.screenCenter(X);
         add(_strumLine);
 
+        song.continuous = true;
         song.play();
     }
 
@@ -118,5 +119,11 @@ final class PlayState extends MusicalState {
 
         _gameCam.zoom += 0.15;
         _hudCam.zoom += 0.05;
+
+        if (song.playing) {
+            trace("Shits still playing");
+        } else if (song.finished) {
+            trace("SHIT IS FINISHED");
+        }
     }
 }

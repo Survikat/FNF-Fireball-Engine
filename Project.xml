@@ -30,7 +30,9 @@
     <set name="BUILD_DIR" value="export/debug" if="debug"/>
 
 	<source path="source" />
-	<assets path="assets" />
+
+    <assets path="assets" embed="false"/>
+    <assets path="mods" embed="false" type="template"/>
 
 	<!-- _______________________________ Libraries ______________________________ -->
 
@@ -90,7 +92,5 @@
 
 	<!-- _________________________________ Custom _______________________________ -->
 
-	<!--Place custom nodes like icons here-->
-    
     <icon path="content/icons/fireball.svg"/>
 </project>

@@ -5,6 +5,7 @@ import flixel.FlxState;
 
 class MusicalState extends FBState {
 	public var song:SongManager;
+    public var songPositon:Float = 0;
 
     public function new (?song:SongManager = null) {
         this.song = song;
@@ -24,6 +25,10 @@ class MusicalState extends FBState {
 
 		add(song);
 	}
+
+    override public function update(elapsed:Float):Void {
+        super.update(elapsed);
+    }
 
 	public function barHit(bar:Int):Void {}
 	public function beatHit(beat:Int):Void {}

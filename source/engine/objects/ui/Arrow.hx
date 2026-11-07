@@ -3,8 +3,8 @@ package engine.objects.ui;
 import animate.FlxAnimateFrames;
 import engine.InternalDefs.AnimatedGraphicProperties;
 import engine.InternalDefs.AtlasType;
-import engine.visuals.Style.GameStyleMeta;
-import engine.visuals.Style.NoteStyleMeta;
+import engine.visuals.meta.Style.GameStyleMeta;
+import engine.visuals.meta.Style.NoteStyleMeta;
 import flixel.graphics.frames.FlxAtlasFrames;
 import flixel.math.FlxPoint;
 import haxe.io.Path;
@@ -16,6 +16,8 @@ enum ArrowType {
 }
 
 final class Arrow extends FBSprite {
+    public static final arrowWidth:Int = 150;
+
     private var _properties:AnimatedGraphicProperties;
     private var _arrowType:ArrowType;
 
@@ -30,9 +32,9 @@ final class Arrow extends FBSprite {
         _arrowType = type;
         switch (arrowType) {
             case STRUM:
-                _properties = style.strumline;
+                _properties = style.strums;
             case NOTE:
-                _properties = style.arrows;
+                _properties = style.notes;
             case SUSTAIN:
                 throw haxe.exceptions.NotImplementedException;
         }
@@ -51,6 +53,11 @@ final class Arrow extends FBSprite {
 
                 this.frames = FlxAnimateFrames.fromAnimate(Resources.getPath(path));
         }
+
+        if (properties.antialiasing == null)
+            this.antialiasing = true;
+        else
+            this.antialiasing = false;
 
         for (selAnim in properties.animations) {
             var fps:Int = 24;
@@ -73,6 +80,8 @@ final class Arrow extends FBSprite {
 
             animationOffsets.set(selAnim.name, new FlxPoint(offsets[0], offsets[1]));
         }
+
+        scaleSprite(Arrow.arrowWidth);
     }
 
     function get_properties():AnimatedGraphicProperties {

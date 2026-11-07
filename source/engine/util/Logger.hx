@@ -3,6 +3,7 @@ package engine.util;
 import flixel.FlxG;
 import haxe.Log;
 import haxe.Timer;
+import lime.system.System;
 import sys.FileSystem;
 import sys.io.File;
 
@@ -17,6 +18,7 @@ final class Logger {
     private static var _changes:Array<String> = [];
 
     public static function init():Void {
+        #if (target.threaded && desktop)
         FileSystem.createDirectory("logs");
         final date:Date = Date.now();
 
@@ -33,16 +35,15 @@ final class Logger {
         }
 
         _path = 'logs/$fileName';
-        File.saveContent(_path, '${Main.engineName} v${Main.version} - ${date.toString()}\n\n');
+        File.saveContent(_path, '${Main.engineName} v${Main.version} - ${System.platformName} (${System.platformVersion}) - ${date.toString()}\n\n');
 
-        #if (target.threaded)
         Thread.createWithEventLoop(() -> {
             var content:String = null;
 
             var saveTimer:Timer = new Timer(250);
             saveTimer.run = () -> {
                 if (_changes.length > 0) {
-                    final changes:Array<String> = _changes.copy();
+                    var changes:Array<String> = _changes.copy();
 
                     if (FileSystem.exists(_path)) {
                         try {
@@ -55,16 +56,14 @@ final class Logger {
                     }
 
                     for (change in changes) {
-                        #if debug
-                        Sys.println(change.trim());
-                        #end
-
                         content += change;
-                        _changes.shift();
+                        _changes.remove(change);
                     }
 
                     try { File.saveContent(_path, content); } catch(e:Dynamic) { Sys.println('Failed to save log ($e).'); }
+
                     content = null;
+                    changes = null;
                 }
             }
         });
@@ -80,14 +79,14 @@ final class Logger {
 
         final output:String = '${infos.fileName}:${infos.lineNumber}: $v\n';
 
-        #if !(target.threaded)
+        #if (!target.threaded && desktop)
         final oldContent:String = File.getContent(_path);
         File.saveContent(_path, oldContent + output);
         #else
         _changes.push(output);
         #end
 
-        #if (!(target.threaded) && debug)
+        #if (debug || !target.threaded)
         Sys.println(output.trim());
         #end
     }

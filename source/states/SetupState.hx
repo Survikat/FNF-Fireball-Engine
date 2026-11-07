@@ -6,9 +6,11 @@ import engine.states.FBState;
 import flixel.FlxG;
 import flixel.FlxState;
 import flixel.text.FlxText;
+import flixel.ui.FlxButton;
 import flixel.ui.FlxSpriteButton;
 import flixel.util.FlxColor;
 import haxe.io.Path;
+import lime.system.Clipboard;
 import lime.system.System;
 import lime.ui.FileDialog;
 import sys.FileSystem;
@@ -25,13 +27,9 @@ final class SetupState extends FBState {
     override public function create() {
 		super.create();
 
-		_dialog = new FileDialog();
+        this.camera.bgColor = FlxColor.GRAY;
 
-		#if debug
-		_dialog.onCancel.add(() -> {
-			trace('File selection dialog cancelled.');
-		});
-		#end
+		_dialog = new FileDialog();
 
 		_dialog.onSelect.add((path) -> {
 			var fixedPath:String = Path.removeTrailingSlashes(Path.normalize(path));
@@ -41,14 +39,10 @@ final class SetupState extends FBState {
 			final success:Bool = SetupHelper.copyAssets(fixedPath);
 
 			if (success) {
-				Save.set("initialized", true);
 				Save.set("resourceVersion", Main.resourceVersion);
-
 				FlxG.resetGame();
 			}
 		});
-
-		this.camera.bgColor = FlxColor.GRAY;
 
 		_fileExplorerButt = new FlxSpriteButton(0, 0, null, () -> {
 			_dialog.browse(

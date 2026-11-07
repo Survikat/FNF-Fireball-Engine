@@ -6,7 +6,8 @@ import flixel.group.FlxGroup;
 import flixel.group.FlxSpriteContainer.FlxTypedSpriteContainer;
 
 class StageContainer extends FlxContainer {
-    public var characterLayer:FlxGroup;
+    public var opponentLayer:FlxGroup;
+    public var playerLayer:FlxGroup;
     public var dancerLayer:FlxGroup; // Background Dancers / Girlfriend
 
     private var _bgStageLayer:FlxTypedSpriteContainer<StageElement>; // Background
@@ -19,12 +20,14 @@ class StageContainer extends FlxContainer {
         _bgStageLayer = new FlxTypedSpriteContainer();
         _fgStageLayer = new FlxTypedSpriteContainer();
 
-        characterLayer = new FlxGroup();
+        opponentLayer = new FlxGroup();
+        playerLayer = new FlxGroup();
 
         add(_bgStageLayer);
         add(dancerLayer);
         add(_mgStageLayer);
-        add(characterLayer);
+        add(opponentLayer);
+        add(playerLayer);
         add(_fgStageLayer);
     }
 

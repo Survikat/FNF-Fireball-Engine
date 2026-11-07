@@ -5,13 +5,36 @@ import flixel.util.FlxSave;
 import lime.system.System;
 
 final class Save {
+    public static function bind(name:String, ?path:String):Void {
+        FlxG.save.bind(name, path);
+    }
+
     public static function get(option:String):Dynamic {
-        return Reflect.field(FlxG.save.data, option);
+        final iterators:Array<String> = option.split(".");
+        var curReference:Dynamic = FlxG.save.data;
+
+        try {
+            for (opt in iterators) {
+                curReference = Reflect.field(curReference, opt);
+            }
+        } catch (e:Dynamic) {
+            FlxG.log.warn('Failed to obtain value of "$option" ($e).');
+            return null;
+        }
+
+        return curReference;
     }
 
     public static function set(option:String, value:Dynamic) {
         try {
-            Reflect.setProperty(FlxG.save.data, option, value);
+            final iterators:Array<String> = option.split(".");
+            var curReference:Dynamic = FlxG.save.data;
+
+            for (i in 0...iterators.length - 1) {
+                curReference = Reflect.field(curReference, iterators[i]);
+            }
+
+            Reflect.setField(curReference, iterators[iterators.length - 1], value);
         } catch (e:Dynamic) {
             FlxG.log.warn('Failed to set option $option as $value!');
         }

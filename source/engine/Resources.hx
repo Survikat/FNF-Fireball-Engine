@@ -5,6 +5,7 @@ import flixel.graphics.FlxGraphic;
 import flixel.system.FlxAssets.FlxSoundAsset;
 import haxe.io.Bytes;
 import haxe.io.Path;
+import lime.system.System;
 import openfl.Assets;
 import openfl.display.BitmapData;
 import openfl.filesystem.File;
@@ -71,9 +72,13 @@ final class Resources {
     public static function getContent(path:String):String { 
         for (dir in resourceDirectories) {
             final finalPath:String = Path.normalize('$dir/$path');
+            final exists:AssetExistance = assetExists(finalPath);
 
-            if (assetExists(finalPath)) {
-                return File.getFileText(finalPath);
+            if (exists != INVALID) {
+                if (exists == EXTERNAL)
+                    return File.getFileText(finalPath);
+                else
+                    return Assets.getText(finalPath);
             }
         }
 
@@ -83,9 +88,13 @@ final class Resources {
     public static function getBinary(path:String):Bytes { 
         for (dir in resourceDirectories) {
             final finalPath:String = Path.normalize('$dir/$path');
+            final exists:AssetExistance = assetExists(finalPath);
 
-            if (assetExists(finalPath)) {
-                return File.getFileBytes(finalPath);
+            if (exists != INVALID) {
+                if (exists == EXTERNAL)
+                    return File.getFileBytes(finalPath);
+                else
+                    return Assets.getBytes(finalPath);
             }
         }
 
@@ -95,12 +104,18 @@ final class Resources {
     public static function getSound(path:String):FlxSoundAsset {
         for (dir in resourceDirectories) {
             final finalPath:String = Path.normalize('$dir/$path.ogg');
+            final exists:AssetExistance = assetExists(finalPath);
 
-            if (assetExists(finalPath)) {
+            if (exists != INVALID) {
                 if (Assets.cache.hasSound(finalPath))
                     return Assets.cache.getSound(finalPath);
 
-                final targetSound:Sound = Sound.fromFile(finalPath);
+                var targetSound:Sound = null;
+
+                if (exists == EXTERNAL)
+                    targetSound = Sound.fromFile(finalPath);
+                else
+                    targetSound = Assets.getSound(finalPath);
 
                 Assets.cache.setSound(finalPath, targetSound);
                 return targetSound;
@@ -113,10 +128,17 @@ final class Resources {
     public static function getGraphic(path:String):FlxGraphic {
         for (dir in resourceDirectories) {
             final finalPath:String = Path.normalize('$dir/$path.png');
+            final exists:AssetExistance = assetExists(finalPath);
 
-            if (assetExists(finalPath)) {
+            if (exists != INVALID) {
                 if (!Assets.cache.hasBitmapData(finalPath)) {
-                    var bitmap:BitmapData = BitmapData.fromFile(finalPath);
+                    var bitmap:BitmapData = null;
+
+                    if (exists == EXTERNAL)
+                        bitmap = BitmapData.fromFile(finalPath)
+                    else
+                        bitmap = Assets.getBitmapData(finalPath);
+
                     Assets.cache.setBitmapData(finalPath, bitmap);
                 }
 
@@ -134,7 +156,7 @@ final class Resources {
         for (dir in resourceDirectories) {
             final finalPath:String = Path.normalize('$dir/$path');
 
-            if (assetExists(finalPath) || FileSystem.isDirectory(finalPath)) {
+            if (assetExists(finalPath) != INVALID) {
                 return finalPath;
             }
         }
@@ -142,8 +164,22 @@ final class Resources {
         return null;
     }
 
-    public static function assetExists(path:String):Bool {
+    public static function assetExists(path:String):AssetExistance {
         var exists:Bool = FlxG.assets.exists(path) || FileSystem.exists(path);
-        return exists;
+
+        if (!exists) {
+            return INVALID;
+        } else {
+            if (FlxG.assets.exists(path))
+                return INTERNAL;
+            else
+                return EXTERNAL;
+        }
     }
+}
+
+enum AssetExistance {
+    INVALID;
+    INTERNAL;
+    EXTERNAL;
 }

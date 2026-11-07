@@ -1,14 +1,26 @@
 package engine.objects.ui;
 
-import engine.visuals.Style.GameStyleMeta;
-import engine.visuals.Style.NoteStyleMeta;
+import engine.visuals.meta.Style.GameStyleMeta;
+import engine.visuals.meta.Style.NoteStyleMeta;
 import flixel.group.FlxSpriteContainer.FlxTypedSpriteContainer;
 
 class Strumline extends FlxTypedSpriteContainer<FBSprite> {
-    public var strums:Array<Arrow> = [];
-    public var noteStyle:NoteStyleMeta;
+    private final _defaultArrowSet:Array<String> = [
+        "Left",
+        "Down",
+        "Up",
+        "Right"
+    ];
 
-    override public function new(?x:Float = 0, ?y:Float = 0, ?style:NoteStyleMeta) {
+    private var _arrowCount:Int = 0;
+
+    public var noteStyle:NoteStyleMeta;
+    public var strumArrows:Map<String, Arrow> = new Map();
+
+    override public function new(?x:Float = 0, ?y:Float = 0, ?style:NoteStyleMeta, ?arrows:Array<String>) {
+        if (arrows == null)
+            arrows = _defaultArrowSet;
+
         super(x, y);
 
         if (style == null)
@@ -16,10 +28,9 @@ class Strumline extends FlxTypedSpriteContainer<FBSprite> {
         else
             this.noteStyle = style;
 
-        addArrow("Left");
-        addArrow("Down");
-        addArrow("Up");
-        addArrow("Right");
+        for (arrow in arrows) {
+            addArrow(arrow);
+        }
     }
 
     public function addArrow(name:String, ?style:NoteStyleMeta):Void {
@@ -28,13 +39,14 @@ class Strumline extends FlxTypedSpriteContainer<FBSprite> {
 
         var arrow = new Arrow(style, STRUM);
 
-        if (strums.length > 0) {
-            arrow.x += strums[strums.length - 1].width * strums.length;
+        if (_arrowCount > 0) {
+            arrow.x += (Arrow.arrowWidth + noteStyle.properties.spacing) * _arrowCount;
         }
         
-        strums.push(arrow);
-        add(arrow);
+        strumArrows.set(name, arrow);
+        ++_arrowCount;
 
+        add(arrow);
         arrow.playAnim('static${name}');
     }
 }

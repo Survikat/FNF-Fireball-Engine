@@ -7,8 +7,10 @@ import engine.util.Logger;
 import flixel.FlxG;
 import flixel.FlxGame;
 import flixel.FlxState;
+import lime.system.System;
 import lime.utils.Assets;
 import openfl.display.Sprite;
+import openfl.system.Capabilities;
 import states.SetupState;
 import states.TestState;
 import states.game.PlayState;
@@ -20,16 +22,26 @@ class Main extends Sprite
     private static var _startHeight:Int = 0;
 	private static var _startFramerate:Int = 60;
 
-	/* ENGINE INFO */
-	public static final engineName:String = "Friday Night Funkin' Fireball Engine";
+	/* ENGINE META */
+	public static final engineName:String = "Fireball Engine";
+
 	public static final version:String = "0.1.0";
 	public static final resourceVersion:Int = 0; // Version of current asset mappings.
+
+    public static final discordAppID:String = "1542526698166165654";
 
 	public function new()
 	{
 		super();
 
 		Logger.init();
+
+        final aspectWidth:Int = Math.floor(Capabilities.screenResolutionX / 120);
+        final aspectHeight:Int = Math.floor(Capabilities.screenResolutionY / 120);
+        final aspectRatio:Float = aspectWidth / aspectHeight;
+
+        _startHeight = 720;
+        _startWidth = Math.floor(720 * aspectRatio);
 
 		#if desktop
 		try {
@@ -47,9 +59,9 @@ class Main extends Sprite
 						case 'fps':
 							_startFramerate = Std.int(Math.min(1000, Math.max(30, Std.parseInt(args[i + 1]))));
                         case 'width':
-                            _startWidth = Std.int(Math.max(1280, Std.parseInt(args[i + 1])));
+                            _startWidth = Std.int(Math.max(640, Std.parseInt(args[i + 1])));
                         case 'height':
-                            _startHeight = Std.int(Math.max(720, Std.parseInt(args[i + 1])));
+                            _startHeight = Std.int(Math.max(360, Std.parseInt(args[i + 1])));
 					}
 				}
 			}
@@ -67,16 +79,17 @@ final class InitState extends FlxState {
 		Assets.cache.enabled = true;
 		FlxG.autoPause = false;
 
+        // Save.bind("saveData", "Survikat/fireballEngine");
 		Highscores.init();
 
 		#if desktop
-		api.DiscordAPI.Init();
+		api.DiscordAPI.Init(Main.discordAppID);
 		#end
 
-		if (FileSystem.isDirectory("resources") && Save.getInt("resourceVersion") == Main.resourceVersion) {
-			FlxG.switchState(() -> new PlayState());
-		} else {
-			FlxG.switchState(() -> new SetupState());
-		}
+        if (FileSystem.isDirectory("resources") && Save.getInt("resourceVersion") == Main.resourceVersion) {
+            FlxG.switchState(() -> new PlayState());
+        } else {
+            FlxG.switchState(() -> new SetupState());
+        }
 	}
 }
