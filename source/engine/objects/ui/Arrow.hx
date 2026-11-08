@@ -17,6 +17,7 @@ enum ArrowType {
 
 final class Arrow extends FBSprite {
     public static final arrowWidth:Int = 150;
+    public static final usualNoteDirectionOrder:Array<NoteDirection> = [LEFT, DOWN, UP, RIGHT];
 
     private var _properties:AnimatedGraphicProperties;
     private var _arrowType:ArrowType;
@@ -91,8 +92,32 @@ final class Arrow extends FBSprite {
     function get_arrowType():ArrowType {
         return _arrowType;
     }
+
+    public static function retrieveNameFromDirection(direction:NoteDirection):String {
+        var name:String = "Left";
+
+        switch (direction) {
+            case LEFT:
+                name = "Left";
+            case DOWN:
+                name = "Down";
+            case UP:
+                name = "Up";
+            case RIGHT:
+                name = "Right";
+        }
+
+        return name;
+    }
 }
 
 final class Sustain extends FBSprite {
 
+}
+
+enum NoteDirection {
+    LEFT;
+    RIGHT;
+    DOWN;
+    UP;
 }

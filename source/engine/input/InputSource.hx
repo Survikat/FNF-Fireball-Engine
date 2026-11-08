@@ -1,15 +1,17 @@
 package engine.input;
 
-import engine.input.InputManager;
+import engine.input.Controls;
+import engine.objects.ui.Arrow.NoteDirection;
 import flixel.FlxG;
 
 class InputSource {
-    public var bindings:Map<ControlName, Array<Dynamic>>;
+    public function new() {}
 
-    public function new() {
-        bindings = new Map();
-    }
+    public function inputJustPressed(control:ControlName):Bool { return false; }
+    public function inputJustReleased(control:ControlName):Bool { return false; }
+    public function inputPressed(control:ControlName):Bool { return false; }
 
-    public function inputJustPressed():Bool { return false; }
-    public function inputPressed():Bool { return false; }
+    public function justPressedNoteDirection(direction:NoteDirection):Bool { return false; }
+    public function justReleasedNoteDirection(direction:NoteDirection):Bool { return false; }
+    public function pressedNoteDirection(direction:NoteDirection):Bool { return false; }
 }

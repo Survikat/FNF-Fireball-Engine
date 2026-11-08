@@ -1,11 +1,5 @@
 package engine.input;
 
-final class InputManager {
-    private var _source:InputSource;
-
-    
-}
-
 enum ControlName {
     LEFT;
     DOWN;

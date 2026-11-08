@@ -3,7 +3,7 @@ package;
 import engine.Resources;
 import engine.save.Highscores;
 import engine.save.Save;
-import engine.util.Logger;
+// import engine.util.Logger;
 import flixel.FlxG;
 import flixel.FlxGame;
 import flixel.FlxState;
@@ -34,14 +34,16 @@ class Main extends Sprite
 	{
 		super();
 
-		Logger.init();
+		// Logger.init();
 
+        #if !desktop
         final aspectWidth:Int = Math.floor(Capabilities.screenResolutionX / 120);
         final aspectHeight:Int = Math.floor(Capabilities.screenResolutionY / 120);
         final aspectRatio:Float = aspectWidth / aspectHeight;
 
         _startHeight = 720;
         _startWidth = Math.floor(720 * aspectRatio);
+        #end
 
 		#if desktop
 		try {

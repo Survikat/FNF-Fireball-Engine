@@ -1,6 +1,8 @@
 package engine.util;
 
-import flixel.FlxG;
+// I plan on redoing this later.
+
+/*import flixel.FlxG;
 import haxe.Log;
 import haxe.Timer;
 import lime.system.System;
@@ -90,4 +92,4 @@ final class Logger {
         Sys.println(output.trim());
         #end
     }
-}
+}*/

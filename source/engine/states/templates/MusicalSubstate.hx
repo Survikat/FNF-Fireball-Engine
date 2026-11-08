@@ -1,13 +1,17 @@
 package engine.states.templates;
 
+import engine.input.InputSource;
+import engine.input.sources.KeyboardInputSource;
 import engine.music.SongManager;
 import flixel.FlxState;
 
 class MusicalSubstate extends FBSubstate {
 	public var song:SongManager;
+    public var controls:InputSource;
 
-    public function new (?song:SongManager = null) {
+    public function new (?song:SongManager = null, ?controls:InputSource) {
         this.song = song;
+        this.controls = controls;
 
         super();
     }
@@ -20,6 +24,10 @@ class MusicalSubstate extends FBSubstate {
             song.onBar.add(barHit);
             song.onBeat.add(beatHit);
             song.onStep.add(stepHit);
+        }
+
+        if (controls == null) {
+            controls = new KeyboardInputSource();
         }
 
 		add(song);

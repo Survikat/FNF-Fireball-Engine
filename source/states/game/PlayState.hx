@@ -4,6 +4,8 @@ import engine.GameManager;
 import engine.Resources;
 import engine.objects.FBSprite;
 import engine.objects.characters.Character;
+import engine.objects.ui.Arrow;
+import engine.objects.ui.Note;
 import engine.objects.ui.Strumline;
 import engine.states.templates.MusicalState;
 import flixel.FlxCamera;
@@ -16,8 +18,6 @@ import flixel.tweens.misc.VarTween;
 import flixel.util.FlxColor;
 
 final class PlayState extends MusicalState {
-    private final _res:FlxPoint = new FlxPoint(1280, 720);
-
     private var _inst:FlxSound;
     private var _mainVocals:FlxSound;
     private var _opponentVocals:FlxSound;
@@ -32,7 +32,8 @@ final class PlayState extends MusicalState {
     private var _strumLine:Strumline;
 
     override public function create():Void {
-        _gameCam = new FlxCamera(FlxG.width - _res.x, FlxG.height - _res.y, Std.int(_res.x), Std.int(_res.y));
+        _gameCam = new FlxCamera();
+        _gameCam.bgColor = FlxColor.BLACK;
 
         _hudCam = new FlxCamera();
         _hudCam.bgColor = FlxColor.TRANSPARENT;
@@ -65,21 +66,24 @@ final class PlayState extends MusicalState {
         _player.scaleSprite(_player.width * 0.7);
         _player.setPosition((FlxG.width - _player.width) - 24, (FlxG.height - _player.height) - 24);
 
-        _dancer = new Character("boyfriend");
+        /*_dancer = new Character("boyfriend");
         _dancer.scaleSprite(_dancer.width * 0.7);
         _dancer.screenCenter();
 
         _opponent = new Character("boyfriend");
         _opponent.scaleSprite(_opponent.width * 0.7);
         _opponent.setPosition(24, (FlxG.height - _player.height) - 24);
-        _opponent.flipX = true;
+        _opponent.flipX = true;*/
 
-        add(_opponent);
-        add(_dancer);
+        /*add(_opponent);
+        add(_dancer);*/
         add(_player);
 
         _strumLine = new Strumline();
-        _strumLine.screenCenter(X);
+        _strumLine.camera = _hudCam;
+        _strumLine.x = _strumLine.camera.width - (Arrow.arrowWidth * _strumLine.strumArrowMembers.length);
+        _strumLine.controls = controls;
+        _strumLine.autoPlay = false;
         add(_strumLine);
 
         song.continuous = true;
@@ -93,21 +97,26 @@ final class PlayState extends MusicalState {
 
         _gameCam.zoom = FlxMath.lerp(_gameCam.zoom, 1, elapsedLerp);
         _hudCam.zoom = FlxMath.lerp(_hudCam.zoom, 1, elapsedLerp);
+
+        if (controls.inputJustPressed(DEBUG)) {
+            song.kill(); // Not killing the song manager manually can result in issues.
+            FlxG.resetState();
+        }
     }
 
     override public function beatHit(beat:Int):Void {
         super.beatHit(beat);
 
         _player.dance();
-        _dancer.dance();
-        _opponent.dance();
+        /*_dancer.dance();
+        _opponent.dance();*/
     }
 
     private var _lastDancerTween:VarTween; // I like rotating
     override public function barHit(bar:Int):Void {
         super.barHit(bar);
 
-        if (_lastDancerTween != null && !_lastDancerTween.finished) {
+        /*if (_lastDancerTween != null && !_lastDancerTween.finished) {
             _lastDancerTween.onComplete(_lastDancerTween);
             _lastDancerTween.cancel();
         }
@@ -115,15 +124,11 @@ final class PlayState extends MusicalState {
         _lastDancerTween = FlxTween.tween(_dancer, {angle: 360}, song.barDuration, {onComplete: (tween) -> {
             _dancer.angle = 0;
             _dancer.flipX = !_dancer.flipX;
-        }});
+        }});*/
 
-        _gameCam.zoom += 0.15;
-        _hudCam.zoom += 0.05;
-
-        if (song.playing) {
-            trace("Shits still playing");
-        } else if (song.finished) {
-            trace("SHIT IS FINISHED");
+        if (bar % 2 == 0) {
+            _gameCam.zoom += 0.15;
+            _hudCam.zoom += 0.05;
         }
     }
 }

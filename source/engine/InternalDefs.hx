@@ -46,61 +46,73 @@ final class InternalDefs {
                     {
                         name: "confirmLeft",
                         symbol: "confirmLeft",
+                        loop: false,
                         fps: 24
                     },
                     {
                         name: "confirmHoldLeft",
                         symbol: "confirmHoldLeft",
+                        loop: false,
                         fps: 24
                     },
                     {
                         name: "confirmDown",
                         symbol: "confirmDown",
+                        loop: false,
                         fps: 24
                     },
                     {
                         name: "confirmHoldDown",
                         symbol: "confirmHoldDown",
+                        loop: false,
                         fps: 24
                     },
                     {
                         name: "confirmUp",
                         symbol: "confirmUp",
+                        loop: false,
                         fps: 24
                     },
                     {
                         name: "confirmHoldUp",
                         symbol: "confirmHoldUp",
+                        loop: false,
                         fps: 24
                     },
                     {
                         name: "confirmRight",
                         symbol: "confirmRight",
+                        loop: false,
                         fps: 24
                     },
                     {
                         name: "confirmHoldRight",
                         symbol: "confirmHoldRight",
+                        loop: false,
                         fps: 24
                     },
                     {
                         name: "pressLeft",
                         symbol: "pressLeft",
+                        loop: false,
                         fps: 24
                     },
                     {
                         name: "pressDown",
                         symbol: "pressDown",
+                        loop: false,
                         fps: 24
                     },
                     {
                         name: "pressUp",
                         symbol: "pressUp",
+                        loop: false,
                         fps: 24
                     },
                     {
                         name: "pressRight",
                         symbol: "pressRight",
+                        loop: false,
                         fps: 24
                     },
                     {
