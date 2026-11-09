@@ -10,9 +10,12 @@ import flixel.group.FlxGroup.FlxTypedGroup;
  * 
  * FBSpriteParent's do not drastically control or manipulate the children contained within it,
  * it will only affect whether or not the children are alive, visible, or active, as well as what it renders to.
+ * 
+ * The parent can have its rendering disabled if you'd rather treat it as a group.
  */
 class FBSpriteParent extends FBSprite {
     public var children:FlxTypedGroup<FBSprite>;
+    public var disableParentRendering:Bool = false;
 
     override public function new(?maxSize:Int = 0, ?x:Float = 0, ?y:Float = 0, ?graphic:FlxGraphic, ?settings:FlxAnimateSettings) {
         super(x, y, graphic, settings);
@@ -21,7 +24,8 @@ class FBSpriteParent extends FBSprite {
     }
 
     override public function draw():Void {
-        super.draw();
+        if (!disableParentRendering)
+            super.draw();
 
         children.cameras = this.cameras;
         if (visible)

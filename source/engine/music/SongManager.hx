@@ -246,7 +246,7 @@ final class SongManager extends FlxBasic {
                 track.update(elapsed);
 
                 if (!finished && playing && Math.abs(track.time - mainTrack.time) >= 20) {
-                    FlxG.log.warn('Track is off-sync! (${Math.abs(track.time - mainTrack.time)}ms)');
+                    // FlxG.log.warn('Track is off-sync! (${Math.abs(track.time - mainTrack.time)}ms)');
                     track.time = mainTrack.time;
                 }
             }
@@ -259,7 +259,7 @@ final class SongManager extends FlxBasic {
 
             if (!finished && playing && _tracks.sounds != null && _tracks.sounds[0] != null) {
                 if (Math.abs(_tracks.sounds[0].time - _internalTime) >= 20) {
-                    FlxG.log.warn('Internal time is ${_internalTime}, but should be ${_tracks.sounds[0].time}. Offset by ${Math.abs(_tracks.sounds[0].time - _internalTime)}ms.');
+                    // FlxG.log.warn('Internal time is ${_internalTime}, but should be ${_tracks.sounds[0].time}. Offset by ${Math.abs(_tracks.sounds[0].time - _internalTime)}ms.');
                     _internalTime = _tracks.sounds[0].time;
                 }
             }

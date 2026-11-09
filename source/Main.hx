@@ -60,10 +60,6 @@ class Main extends Sprite
 							trace('$fArg is an invalid argument!');
 						case 'fps':
 							_startFramerate = Std.int(Math.min(1000, Math.max(30, Std.parseInt(args[i + 1]))));
-                        case 'width':
-                            _startWidth = Std.int(Math.max(640, Std.parseInt(args[i + 1])));
-                        case 'height':
-                            _startHeight = Std.int(Math.max(360, Std.parseInt(args[i + 1])));
 					}
 				}
 			}

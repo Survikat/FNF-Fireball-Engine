@@ -63,7 +63,7 @@ final class Arrow extends FBSprite {
         for (selAnim in properties.animations) {
             var fps:Int = 24;
             var offsets:Array<Int> = [];
-            var loop:Bool = true;
+            var loop:Bool = false;
 
             if (selAnim.fps != null)
                 fps = selAnim.fps;

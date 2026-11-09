@@ -9,6 +9,7 @@ import flixel.group.FlxGroup.FlxTypedGroup;
  */
 class StageElementParent extends StageElement {
     public var children:FlxTypedGroup<StageElement>;
+    public var disableParentRendering:Bool = false;
 
     override public function new(?maxSize:Int = 0, ?x:Float = 0, ?y:Float = 0, ?graphic:FlxGraphic, settings:FlxAnimateSettings) {
         super(x, y, graphic, settings);
@@ -16,7 +17,8 @@ class StageElementParent extends StageElement {
     }
 
     override public function draw():Void {
-        super.draw();
+        if (!disableParentRendering)
+            super.draw();
 
         children.cameras = this.cameras;
         if (visible)

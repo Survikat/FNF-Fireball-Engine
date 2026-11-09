@@ -29,7 +29,10 @@ final class PlayState extends MusicalState {
     private var _dancer:Character;
     private var _opponent:Character;
 
-    private var _strumLine:Strumline;
+    private var _playerStrumLine:Strumline;
+    private var _opponentStrumLine:Strumline;
+
+    public var camZooming:Bool = false;
 
     override public function create():Void {
         _gameCam = new FlxCamera();
@@ -79,27 +82,35 @@ final class PlayState extends MusicalState {
         add(_dancer);*/
         add(_player);
 
-        _strumLine = new Strumline();
-        _strumLine.camera = _hudCam;
-        _strumLine.x = _strumLine.camera.width - (Arrow.arrowWidth * _strumLine.strumArrowMembers.length);
-        _strumLine.controls = controls;
-        _strumLine.autoPlay = false;
-        add(_strumLine);
+        _opponentStrumLine = new Strumline();
+        _opponentStrumLine.camera = _hudCam;
+        _opponentStrumLine.x = Arrow.arrowWidth / 2;
+        _opponentStrumLine.autoPlay = true;
+        add(_opponentStrumLine);
+
+        _playerStrumLine = new Strumline();
+        _playerStrumLine.camera = _hudCam;
+        _playerStrumLine.x = (_hudCam.width - _playerStrumLine.width) - (Arrow.arrowWidth / 2);
+        _playerStrumLine.controls = controls;
+        _playerStrumLine.autoPlay = false;
+        add(_playerStrumLine);
 
         song.continuous = true;
         song.play();
+
+        camZooming = true;
     }
 
     override public function update(elapsed:Float):Void {
         final elapsedLerp:Float = FlxMath.getElapsedLerp(0.2, elapsed);
 
         super.update(elapsed);
-
+        
         _gameCam.zoom = FlxMath.lerp(_gameCam.zoom, 1, elapsedLerp);
         _hudCam.zoom = FlxMath.lerp(_hudCam.zoom, 1, elapsedLerp);
 
-        if (controls.inputJustPressed(DEBUG)) {
-            song.kill(); // Not killing the song manager manually can result in issues.
+        if (controls.inputJustPressed("DEBUG")) {
+            song.kill(); // Not killing the song manager manually can result in issues? I think?
             FlxG.resetState();
         }
     }
@@ -126,7 +137,7 @@ final class PlayState extends MusicalState {
             _dancer.flipX = !_dancer.flipX;
         }});*/
 
-        if (bar % 2 == 0) {
+        if (camZooming && bar % 2 == 0) {
             _gameCam.zoom += 0.15;
             _hudCam.zoom += 0.05;
         }

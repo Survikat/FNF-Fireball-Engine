@@ -15,7 +15,7 @@ class Strumline extends FlxContainer {
     private var _strumArrowCount:Int = 0;
 
     private var _strumArrows:FlxTypedSpriteContainer<Arrow>;
-    private var _noteArrows:FlxTypedSpriteContainer<Note>;
+    private var _notes:FlxTypedSpriteContainer<Note>;
     private var _noteSplashes:FlxTypedSpriteContainer<FBSprite>;
 
     public var controls:InputSource;
@@ -24,7 +24,6 @@ class Strumline extends FlxContainer {
     public var y(get, set):Float;
 
     public var width(get, never):Float;
-    public var height(get, never):Float;
 
     public var scrollSpeed:Float = 1;
     public var autoPlay:Bool = true;
@@ -37,7 +36,7 @@ class Strumline extends FlxContainer {
 
     override public function new(?x:Float = 0, ?y:Float = 0, ?style:NoteStyleMeta, ?inputSource:InputSource) {
         _strumArrows = new FlxTypedSpriteContainer(x, y);
-        _noteArrows = new FlxTypedSpriteContainer(x, y);
+        _notes = new FlxTypedSpriteContainer(x, y);
         _noteSplashes = new FlxTypedSpriteContainer(x, y);
 
         controls = inputSource;
@@ -54,7 +53,7 @@ class Strumline extends FlxContainer {
         }
 
         add(_strumArrows);
-        add(_noteArrows);
+        add(_notes);
         add(_noteSplashes);
     }
 
@@ -66,18 +65,19 @@ class Strumline extends FlxContainer {
             final direction:NoteDirection = Arrow.usualNoteDirectionOrder[i];
             final name:String = Arrow.retrieveNameFromDirection(direction);
 
-            if (controls != null) {
-                if (controls.justPressedNoteDirection(direction)) {
-                    arrow.playAnim('press${name}');
-                }
-            }
+            if (!autoPlay) {
+                if (controls.justPressedNoteDirection(direction))
+                    arrow.playAnim('press${name}', true);
 
-            if (controls != null && arrow.anim.finished) {
-                if (!controls.pressedNoteDirection(direction)) {
+                if (arrow.anim.finished && !controls.pressedNoteDirection(direction))
                     arrow.playAnim('static${name}');
-                }
-            } else if (arrow.anim.finished) {
-                arrow.playAnim('static${name}');
+
+                // Control bullshit
+            } else {
+                if (arrow.anim.finished)
+                    arrow.playAnim('static${name}');
+
+                // Hit notes and shit
             }
         }
     }
@@ -102,35 +102,31 @@ class Strumline extends FlxContainer {
         _strumArrows.add(arrow);
     }
 
-    function set_x(value:Float):Float {
-        return _strumArrows.x = _noteArrows.x = _noteSplashes.x = value;
+    private final function set_x(value:Float):Float {
+        return _strumArrows.x = _notes.x = _noteSplashes.x = value;
     }
 
-	function get_x():Float {
+	private final function get_x():Float {
 		return _strumArrows.x;
 	}
 
-    function set_y(value:Float):Float {
-        return _strumArrows.y = _noteArrows.y = _noteSplashes.y = value;
+    private final function set_y(value:Float):Float {
+        return _strumArrows.y = _notes.y = _noteSplashes.y = value;
     }
 
-	function get_y():Float {
+	private final function get_y():Float {
 		return _strumArrows.y;
 	}
 
-    function get_strumArrowMembers():Array<Arrow> {
+    private final function get_strumArrowMembers():Array<Arrow> {
         return _strumArrows.members;
     }
 
-    function get_noteArrowMembers():Array<Note> {
-        return _noteArrows.members;
+    private final function get_noteArrowMembers():Array<Note> {
+        return _notes.members;
     }
 
-    function get_width():Float {
+    private final function get_width():Float {
         return _strumArrows.width;
-    }
-
-    function get_height():Float {
-        return _strumArrows.height;
     }
 }
