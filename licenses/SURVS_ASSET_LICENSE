@@ -1,0 +1,36 @@
+Surv's Asset License v2.0
+Last Updated 11/12/2026 - (MM/DD/YYYY Format).
+
+The Project Owner or Director is "Survikat".
+The Source Code's license falls under the "Apache 2.0 License".
+
+The term "project" refers to this project, currently labeled as "FNF: Fireball Engine".
+The term "asset", "assets", or "asset(s)" refers to data such as audio, graphics, fonts, text, or any other binary data that are applicable.
+The term "this license", or "Surv's Asset License" refers to the written license and agreement you are currently viewing.
+The term "we", "our", and "us" refers to the main team or entities behind the project. The main team can be defined by the owner or director of this project at any time.
+
+Below is a short Q&A that explains this license in short simple terms, but are not what you legally agree to. Please read the actual agreement listed below the Q&A.
+    What is Surv's Asset License and why does it exist?
+        The reason this license exists is so that assets you do not want permitted to be copied for unrelated use of this project cannot be stolen. Though, I had to write it up in a way that confirms my legal safety and permission in using the assets given to me for this project.
+
+    Do I still retain full ownership to my asset(s)?
+        Yes, this license is written in a way that retains your ownership to what you've created, but gives us and those we give consent permission to use the asset as long as it is connected to this project in the ways mentioned below. If you transfer ownership of the asset, they must also agree to these terms.
+
+---
+
+This license utilizes a separate document "ASSET_LICENSES.md" in the same directory as this license, which lists what licenses are applicable to each asset as well as the primary license for specified directories. We, including the copyright holders or entities that own the asset(s) which fall under this license, do not agree for the asset(s) to be utilized in any way, shape, or form in use of Generative AI no matter what use it is, unless consent is given directly by the copyright holder. Any asset not specifically mentioned as falling on a specified license will always fall under its primary license listed in the "ASSET_LICENSES.md" document. This license is not used or applied to the source code; it shall fall under the source code's license.
+
+For contributors, copyright holders, and/or entities handing off assets to be used within the project:
+    For the assets applicable to this license, you confirm that the asset was created purely by you or that you have full rights to it. You agree to let us - and those we give consent - permanent permission to use the asset in any way, shape, or form, with or without proper attribution or authorization, but only in connection with this project, including without limitation; distribution, modifications, hosting, display, and promotional content. You understand that your only notice of contribution will be as a listed contributor on the GitHub repository, as well as potential credit within the project itself, however none are guaranteed.
+    
+    You agree that changes made to this license in the foreseeable future will be applied to your asset(s). These changes are only applicable if they do not vastly change the original definitions and permissions given to us, do not change who holds the final copyright over the asset, or prevent you from opting out of this clause. You can always opt-out from this at any time and request that the asset fall under a specific version of this license by stating a specific name, date, and version. If you wish to opt-out immediately, you can state so in "ASSET_LICENSES.md" in your section. We promise that this clause is only here to better defend the rights on both of our sides, but primarily yours. Again, you can always opt-out at any time.
+
+    By submitting any changes to the project, you agree to these terms. This clause does not affect assets that are licensed under other licenses. You retain the rights to the asset, meaning you can do anything you like with it. However, if the asset's ownership is transferred, the new copyright holder must agree to the latest version of this agreement.
+
+For entities copying, cloning, or distributing this project with our direct consent of use for the assets or contribution use:
+    Use of the applicable assets can only be used in connection with this project, including without limitation; distribution, modifications, hosting, display, and promotional content. What you do with the applicable asset must fall within this definition or must be given consent from the copyright holder.
+
+    Please note that "contribution use" only applies to forks or clones of the project made to only be as a contribution or merge to the original project, whether that be repository or source modifications.
+
+For entities copying, cloning, or distributing this project without our consent of use for the assets:
+    You do not have our or our copyright holders consent to use any assets that fall under this license. Assets that do and do not fall under this license may be listed within the mentioned above "ASSET_LICENSES.md" document. Certain directories may have a primary license to them mentioned in said document. You hold all liability for failure of removal.
