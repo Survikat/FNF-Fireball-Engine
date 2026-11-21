@@ -1,28 +1,31 @@
 package engine.objects.ui;
 
 import engine.input.InputSource;
-import engine.objects.ui.Arrow.NoteDirection;
+import engine.objects.ui.arrows.Arrow;
+import engine.objects.ui.arrows.Note;
 import engine.visuals.meta.Style.GameStyleMeta;
 import engine.visuals.meta.Style.NoteStyleMeta;
+import flixel.FlxG;
 import flixel.group.FlxContainer;
 import flixel.group.FlxGroup;
 import flixel.group.FlxSpriteContainer.FlxTypedSpriteContainer;
+import flixel.math.FlxPoint;
 
 class Strumline extends FlxContainer {
-    public var noteStyle:NoteStyleMeta;
-    public var strumArrowMap:Map<NoteDirection, Arrow> = new Map();
-
-    private var _strumArrowCount:Int = 0;
-
     private var _strumArrows:FlxTypedSpriteContainer<Arrow>;
     private var _notes:FlxTypedSpriteContainer<Note>;
     private var _noteSplashes:FlxTypedSpriteContainer<FBSprite>;
 
+    private var _strumArrowCount:Int = 0;
+
     public var controls:InputSource;
+
+    public var noteStyle:NoteStyleMeta;
+    public var noteKeyOrder:Array<String>;
+    public var strumArrowMap:Map<String, Arrow> = new Map();
 
     public var x(get, set):Float;
     public var y(get, set):Float;
-
     public var width(get, never):Float;
 
     public var scrollSpeed:Float = 1;
@@ -34,12 +37,17 @@ class Strumline extends FlxContainer {
     public var strumArrowMembers(get, never):Array<Arrow>;
     public var noteArrowMembers(get, never):Array<Note>;
 
-    override public function new(?x:Float = 0, ?y:Float = 0, ?style:NoteStyleMeta, ?inputSource:InputSource) {
+    override public function new(?x:Float = 0, ?y:Float = 0, ?style:NoteStyleMeta, ?keyOrder:Array<String>, ?inputSource:InputSource) {
         _strumArrows = new FlxTypedSpriteContainer(x, y);
         _notes = new FlxTypedSpriteContainer(x, y);
         _noteSplashes = new FlxTypedSpriteContainer(x, y);
 
         controls = inputSource;
+
+        if (keyOrder == null)
+            noteKeyOrder = Arrow.fourKeyOrder;
+        else
+            noteKeyOrder = keyOrder;
 
         super();
 
@@ -48,7 +56,7 @@ class Strumline extends FlxContainer {
         else
             this.noteStyle = style;
 
-        for (direction in Arrow.usualNoteDirectionOrder) {
+        for (direction in noteKeyOrder) {
             addArrow(direction, noteStyle);
         }
 
@@ -60,12 +68,11 @@ class Strumline extends FlxContainer {
     override public function update(elapsed:Float):Void {
         super.update(elapsed);
 
-        for (i in 0...Arrow.usualNoteDirectionOrder.length) {
-            final arrow:Arrow = _strumArrows.members[i];
-            final direction:NoteDirection = Arrow.usualNoteDirectionOrder[i];
-            final name:String = Arrow.retrieveNameFromDirection(direction);
+        for (i in 0..._strumArrows.members.length) {
+            var arrow:Arrow = _strumArrows.members[i];
+            final noteType:String = arrow.type;
 
-            if (!autoPlay) {
+            /*if (!autoPlay) {
                 if (controls.justPressedNoteDirection(direction))
                     arrow.playAnim('press${name}', true);
 
@@ -78,11 +85,11 @@ class Strumline extends FlxContainer {
                     arrow.playAnim('static${name}');
 
                 // Hit notes and shit
-            }
+            }*/
         }
     }
 
-    public function addArrow(direction:NoteDirection, ?style:NoteStyleMeta):Void {
+    public function addArrow(type:String, ?style:NoteStyleMeta):Void {
         if (style == null)
             style = noteStyle;
 
@@ -93,9 +100,9 @@ class Strumline extends FlxContainer {
             arrow.x += (Arrow.arrowWidth + noteStyle.properties.spacing) * _strumArrowCount;
         }
 
-        final name:String = Arrow.retrieveNameFromDirection(direction);
+        final name:String = type;
         
-        strumArrowMap.set(direction, arrow);
+        strumArrowMap.set(type, arrow);
         ++_strumArrowCount;
 
         arrow.playAnim('static${name}');

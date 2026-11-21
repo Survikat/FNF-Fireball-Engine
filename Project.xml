@@ -31,7 +31,11 @@
 
 	<source path="source" />
 
-    <assets path="assets" embed="false"/>
+    <assets path="assets/data" embed="false"/>
+    <assets path="assets/images" embed="false"/>
+    <assets path="assets/songs" embed="false"/>
+    <assets path="assets/sounds" embed="false"/>
+
     <assets path="mods" embed="false" type="template"/>
 
 	<!-- _______________________________ Libraries ______________________________ -->

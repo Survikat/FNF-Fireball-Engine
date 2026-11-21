@@ -1,7 +1,7 @@
 package engine;
 
 import engine.music.SongManager;
-import engine.music.SongMetaData;
+import engine.music.meta.SongMeta;
 import flixel.FlxG;
 import flixel.sound.FlxSound;
 import haxe.Json;

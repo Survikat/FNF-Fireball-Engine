@@ -2,8 +2,6 @@ package engine.states;
 
 import engine.input.InputHandler;
 import engine.input.InputSource;
-import engine.input.sources.GamepadInputSource;
-import engine.input.sources.KeyboardInputSource;
 import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.addons.transition.FlxTransitionSprite.GraphicTransTileDiamond;
@@ -38,14 +36,6 @@ class FBState extends FlxUIState {
 
         transIn = FlxTransitionableState.defaultTransIn;
         transOut = FlxTransitionableState.defaultTransOut;
-
-        if (InputHandler.inputMethod == null) {
-            #if desktop
-            InputHandler.init(new KeyboardInputSource());
-            #else
-            InputHandler.init(new GamepadInputSource());
-            #end
-        }
 
         this.controls = InputHandler.inputMethod;
 

@@ -1,4 +1,4 @@
-package engine.objects.ui;
+package engine.objects.ui.arrows;
 
 import animate.FlxAnimateFrames;
 import engine.InternalDefs.AnimatedGraphicProperties;
@@ -17,12 +17,14 @@ enum ArrowType {
 
 final class Arrow extends FBSprite {
     public static final arrowWidth:Int = 150;
-    public static final usualNoteDirectionOrder:Array<NoteDirection> = [LEFT, DOWN, UP, RIGHT];
+    public static final fourKeyOrder:Array<String> = ["Left", "Down", "Up", "Right"];
+    public static final sixKeyOrder:Array<String> = ["Left", "Up", "Right", "Left", "Down", "Right"];
 
     private var _properties:AnimatedGraphicProperties;
     private var _arrowType:ArrowType;
 
     public var noteStyle:NoteStyleMeta;
+    public var type:String = "Left";
 
     public var arrowType(get, never):ArrowType;
     public var properties(get, never):AnimatedGraphicProperties;
@@ -92,32 +94,8 @@ final class Arrow extends FBSprite {
     function get_arrowType():ArrowType {
         return _arrowType;
     }
-
-    public static function retrieveNameFromDirection(direction:NoteDirection):String {
-        var name:String = "Left";
-
-        switch (direction) {
-            case LEFT:
-                name = "Left";
-            case DOWN:
-                name = "Down";
-            case UP:
-                name = "Up";
-            case RIGHT:
-                name = "Right";
-        }
-
-        return name;
-    }
 }
 
 final class Sustain extends FBSprite {
 
-}
-
-enum NoteDirection {
-    LEFT;
-    RIGHT;
-    DOWN;
-    UP;
 }

@@ -1,12 +1,12 @@
 package states.game;
 
 import engine.GameManager;
+import engine.InternalDefs;
 import engine.Resources;
 import engine.objects.FBSprite;
 import engine.objects.characters.Character;
-import engine.objects.ui.Arrow;
-import engine.objects.ui.Note;
 import engine.objects.ui.Strumline;
+import engine.objects.ui.arrows.Arrow;
 import engine.states.templates.MusicalState;
 import flixel.FlxCamera;
 import flixel.FlxG;
@@ -31,6 +31,9 @@ final class PlayState extends MusicalState {
 
     private var _playerStrumLine:Strumline;
     private var _opponentStrumLine:Strumline;
+
+    public var hudDefZoom:Float = 1;
+    public var stageZoom:Float = 1;
 
     public var camZooming:Bool = false;
 
@@ -82,13 +85,13 @@ final class PlayState extends MusicalState {
         add(_dancer);*/
         add(_player);
 
-        _opponentStrumLine = new Strumline();
+        _opponentStrumLine = new Strumline(0, 0, InternalDefs.defaultGameStyle.noteStyle, Arrow.sixKeyOrder);
         _opponentStrumLine.camera = _hudCam;
         _opponentStrumLine.x = Arrow.arrowWidth / 2;
         _opponentStrumLine.autoPlay = true;
-        add(_opponentStrumLine);
+        // add(_opponentStrumLine);
 
-        _playerStrumLine = new Strumline();
+        _playerStrumLine = new Strumline(0, 0, InternalDefs.defaultGameStyle.noteStyle, Arrow.sixKeyOrder);
         _playerStrumLine.camera = _hudCam;
         _playerStrumLine.x = (_hudCam.width - _playerStrumLine.width) - (Arrow.arrowWidth / 2);
         _playerStrumLine.controls = controls;
@@ -106,13 +109,13 @@ final class PlayState extends MusicalState {
 
         super.update(elapsed);
         
-        _gameCam.zoom = FlxMath.lerp(_gameCam.zoom, 1, elapsedLerp);
-        _hudCam.zoom = FlxMath.lerp(_hudCam.zoom, 1, elapsedLerp);
+        _gameCam.zoom = FlxMath.lerp(_gameCam.zoom, stageZoom, elapsedLerp);
+        _hudCam.zoom = FlxMath.lerp(_hudCam.zoom, hudDefZoom, elapsedLerp);
 
-        if (controls.inputJustPressed("DEBUG")) {
+        /*if (controls.inputJustPressed("DEBUG")) {
             song.kill(); // Not killing the song manager manually can result in issues? I think?
             FlxG.resetState();
-        }
+        }*/
     }
 
     override public function beatHit(beat:Int):Void {

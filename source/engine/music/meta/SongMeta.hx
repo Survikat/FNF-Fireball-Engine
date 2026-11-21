@@ -1,4 +1,4 @@
-package engine.music;
+package engine.music.meta;
 
 typedef SongMetaData = {
     var title:String;

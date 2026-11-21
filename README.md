@@ -13,12 +13,12 @@ Fireball Engine is in active development! Join our Discord Server [here](https:/
 I believed there should be a heavily advanced yet extremely easy to use FNF Engine, something optimized for multiple mods while being optimal for full control and creativity. No FNF Engines (that I'm aware of) implement this in a way that I'm happy with. My goal is to make an Engine that isn't clunky, and is easy to use immediately.
 
 ## Notice
-Fireball Engine is not affiliated with "The Funkin' Crew Inc." or "Friday Night Funkin'". No assets or source code from the mentioned names are driectly contained within this project. You must have a desktop copy of "Friday Night Funkin'" for Fireball Engine to function proper.
+Fireball Engine is not affiliated with "The Funkin' Crew Inc." or "Friday Night Funkin'". No assets or source code from the mentioned names are contained within this project. You must have a desktop copy of "Friday Night Funkin'" for Fireball Engine to function properly.
 
 **Zero code or assets were made with Generative AI, yuck.**
 
 ### License
-Two seperate licenses are contained in this repository. The source code without its assets fall under the [Apache 2.0 License](licenses/APACHE_LICENSE), but other content and/or assets may fall under different licenses. For more information, read the [LICENSE](LICENSE).
+Two seperate licenses are contained in this repository. The source code without its assets fall under the [Apache 2.0 License](licenses/APACHE_LICENSE), but other content and/or assets may fall under different licenses. For more information, read the [LICENSE](LICENSE.md).
 
 To contribute to this project, you must have read and agreed to the applicable licenses as it affects you as a contributor. Especially if that contribution is assets.
 

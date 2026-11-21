@@ -1,6 +1,6 @@
 package engine.music;
 
-import engine.music.SongMetaData;
+import engine.music.meta.SongMeta;
 import engine.util.Reactive;
 import flixel.FlxBasic;
 import flixel.FlxG;
@@ -82,6 +82,7 @@ final class SongManager extends FlxBasic {
 
     /**
      * Will continue updating the current beats as if the song was still playing.
+     * If enabled, you will not get accurate timing from the `time` variable when the song is under certain conditions (like being paused).
      */
     public var continuous:Bool = false;
     
