@@ -23,13 +23,20 @@ Two seperate licenses are contained in this repository. The source code without 
 To contribute to this project, you must have read and agreed to the applicable licenses as it affects you as a contributor. Especially if that contribution is assets.
 
 ## How to build
-Install Haxe 4.3.7, and follow the [HaxeFlixel Install Guide](https://haxeflixel.com/documentation/install-haxeflixel/). Then, run the following commands to install all the necessary libraries:
+Install Haxe 4.3.7, and follow the [HaxeFlixel Install Guide](https://haxeflixel.com/documentation/install-haxeflixel/).
 
+The next thing to do is install the necessary libraries. There are two ways of doing so, either using `hmm`, or by manually installing them yourself.
+
+If you prefer to use `hmm`, run the commands:
 ```bash
-haxelib install hxvlc
-haxelib install flixel-animate
-haxelib install hxdiscord_rpc
+haxelib install hmm
+haxelib run hmm setup
+haxelib run hmm install
+haxelib run lime setup
+haxelib run lime setup flixel
 ```
+
+If you'd rather install libraries manually (maybe because you want more control over your local installation), you can refer to the [hmm.json](hmm.json) file to know what libraries this engine uses.
 
 You can then compile and test with either `lime test windows`, `lime test linux`, or `lime test mac` depending on your host device or target. **MacOS is untested**.
 
