@@ -4,7 +4,6 @@ import engine.GameManager;
 import engine.Resources;
 import engine.objects.FBSprite;
 import engine.objects.characters.Character;
-import engine.save.Highscores;
 import engine.states.templates.MusicalState;
 import flixel.FlxG;
 import flixel.FlxSprite;
@@ -60,7 +59,7 @@ final class TestState extends MusicalState {
         FlxG.timeScale = Math.max(0.1, song.pitch);
 
         if (FlxG.keys.justPressed.SPACE) {
-            Highscores.setSongScore('Test${Std.int(Math.random() * 1000)}', "normal", Std.int(Math.random() * 10000));
+            // Highscores.setSongScore('Test${Std.int(Math.random() * 1000)}', "normal", Std.int(Math.random() * 10000));
 
             if (song.playing)
                 song.play();

@@ -15,6 +15,7 @@ typedef AnimationData = {
     var ?fps:Null<Int>;
     var ?loop:Bool;
     var ?offsets:Array<Int>;
+    var ?indices:Array<Int>;
 }
 
 typedef AnimatedGraphicProperties = {

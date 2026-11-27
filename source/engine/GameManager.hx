@@ -3,8 +3,11 @@ package engine;
 import engine.music.SongManager;
 import engine.music.meta.SongMeta;
 import flixel.FlxG;
+import flixel.FlxGame;
 import flixel.sound.FlxSound;
 import haxe.Json;
+import openfl.Assets;
+import openfl.display.Sprite;
 
 enum FunkinTracks {
     Instrumental;
@@ -14,6 +17,8 @@ enum FunkinTracks {
 }
 
 final class GameManager {
+    public static var game:FlxGame;
+
     /**
      * Plays the given song to the given song manager.
      * @param manager Song Manager.

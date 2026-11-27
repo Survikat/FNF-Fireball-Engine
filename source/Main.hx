@@ -1,7 +1,7 @@
 package;
 
+import engine.GameManager;
 import engine.Resources;
-import engine.save.Highscores;
 import engine.save.Save;
 // import engine.util.Logger;
 import flixel.FlxG;
@@ -18,9 +18,11 @@ import sys.FileSystem;
 
 class Main extends Sprite
 {
+    /* GAME DATA */
     private static var _startWidth:Int = 0;
     private static var _startHeight:Int = 0;
 	private static var _startFramerate:Int = 60;
+    private static var _startFullscreen:Bool = false;
 
 	/* ENGINE META */
 	public static final engineName:String = "Fireball Engine";
@@ -30,6 +32,9 @@ class Main extends Sprite
 
     public static final discordAppID:String = "1542526698166165654";
 
+    /* IDK WHAT TO NAME THIS IT JUST FEELS WEIRD NOT BEING HERE */
+    public var _game:FlxGame;
+
 	public function new()
 	{
 		super();
@@ -37,12 +42,7 @@ class Main extends Sprite
 		// Logger.init();
 
         #if !desktop
-        final aspectWidth:Int = Math.floor(Capabilities.screenResolutionX / 120);
-        final aspectHeight:Int = Math.floor(Capabilities.screenResolutionY / 120);
-        final aspectRatio:Float = aspectWidth / aspectHeight;
-
-        _startHeight = 720;
-        _startWidth = Math.floor(720 * aspectRatio);
+        calculateGameSize();
         #end
 
 		#if desktop
@@ -60,6 +60,9 @@ class Main extends Sprite
 							trace('$fArg is an invalid argument!');
 						case 'fps':
 							_startFramerate = Std.int(Math.min(1000, Math.max(30, Std.parseInt(args[i + 1]))));
+                        case 'fullscreen':
+                            calculateGameSize();
+                            _startFullscreen = true;
 					}
 				}
 			}
@@ -68,22 +71,31 @@ class Main extends Sprite
 		}
 		#end
 
-		addChild(new FlxGame(_startWidth, _startHeight, InitState, _startFramerate, _startFramerate, true));
+		final _game = new FlxGame(_startWidth, _startHeight, InitState, _startFramerate, _startFramerate, true, _startFullscreen);
+        addChild(_game);
+
+        Save.bind("saveData", "Survikat/fireballEngine");
+        FlxG.autoPause = false;
+
+        GameManager.game = _game;
+
+        #if desktop
+		api.DiscordAPI.Init(Main.discordAppID);
+		#end
 	}
+
+    private function calculateGameSize():Void {
+        final aspectWidth:Int = Math.floor(Capabilities.screenResolutionX / 120);
+        final aspectHeight:Int = Math.floor(Capabilities.screenResolutionY / 120);
+        final aspectRatio:Float = aspectWidth / aspectHeight;
+
+        _startHeight = 720;
+        _startWidth = Math.floor(720 * aspectRatio);
+    }
 }
 
 final class InitState extends FlxState {
 	override public function create():Void {
-		Assets.cache.enabled = true;
-		FlxG.autoPause = false;
-
-        // Save.bind("saveData", "Survikat/fireballEngine");
-		Highscores.init();
-
-		#if desktop
-		api.DiscordAPI.Init(Main.discordAppID);
-		#end
-
         if (FileSystem.isDirectory("resources") && Save.getInt("resourceVersion") == Main.resourceVersion) {
             FlxG.switchState(() -> new PlayState());
         } else {

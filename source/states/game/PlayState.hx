@@ -72,17 +72,16 @@ final class PlayState extends MusicalState {
         _player.scaleSprite(_player.width * 0.7);
         _player.setPosition((FlxG.width - _player.width) - 24, (FlxG.height - _player.height) - 24);
 
-        /*_dancer = new Character("boyfriend");
+        _dancer = new Character("girlfriend");
         _dancer.scaleSprite(_dancer.width * 0.7);
         _dancer.screenCenter();
 
-        _opponent = new Character("boyfriend");
+        _opponent = new Character("daddy_dearest");
         _opponent.scaleSprite(_opponent.width * 0.7);
-        _opponent.setPosition(24, (FlxG.height - _player.height) - 24);
-        _opponent.flipX = true;*/
+        _opponent.setPosition(24, (FlxG.height - _opponent.height) - 24);
 
-        /*add(_opponent);
-        add(_dancer);*/
+        add(_opponent);
+        add(_dancer);
         add(_player);
 
         _opponentStrumLine = new Strumline(0, 0, InternalDefs.defaultGameStyle.noteStyle, Arrow.sixKeyOrder);
@@ -111,34 +110,21 @@ final class PlayState extends MusicalState {
         
         _gameCam.zoom = FlxMath.lerp(_gameCam.zoom, stageZoom, elapsedLerp);
         _hudCam.zoom = FlxMath.lerp(_hudCam.zoom, hudDefZoom, elapsedLerp);
-
-        /*if (controls.inputJustPressed("DEBUG")) {
-            song.kill(); // Not killing the song manager manually can result in issues? I think?
-            FlxG.resetState();
-        }*/
     }
 
     override public function beatHit(beat:Int):Void {
         super.beatHit(beat);
 
         _player.dance();
-        /*_dancer.dance();
-        _opponent.dance();*/
+        _opponent.dance();
+
+        if (beat % 2 == 0)
+            _dancer.dance();
     }
 
     private var _lastDancerTween:VarTween; // I like rotating
     override public function barHit(bar:Int):Void {
         super.barHit(bar);
-
-        /*if (_lastDancerTween != null && !_lastDancerTween.finished) {
-            _lastDancerTween.onComplete(_lastDancerTween);
-            _lastDancerTween.cancel();
-        }
-
-        _lastDancerTween = FlxTween.tween(_dancer, {angle: 360}, song.barDuration, {onComplete: (tween) -> {
-            _dancer.angle = 0;
-            _dancer.flipX = !_dancer.flipX;
-        }});*/
 
         if (camZooming && bar % 2 == 0) {
             _gameCam.zoom += 0.15;

@@ -1,0 +1,27 @@
+{
+    "path": "dad",
+    "atlasType": "SPRITEMAP",
+    "animations": [
+        {
+            "name": "idle",
+            "symbol": "Dad idle dance"
+        },
+        {
+            "name": "singLEFT",
+            "symbol": "Dad Sing Note LEFT"
+        },
+        {
+            "name": "singRIGHT",
+            "symbol": "dad sing note right"
+        },
+        {
+            "name": "singUP",
+            "symbol": "Dad Sing note UP"
+        },
+        {
+            "name": "singDOWN",
+            "symbol": "Dad Sing Note DOWN"
+        }
+    ],
+    "flip": false
+}

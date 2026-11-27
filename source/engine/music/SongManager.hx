@@ -125,17 +125,17 @@ final class SongManager extends FlxBasic {
         _beatDuration = 0;
         
         _curBar = new Reactive<Int>({
-            initialValue: -1,
+            initialValue: 0,
             callback: onBar.dispatch
         });
 
         _curBeat = new Reactive<Int>({
-            initialValue: -1,
+            initialValue: 0,
             callback: onBeat.dispatch
         });
 
         _curStep = new Reactive<Int>({
-            initialValue: -1,
+            initialValue: 0,
             callback: onStep.dispatch
         });
     }

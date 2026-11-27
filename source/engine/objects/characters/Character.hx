@@ -78,9 +78,15 @@ class Character extends FBSprite {
                     if (animFPS == null)
                         animFPS = 24;
 
-                    this.anim.addByPrefix(animName, animSymbol, animFPS, animLoop, _flip);
+                    if (animData.indices == null || animData.indices.length == 0)
+                        this.anim.addByPrefix(animName, animSymbol, animFPS, animLoop, _flip);
+                    else
+                        this.anim.addByIndices(animName, animSymbol, animData.indices, "", animFPS, animLoop, _flip);
                 case SPRITEMAP:
-                    this.anim.addBySymbol(animName, animSymbol, animFPS, animLoop, _flip);
+                    if (animData.indices == null || animData.indices.length == 0)
+                        this.anim.addBySymbol(animName, animSymbol, animFPS, animLoop, _flip);
+                    else
+                        this.anim.addBySymbolIndices(animName, animSymbol, animData.indices, animFPS, animLoop, _flip);
             }
             
             var offsetX:Float = 0;
@@ -100,7 +106,7 @@ class Character extends FBSprite {
         if (characterData.danceType == null)
             this.danceType = BOP;
         else
-            this.danceType = characterData.danceType;
+            this.danceType = DanceType.createByName(characterData.danceType.toUpperCase());
 
         dance();
     }
@@ -138,7 +144,7 @@ typedef CharacterJson = {
     var atlasType:String;
     var ?antialiasing:Bool;
     var animations:Array<AnimationData>;
-    var ?danceType:DanceType;
+    var ?danceType:String;
     var ?flip:Bool;
     var ?scale:Float;
 }

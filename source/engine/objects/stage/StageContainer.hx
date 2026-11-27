@@ -1,6 +1,7 @@
 package engine.objects.stage;
 
-import engine.objects.stage.elements.StageElement;
+import engine.objects.stage.StageElement;
+import flixel.FlxSprite;
 import flixel.group.FlxContainer;
 import flixel.group.FlxGroup;
 import flixel.group.FlxSpriteContainer.FlxTypedSpriteContainer;
@@ -15,9 +16,6 @@ class StageContainer extends FlxContainer {
     private var _mgStageLayerB:FlxTypedSpriteContainer<StageElement>; // Middleground B
     private var _fgStageLayer:FlxTypedSpriteContainer<StageElement>; // Foreground
 
-    /**
-     * @param swapCharacterLayering if toggled, the player rendering will occur below the opponent rather than vice-versa.
-     */
     override public function new(?swapCharacterLayering:Bool = false) {
         super();
 
@@ -29,6 +27,34 @@ class StageContainer extends FlxContainer {
         opponentLayer = new FlxGroup();
         playerLayer = new FlxGroup();
 
+        regroupContainer(swapCharacterLayering);
+    }
+
+    /**
+     * Kills all layers then re-adds them to the container, used for changing how characters are layered.
+     * 
+     * @param swapCharacterLayering if toggled, the player rendering will occur below the opponent rather than vice-versa.
+     */
+    public function regroupContainer(?swapCharacterLayering:Bool = false):Void {
+        var _stageLayers:Array<FlxTypedSpriteContainer<StageElement>> = [
+            _bgStageLayer,
+            _mgStageLayerA,
+            _mgStageLayerB,
+            _fgStageLayer
+        ];
+
+        for (layer in _stageLayers) {
+            if (layer != null && layer.alive) {
+                layer.kill();
+            }
+        }
+
+        if (opponentLayer != null && opponentLayer.alive)
+            opponentLayer.kill();
+        if (playerLayer != null && playerLayer.alive)
+            playerLayer.kill();
+
+        // Add layers
         add(_bgStageLayer);
         add(dancerLayer);
         add(_mgStageLayerA);
@@ -44,6 +70,19 @@ class StageContainer extends FlxContainer {
         }
         
         add(_fgStageLayer);
+    }
+
+    public function addAsElement(object:FBSprite, container:FlxTypedSpriteContainer<StageElement>):StageElement {
+        var convertedObject:StageElement = null;
+
+        if (object is FBSprite) {
+            convertedObject = cast(object, StageElement);
+            container.add(convertedObject);
+        } else {
+            trace('Object is not valid. Is object even an FBSprite?');
+        }
+
+        return convertedObject;
     }
 
     public function onBar(bar:Int):Void {

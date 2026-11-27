@@ -1,4 +1,4 @@
-package engine.objects.stage.elements;
+package engine.objects.stage;
 
 class StageElement extends FBSprite {
     public function onBar(bar:Int):Void {}

@@ -76,9 +76,15 @@ final class Arrow extends FBSprite {
 
             switch (atlasType) {
                 case SPARROW:
-                    anim.addByPrefix(selAnim.name, selAnim.symbol, fps, loop);
+                    if (selAnim.indices == null || selAnim.indices.length == 0)
+                        this.anim.addByPrefix(selAnim.name, selAnim.symbol, fps, loop);
+                    else
+                        this.anim.addByIndices(selAnim.name, selAnim.symbol, selAnim.indices, "", fps, loop);
                 case SPRITEMAP:
-                    anim.addBySymbol(selAnim.name, selAnim.symbol, fps, loop);
+                    if (selAnim.indices == null ||selAnim.indices.length == 0)
+                        this.anim.addBySymbol(selAnim.name, selAnim.symbol, fps, loop);
+                    else
+                        this.anim.addBySymbolIndices(selAnim.name, selAnim.symbol, selAnim.indices, fps, loop);
             }
 
             animationOffsets.set(selAnim.name, new FlxPoint(offsets[0], offsets[1]));
